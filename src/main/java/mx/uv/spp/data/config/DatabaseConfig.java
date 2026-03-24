@@ -1,4 +1,4 @@
-package mx.uv.spp.config;
+package mx.uv.spp.data.config;
 
 import java.io.IOException;
 import java.io.InputStream;
