@@ -9,5 +9,4 @@ public interface IActivityDAO {
     ActivityDTO findActivityById(Integer id);
     List<ActivityDTO> findAllActivities();
     boolean updateActivity(ActivityDTO activity);
-    boolean deleteActivityById(Integer id);
 }

@@ -1,5 +1,4 @@
 package mx.uv.spp.business.dto;
-// hbauxhbasac
 
 public class UserDTO {
     private int idUser;
