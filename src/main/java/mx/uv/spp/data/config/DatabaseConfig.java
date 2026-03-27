@@ -22,7 +22,7 @@ public class DatabaseConfig {
         try {
             this.connection = DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
-            throw new DatabaseException("Error crítico al conectar con la base de datos", e);
+            throw new DatabaseException("Error crotico al conectar con la base de datos", e);
         }
     }
 
