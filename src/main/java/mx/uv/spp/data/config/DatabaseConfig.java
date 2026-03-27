@@ -1,32 +1,43 @@
 package mx.uv.spp.data.config;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DatabaseConfig {
-    private static final Properties properties = new Properties();
 
-    static {
-        try (InputStream inputStream = DatabaseConfig.class.getClassLoader()
-            .getResourceAsStream("db.properties")) {
-            if (inputStream == null) {
-                throw new RuntimeException("No se encontro el archivo db.properties");
-            }
-            properties.load(inputStream);
-        } catch (IOException e) {
-            throw new RuntimeException("Error al cargar la configuración de la BD", e);
+    private static final Logger LOGGER = Logger.getLogger(DatabaseConfig.class.getName());
+    private static DatabaseConfig instance;
+
+    private Connection connection;
+
+    private DatabaseConfig() {
+        String url = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String pass = System.getenv("DB_PASS");
+
+        if (url == null || user == null || pass == null) {
+            LOGGER.severe("Environment variables missing");
+            return;
+        }
+
+        try {
+            this.connection = DriverManager.getConnection(url, user, pass);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Error", e);
         }
     }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-            properties.getProperty("db.url"),
-            properties.getProperty("db.user"),
-            properties.getProperty("db.pass")
-        );
+    public static DatabaseConfig getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConfig();
+        }
+        return instance;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 }
