@@ -3,6 +3,7 @@ package mx.uv.spp.data.dao.impl;
 import mx.uv.spp.business.dto.ActivityDTO;
 import mx.uv.spp.data.config.DatabaseConfig;
 import mx.uv.spp.data.dao.IActivityDAO;
+import mx.uv.spp.data.exceptions.DatabaseException; // Importa tu excepción
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,8 +32,7 @@ public class ActivityDAOImpl implements IActivityDAO {
             stmt.setInt(6, activity.getProfessorId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Error al guardar: " + e.getMessage());
-            return false;
+            throw new DatabaseException("Error al guardar la actividad", e);
         }
     }
 
@@ -46,7 +46,7 @@ public class ActivityDAOImpl implements IActivityDAO {
                 return mapResultSetToActivity(rs);
             }
         } catch (SQLException e) {
-            System.out.println("Error al buscar: " + e.getMessage());
+            throw new DatabaseException("Error al buscar la actividad con ID: " + id, e);
         }
         return null;
     }
@@ -61,7 +61,7 @@ public class ActivityDAOImpl implements IActivityDAO {
                 list.add(mapResultSetToActivity(rs));
             }
         } catch (SQLException e) {
-            System.out.println("Error al listar: " + e.getMessage());
+            throw new DatabaseException("Error al listar las actividades", e);
         }
         return list;
     }
@@ -79,8 +79,7 @@ public class ActivityDAOImpl implements IActivityDAO {
             stmt.setInt(7, activity.getId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Error al actualizar: " + e.getMessage());
-            return false;
+            throw new DatabaseException("Error al actualizar la actividad con ID: " + activity.getId(), e);
         }
     }
 

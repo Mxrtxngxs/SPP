@@ -3,6 +3,7 @@ package mx.uv.spp.data.dao.impl;
 import mx.uv.spp.business.dto.UserDTO;
 import mx.uv.spp.data.config.DatabaseConfig;
 import mx.uv.spp.data.dao.IUserDAO;
+import mx.uv.spp.data.exceptions.DatabaseException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,8 +30,7 @@ public class UserDAOImpl implements IUserDAO {
             stmt.setString(4, user.getRole());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Error al guardar: " + e.getMessage());
-            return false;
+            throw new DatabaseException("Error al guardar el usuario", e);
         }
     }
 
@@ -44,7 +44,7 @@ public class UserDAOImpl implements IUserDAO {
                 return mapResultSetToUser(rs);
             }
         } catch (SQLException | NumberFormatException e) {
-            System.out.println("Error al buscar: " + e.getMessage());
+            throw new DatabaseException("Error al buscar el usuario con ID: " + id, e);
         }
         return null;
     }
@@ -59,7 +59,7 @@ public class UserDAOImpl implements IUserDAO {
                 list.add(mapResultSetToUser(rs));
             }
         } catch (SQLException e) {
-            System.out.println("Error al listar: " + e.getMessage());
+            throw new DatabaseException("Error al listar los usuarios", e);
         }
         return list;
     }
@@ -75,8 +75,7 @@ public class UserDAOImpl implements IUserDAO {
             stmt.setInt(5, user.getIdUser());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("Error al actualizar: " + e.getMessage());
-            return false;
+            throw new DatabaseException("Error al actualizar el usuario con ID: " + user.getIdUser(), e);
         }
     }
 

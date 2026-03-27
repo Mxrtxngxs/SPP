@@ -1,5 +1,6 @@
 package mx.uv.spp.data.config;
 
+import mx.uv.spp.data.exceptions.DatabaseException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -15,14 +16,13 @@ public class DatabaseConfig {
         String pass = System.getenv("DB_PASS");
 
         if (url == null || user == null || pass == null) {
-            System.out.println("Faltan variables de entorno");
-            return;
+            throw new DatabaseException("Faltan variables de entorno DB_URL, DB_USER o DB_PASS", null);
         }
 
         try {
             this.connection = DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
-            System.out.println("Error de conexion: " + e.getMessage());
+            throw new DatabaseException("Error crítico al conectar con la base de datos", e);
         }
     }
 
