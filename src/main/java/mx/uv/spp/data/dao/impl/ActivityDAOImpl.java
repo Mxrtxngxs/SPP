@@ -17,6 +17,9 @@ public class ActivityDAOImpl implements IActivityDAO {
     private final Connection connection;
 
     private static final String SQL_SAVE_ACTIVITY = "INSERT INTO activities (title, description, due_date, publication_date, status, professor_id) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String SQL_FIND_ACTIVITY_BY_ID = "SELECT * FROM activities WHERE id = ?";
+    private static final String SQL_FIND_ALL_ACTIVITIES = "SELECT * FROM activities";
+    private static final String SQL_UPDATE_ACTIVITY = "UPDATE activities SET title=?, description=?, due_date=?, publication_date=?, status=?, professor_id=? WHERE id=?";
 
     public ActivityDAOImpl() {
         this.connection = DatabaseConfig.getInstance().getConnection();
@@ -39,8 +42,7 @@ public class ActivityDAOImpl implements IActivityDAO {
 
     @Override
     public ActivityDTO findActivityById(Integer id) {
-        String sql = "SELECT * FROM activities WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ACTIVITY_BY_ID)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -55,8 +57,8 @@ public class ActivityDAOImpl implements IActivityDAO {
     @Override
     public List<ActivityDTO> findAllActivities() {
         List<ActivityDTO> list = new ArrayList<>();
-        String sql = "SELECT * FROM activities";
-        try (PreparedStatement statement = connection.prepareStatement(sql);
+
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_ACTIVITIES);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 list.add(mapResultSetToActivity(resultSet));
@@ -69,8 +71,7 @@ public class ActivityDAOImpl implements IActivityDAO {
 
     @Override
     public boolean updateActivity(ActivityDTO activity) {
-        String sql = "UPDATE activities SET title=?, description=?, due_date=?, publication_date=?, status=?, professor_id=? WHERE id=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_ACTIVITY)) {
             statement.setString(1, activity.getTitle());
             statement.setString(2, activity.getDescription());
             statement.setDate(3, new java.sql.Date(activity.getDueDate().getTime()));
