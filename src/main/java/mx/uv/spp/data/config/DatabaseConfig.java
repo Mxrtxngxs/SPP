@@ -3,14 +3,10 @@ package mx.uv.spp.data.config;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class DatabaseConfig {
 
-    private static final Logger LOGGER = Logger.getLogger(DatabaseConfig.class.getName());
     private static DatabaseConfig instance;
-
     private Connection connection;
 
     private DatabaseConfig() {
@@ -19,14 +15,14 @@ public class DatabaseConfig {
         String pass = System.getenv("DB_PASS");
 
         if (url == null || user == null || pass == null) {
-            LOGGER.severe("Environment variables missing");
+            System.out.println("Faltan variables de entorno");
             return;
         }
 
         try {
             this.connection = DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error", e);
+            System.out.println("Error de conexion: " + e.getMessage());
         }
     }
 
