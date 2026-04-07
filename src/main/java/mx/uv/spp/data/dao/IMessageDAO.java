@@ -1,4 +1,4 @@
 package mx.uv.spp.data.dao;
 
-public interface TemplateDAO {
+public interface IMessageDAO {
 }

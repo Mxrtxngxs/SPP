@@ -1,4 +1,4 @@
-package mx.uv.spp.data.dao.impl;
+package mx.uv.spp.data.dao.implementations;
 
 import mx.uv.spp.business.dto.ActivityDTO;
 import mx.uv.spp.data.config.DatabaseConfig;
