@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IActivityDAO {
     boolean saveActivity(ActivityDTO activity);
-    ActivityDTO findActivityById(Integer id);
+    ActivityDTO findActivityById(int id);
     List<ActivityDTO> findAllActivities();
     boolean updateActivity(ActivityDTO activity);
 }

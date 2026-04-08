@@ -1,4 +1,4 @@
 package mx.uv.spp.data.dao.implementations;
 
-public class ProjectDAOImpl {
+public class ProjectDAOImplementation {
 }
