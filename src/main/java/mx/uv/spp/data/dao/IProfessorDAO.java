@@ -6,4 +6,5 @@ public interface IProfessorDAO {
     boolean existsStaffNumber(String staffNumber);
     int getActiveProfessorsCount();
     boolean saveProfessor(ProfessorDTO professor);
+    boolean inactivateProfessor(int userId);
 }

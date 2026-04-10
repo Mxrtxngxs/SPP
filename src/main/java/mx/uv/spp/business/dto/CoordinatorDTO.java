@@ -1,6 +1,6 @@
 package mx.uv.spp.business.dto;
 
-public class CoordinatorDetailDTO extends UserDTO {
+public class CoordinatorDTO extends UserDTO {
     private Integer userId;
     private String staffNumber;
 

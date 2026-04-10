@@ -19,6 +19,7 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
     private static final String SQL_COUNT_ACTIVE = "SELECT COUNT(*) FROM Usuario WHERE rol = 'Profesor' AND estado = 'Activo'";
     private static final String SQL_SAVE_USER = "INSERT INTO Usuario (nombre, contrasena, estado, rol) VALUES (?, ?, ?, 'Profesor')";
     private static final String SQL_SAVE_PROFESSOR = "INSERT INTO Profesor_Detalle (id_usuario, numero_personal, turno) VALUES (?, ?, ?)";
+    private static final String SQL_INACTIVATE_PROFESSOR_BY_ID = "UPDATE Usuario SET estado = 'No Activo' WHERE id_usuario = ?";
 
     public ProfessorDAOImplementation() {
         this.connection = DatabaseConfig.getInstance().getConnection();
@@ -82,6 +83,16 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
 
         } catch (SQLException e) {
             throw new DatabaseException("Error saving professor", e);
+        }
+    }
+
+    @Override
+    public boolean inactivateProfessor(int userId) {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_INACTIVATE_PROFESSOR_BY_ID)) {
+            statement.setInt(1, userId);
+            return statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            throw new DatabaseException("Error inactivating professor with ID: " + userId, e);
         }
     }
 }

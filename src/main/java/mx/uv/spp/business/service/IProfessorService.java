@@ -4,4 +4,5 @@ import mx.uv.spp.business.dto.ProfessorDTO;
 
 public interface IProfessorService {
     void registerProfessor(ProfessorDTO professor);
+    void inactivateProfessor(int userId);
 }

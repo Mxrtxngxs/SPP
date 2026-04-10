@@ -32,4 +32,11 @@ public class ProfessorServiceImplementation implements IProfessorService {
             throw new RuntimeException("Could not register the professor. Try again.");
         }
     }
+
+    @Override
+    public void inactivateProfessor(int userId) {
+        if (!professorDAO.inactivateProfessor(userId)) {
+            throw new RuntimeException("Could not inactivate the professor. Try again.");
+        }
+    }
 }

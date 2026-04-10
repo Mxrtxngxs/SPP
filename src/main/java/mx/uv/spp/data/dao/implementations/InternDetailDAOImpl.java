@@ -1,6 +1,6 @@
 package mx.uv.spp.data.dao.implementations;
 
-import mx.uv.spp.business.dto.InternDetailDTO;
+import mx.uv.spp.business.dto.InternDTO;
 import mx.uv.spp.data.config.DatabaseConfig;
 import mx.uv.spp.data.exceptions.DatabaseException;
 
@@ -20,7 +20,7 @@ public class InternDetailDAOImpl {
     }
 
     @Override
-    public boolean saveInternDetail(InternDetailDTO internDetail) {
+    public boolean saveInternDetail(InternDTO internDetail) {
         String sql = "INSERT INTO Practicante_Detalle (id_usuario, matricula, sexo, habla_lengua_indigena, lengua_indigena, id_coordinador, id_profesor) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, internDetail.getUserId());
@@ -37,7 +37,7 @@ public class InternDetailDAOImpl {
     }
 
     @Override
-    public InternDetailDTO findInternDetailById(Integer id) {
+    public InternDTO findInternDetailById(Integer id) {
         String sql = "SELECT * FROM Practicante_Detalle WHERE id_usuario = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -50,8 +50,8 @@ public class InternDetailDAOImpl {
     }
 
     @Override
-    public List<InternDetailDTO> findAllInternDetails() {
-        List<InternDetailDTO> list = new ArrayList<>();
+    public List<InternDTO> findAllInternDetails() {
+        List<InternDTO> list = new ArrayList<>();
         String sql = "SELECT * FROM Practicante_Detalle";
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -63,7 +63,7 @@ public class InternDetailDAOImpl {
     }
 
     @Override
-    public boolean updateInternDetail(InternDetailDTO internDetail) {
+    public boolean updateInternDetail(InternDTO internDetail) {
         String sql = "UPDATE Practicante_Detalle SET matricula=?, sexo=?, habla_lengua_indigena=?, lengua_indigena=?, id_coordinador=?, id_profesor=? WHERE id_usuario=?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, internDetail.getEnrollmentNumber());
@@ -90,8 +90,8 @@ public class InternDetailDAOImpl {
         }
     }
 
-    private InternDetailDTO mapResultSetToInternDetail(ResultSet resultSet) throws SQLException {
-        InternDetailDTO internDetail = new InternDetailDTO();
+    private InternDTO mapResultSetToInternDetail(ResultSet resultSet) throws SQLException {
+        InternDTO internDetail = new InternDTO();
         internDetail.setUserId(resultSet.getInt("id_usuario"));
         internDetail.setEnrollmentNumber(resultSet.getString("matricula"));
         internDetail.setGender(resultSet.getString("sexo"));
