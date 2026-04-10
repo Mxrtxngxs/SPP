@@ -12,11 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements IUserDAO {
+public class UserDAOImplementation implements IUserDAO {
 
     private final Connection connection;
 
-    public UserDAOImpl() {
+    public UserDAOImplementation() {
         this.connection = DatabaseConfig.getInstance().getConnection();
     }
 

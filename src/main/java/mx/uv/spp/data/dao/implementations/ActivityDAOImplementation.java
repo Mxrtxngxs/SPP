@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityDAOImpl implements IActivityDAO {
+public class ActivityDAOImplementation implements IActivityDAO {
 
     private final Connection connection;
 
@@ -21,7 +21,7 @@ public class ActivityDAOImpl implements IActivityDAO {
     private static final String SQL_FIND_ALL_ACTIVITIES = "SELECT * FROM activities";
     private static final String SQL_UPDATE_ACTIVITY = "UPDATE activities SET title=?, description=?, due_date=?, publication_date=?, status=?, professor_id=? WHERE id=?";
 
-    public ActivityDAOImpl() {
+    public ActivityDAOImplementation() {
         this.connection = DatabaseConfig.getInstance().getConnection();
     }
 
@@ -41,7 +41,7 @@ public class ActivityDAOImpl implements IActivityDAO {
     }
 
     @Override
-    public ActivityDTO findActivityById(Integer id) {
+    public ActivityDTO findActivityById(int id) {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ACTIVITY_BY_ID)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();

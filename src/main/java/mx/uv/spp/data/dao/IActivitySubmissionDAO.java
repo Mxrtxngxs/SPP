@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IActivitySubmissionDAO {
     boolean saveActivitySubmission(ActivitySubmissionDTO submission);
-    ActivitySubmissionDTO findActivitySubmissionById(Integer id);
+    ActivitySubmissionDTO findActivitySubmissionById(int id);
     List<ActivitySubmissionDTO> findAllActivitySubmissions();
     boolean updateActivitySubmission(ActivitySubmissionDTO submission);
     boolean deleteActivitySubmissionById(Integer id);
