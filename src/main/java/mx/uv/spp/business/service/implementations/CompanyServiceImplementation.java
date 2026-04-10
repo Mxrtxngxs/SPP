@@ -20,7 +20,7 @@ public class CompanyServiceImplementation implements ICompanyService {
         if (newCompanyId == -1) {
             throw new RuntimeException("Could not register the company.");
         }
-        return newCompanyId; // Retorna el ID para usarlo en el registro del Proyecto
+        return newCompanyId;
     }
 
     @Override

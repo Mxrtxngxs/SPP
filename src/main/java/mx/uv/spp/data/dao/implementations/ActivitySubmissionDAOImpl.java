@@ -23,14 +23,14 @@ public class ActivitySubmissionDAOImpl implements IActivitySubmissionDAO {
     @Override
     public boolean saveActivitySubmission(ActivitySubmissionDTO submission) {
         String sql = "INSERT INTO Entrega_Actividad (nombre_archivo, fecha_entrega, calificacion, estado, id_actividad, id_practicante) VALUES (?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
-            st.setString(1, submission.getFileName());
-            st.setTimestamp(2, new java.sql.Timestamp(submission.getSubmissionDate().getTime()));
-            st.setObject(3, submission.getGrade());
-            st.setString(4, submission.getStatus());
-            st.setInt(5, submission.getActivityId());
-            st.setInt(6, submission.getInternId());
-            return st.executeUpdate() > 0;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, submission.getFileName());
+            statement.setTimestamp(2, new java.sql.Timestamp(submission.getSubmissionDate().getTime()));
+            statement.setObject(3, submission.getGrade());
+            statement.setString(4, submission.getStatus());
+            statement.setInt(5, submission.getActivityId());
+            statement.setInt(6, submission.getInternId());
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DatabaseException("Error al guardar la entrega de actividad", e);
         }

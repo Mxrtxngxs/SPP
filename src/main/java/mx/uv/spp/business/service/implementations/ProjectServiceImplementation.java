@@ -18,7 +18,7 @@ public class ProjectServiceImplementation implements IProjectService {
     public void registerProject(ProjectDTO project) {
         validateProjectData(project);
         if (!projectDAO.saveProject(project)) {
-            throw new RuntimeException("Could not register the project.");
+            throw new RuntimeException("Could not register the project");
         }
     }
 
@@ -26,14 +26,14 @@ public class ProjectServiceImplementation implements IProjectService {
     public void updateProject(ProjectDTO project) {
         validateProjectData(project);
         if (!projectDAO.updateProject(project)) {
-            throw new RuntimeException("Could not update the project.");
+            throw new RuntimeException("Could not update the projec");
         }
     }
 
     @Override
     public void deleteProject(int projectId) {
         if (!projectDAO.deleteProject(projectId)) {
-            throw new RuntimeException("Could not delete the project.");
+            throw new RuntimeException("Could not delete the project");
         }
     }
 
@@ -54,10 +54,10 @@ public class ProjectServiceImplementation implements IProjectService {
 
     private void validateProjectData(ProjectDTO project) {
         if (project.getInternCapacity() <= 0) {
-            throw new IllegalArgumentException("Capacity must be greater than 0.");
+            throw new IllegalArgumentException("Capacity must be greater than 0");
         }
         if (project.getEndDate().before(project.getStartDate())) {
-            throw new IllegalArgumentException("End date cannot be before start date.");
+            throw new IllegalArgumentException("End date cannot be before start date");
         }
     }
 }

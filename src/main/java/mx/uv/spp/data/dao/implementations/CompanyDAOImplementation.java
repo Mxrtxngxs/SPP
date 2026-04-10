@@ -60,9 +60,9 @@ public class CompanyDAOImplementation implements ICompanyDAO {
     public CompanyDTO getCompanyById(int companyId) {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, companyId);
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToCompany(rs);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToCompany(resultSet);
                 }
             }
         } catch (SQLException e) {

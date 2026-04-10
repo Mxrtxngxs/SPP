@@ -39,9 +39,9 @@ public class UserDAOImplementation implements IUserDAO {
         String sql = "SELECT * FROM users WHERE id_user = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, Integer.parseInt(id));
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return mapResultSetToUser(rs);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return mapResultSetToUser(resultSet);
             }
         } catch (SQLException | NumberFormatException e) {
             throw new DatabaseException("Error al buscar el usuario con ID: " + id, e);

@@ -26,7 +26,6 @@ public class AssignmentServiceImplementation implements IAssignmentService {
 
         assignment.setAssignmentDate(new Date());
 
-        // Valida capacidad y actualiza el proyecto
         if (!projectDAO.incrementAssignedInterns(assignment.getProjectId())) {
             throw new IllegalStateException("The project does not have available capacity.");
         }
