@@ -1,0 +1,87 @@
+package mx.uv.spp.data.dao.implementations;
+
+import mx.uv.spp.business.dto.ProfessorDTO;
+import mx.uv.spp.data.config.DatabaseConfig;
+import mx.uv.spp.data.dao.IProfessorDAO;
+import mx.uv.spp.data.exceptions.DatabaseException;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class ProfessorDAOImplementation implements IProfessorDAO {
+
+    private final Connection connection;
+
+    private static final String SQL_EXISTS_STAFF_NUMBER = "SELECT COUNT(*) FROM Profesor_Detalle WHERE numero_personal = ?";
+    private static final String SQL_COUNT_ACTIVE = "SELECT COUNT(*) FROM Usuario WHERE rol = 'Profesor' AND estado = 'Activo'";
+    private static final String SQL_SAVE_USER = "INSERT INTO Usuario (nombre, contrasena, estado, rol) VALUES (?, ?, ?, 'Profesor')";
+    private static final String SQL_SAVE_PROFESSOR = "INSERT INTO Profesor_Detalle (id_usuario, numero_personal, turno) VALUES (?, ?, ?)";
+
+    public ProfessorDAOImplementation() {
+        this.connection = DatabaseConfig.getInstance().getConnection();
+    }
+
+    @Override
+    public boolean existsStaffNumber(String staffNumber) {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_EXISTS_STAFF_NUMBER)) {
+            statement.setString(1, staffNumber);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error checking staff number: " + staffNumber, e);
+        }
+        return false;
+    }
+
+    @Override
+    public int getActiveProfessorsCount() {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT_ACTIVE);
+             ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Error counting active professors", e);
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean saveProfessor(ProfessorDTO professor) {
+        try {
+            int generatedId = -1;
+
+            try (PreparedStatement statementUser = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
+                statementUser.setString(1, professor.getName());
+                statementUser.setString(2, professor.getPassword());
+                statementUser.setString(3, professor.getState());
+                statementUser.executeUpdate();
+
+                try (ResultSet rs = statementUser.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        generatedId = rs.getInt(1);
+                    }
+                }
+            }
+
+            if (generatedId != -1) {
+                try (PreparedStatement statementProf = connection.prepareStatement(SQL_SAVE_PROFESSOR)) {
+                    statementProf.setInt(1, generatedId);
+                    statementProf.setString(2, professor.getStaffNumber());
+                    statementProf.setString(3, professor.getShift());
+                    return statementProf.executeUpdate() > 0;
+                }
+            }
+            return false;
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Error saving professor", e);
+        }
+    }
+}
