@@ -16,14 +16,18 @@ public class UserDAOImplementation implements IUserDAO {
 
     private final Connection connection;
 
+    private static final String SQL_SAVE_USER = "INSERT INTO users (name, password, state, role) VALUES (?, ?, ?, ?)";
+    private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM users WHERE id_user = ?";
+    private static final String SQL_FIND_ALL_USERS = "SELECT * FROM users";
+    private static final String SQL_UPDATE_USER = "UPDATE users SET name=?, password=?, state=?, role=? WHERE id_user=?";
+
     public UserDAOImplementation() {
         this.connection = DatabaseConfig.getInstance().getConnection();
     }
 
     @Override
-    public boolean saveUser(UserDTO user) {
-        String sql = "INSERT INTO users (name, password, state, role) VALUES (?, ?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+    public boolean saveUser(UserDTO user) throws DatabaseException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE_USER)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getState());
@@ -35,9 +39,8 @@ public class UserDAOImplementation implements IUserDAO {
     }
 
     @Override
-    public UserDTO findUserById(String id) {
-        String sql = "SELECT * FROM users WHERE id_user = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+    public UserDTO findUserById(String id) throws DatabaseException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_USER_BY_ID)) {
             statement.setInt(1, Integer.parseInt(id));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -50,10 +53,9 @@ public class UserDAOImplementation implements IUserDAO {
     }
 
     @Override
-    public List<UserDTO> findAllUsers() {
+    public List<UserDTO> findAllUsers() throws DatabaseException {
         List<UserDTO> list = new ArrayList<>();
-        String sql = "SELECT * FROM users";
-        try (PreparedStatement statement = connection.prepareStatement(sql);
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_USERS);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 list.add(mapResultSetToUser(resultSet));
@@ -65,9 +67,8 @@ public class UserDAOImplementation implements IUserDAO {
     }
 
     @Override
-    public boolean updateUser(UserDTO user) {
-        String sql = "UPDATE users SET name=?, password=?, state=?, role=? WHERE id_user=?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+    public boolean updateUser(UserDTO user) throws DatabaseException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_USER)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
             statement.setString(3, user.getState());

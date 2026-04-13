@@ -30,12 +30,12 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
     }
 
     @Override
-    public boolean existsStaffNumber(String staffNumber) {
+    public boolean existsStaffNumber(String staffNumber) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_EXISTS_STAFF_NUMBER)) {
             statement.setString(1, staffNumber);
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
@@ -45,7 +45,7 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
     }
 
     @Override
-    public boolean inactivateCurrentCoordinators() {
+    public boolean inactivateCurrentCoordinators() throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_INACTIVATE_COORDINATORS)) {
             return statement.executeUpdate() >= 0;
         } catch (SQLException e) {
@@ -54,7 +54,7 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
     }
 
     @Override
-    public boolean saveCoordinator(CoordinatorDTO coordinator) {
+    public boolean saveCoordinator(CoordinatorDTO coordinator) throws DatabaseException {
         try {
             int generatedId = -1;
             try (PreparedStatement stmtUser = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
@@ -83,7 +83,7 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
     }
 
     @Override
-    public boolean inactivateCoordinator(int userId) {
+    public boolean inactivateCoordinator(int userId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_INACTIVATE_COORDINATOR_BY_ID)) {
             statement.setInt(1, userId);
             return statement.executeUpdate() > 0;
@@ -93,12 +93,12 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
     }
 
     @Override
-    public CoordinatorDTO getCoordinatorById(int userId) {
+    public CoordinatorDTO getCoordinatorById(int userId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, userId);
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToCoordinator(rs);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToCoordinator(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -108,12 +108,12 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
     }
 
     @Override
-    public List<CoordinatorDTO> getAllCoordinators() {
+    public List<CoordinatorDTO> getAllCoordinators() throws DatabaseException {
         List<CoordinatorDTO> list = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
-             ResultSet rs = statement.executeQuery()) {
-            while (rs.next()) {
-                list.add(mapResultSetToCoordinator(rs));
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                list.add(mapResultSetToCoordinator(resultSet));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error listing coordinators", e);
@@ -121,13 +121,13 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
         return list;
     }
 
-    private CoordinatorDTO mapResultSetToCoordinator(ResultSet rs) throws SQLException {
+    private CoordinatorDTO mapResultSetToCoordinator(ResultSet resultSet) throws SQLException {
         CoordinatorDTO coordinator = new CoordinatorDTO();
-        coordinator.setIdUser(rs.getInt("id_usuario"));
-        coordinator.setName(rs.getString("nombre"));
-        coordinator.setPassword(rs.getString("contrasena"));
-        coordinator.setState(rs.getString("estado"));
-        coordinator.setStaffNumber(rs.getString("numero_personal"));
+        coordinator.setIdUser(resultSet.getInt("id_usuario"));
+        coordinator.setName(resultSet.getString("nombre"));
+        coordinator.setPassword(resultSet.getString("contrasena"));
+        coordinator.setState(resultSet.getString("estado"));
+        coordinator.setStaffNumber(resultSet.getString("numero_personal"));
         coordinator.setRole("Coordinador");
         return coordinator;
     }

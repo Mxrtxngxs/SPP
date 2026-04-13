@@ -23,7 +23,7 @@ public class CompanyDAOImplementation implements ICompanyDAO {
     }
 
     @Override
-    public int saveCompany(CompanyDTO company) {
+    public int saveCompany(CompanyDTO company) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, company.getName());
             statement.setString(2, company.getSector());
@@ -31,9 +31,9 @@ public class CompanyDAOImplementation implements ICompanyDAO {
             statement.setString(4, company.getManagerContact());
             statement.executeUpdate();
 
-            try (ResultSet rs = statement.getGeneratedKeys()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
+            try (ResultSet resultSet = statement.getGeneratedKeys()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
                 }
             }
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class CompanyDAOImplementation implements ICompanyDAO {
     }
 
     @Override
-    public boolean updateCompany(CompanyDTO company) {
+    public boolean updateCompany(CompanyDTO company) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             statement.setString(1, company.getName());
             statement.setString(2, company.getSector());
@@ -57,7 +57,7 @@ public class CompanyDAOImplementation implements ICompanyDAO {
     }
 
     @Override
-    public CompanyDTO getCompanyById(int companyId) {
+    public CompanyDTO getCompanyById(int companyId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, companyId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -72,12 +72,12 @@ public class CompanyDAOImplementation implements ICompanyDAO {
     }
 
     @Override
-    public List<CompanyDTO> getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() throws DatabaseException {
         List<CompanyDTO> list = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
-             ResultSet rs = statement.executeQuery()) {
-            while (rs.next()) {
-                list.add(mapResultSetToCompany(rs));
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                list.add(mapResultSetToCompany(resultSet));
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error listing companies", e);
@@ -85,13 +85,13 @@ public class CompanyDAOImplementation implements ICompanyDAO {
         return list;
     }
 
-    private CompanyDTO mapResultSetToCompany(ResultSet rs) throws SQLException {
+    private CompanyDTO mapResultSetToCompany(ResultSet resultSet) throws SQLException {
         CompanyDTO company = new CompanyDTO();
-        company.setId(rs.getInt("id_empresa"));
-        company.setName(rs.getString("nombre"));
-        company.setSector(rs.getString("sector"));
-        company.setManagerName(rs.getString("nombre_responsable"));
-        company.setManagerContact(rs.getString("contacto_responsable"));
+        company.setId(resultSet.getInt("id_empresa"));
+        company.setName(resultSet.getString("nombre"));
+        company.setSector(resultSet.getString("sector"));
+        company.setManagerName(resultSet.getString("nombre_responsable"));
+        company.setManagerContact(resultSet.getString("contacto_responsable"));
         return company;
     }
 }

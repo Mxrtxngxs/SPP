@@ -28,7 +28,7 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
     }
 
     @Override
-    public boolean saveAssignment(AssignmentDTO assignment) {
+    public boolean saveAssignment(AssignmentDTO assignment) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE)) {
             statement.setDate(1, new java.sql.Date(assignment.getAssignmentDate().getTime()));
             statement.setInt(2, assignment.getInternId());
@@ -41,12 +41,12 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
     }
 
     @Override
-    public boolean hasExistingAssignment(int internId) {
+    public boolean hasExistingAssignment(int internId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_CHECK_EXISTING)) {
             statement.setInt(1, internId);
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
@@ -56,7 +56,7 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
     }
 
     @Override
-    public boolean inactivateAssignment(int assignmentId) {
+    public boolean inactivateAssignment(int assignmentId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_INACTIVATE)) {
             statement.setInt(1, assignmentId);
             return statement.executeUpdate() > 0;
@@ -66,12 +66,12 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
     }
 
     @Override
-    public AssignmentDTO getAssignmentById(int assignmentId) {
+    public AssignmentDTO getAssignmentById(int assignmentId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, assignmentId);
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToAssignment(rs);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToAssignment(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -81,12 +81,12 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
     }
 
     @Override
-    public AssignmentDTO getAssignmentByInternId(int internId) {
+    public AssignmentDTO getAssignmentByInternId(int internId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_INTERN)) {
             statement.setInt(1, internId);
-            try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return mapResultSetToAssignment(rs);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToAssignment(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -96,13 +96,13 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
     }
 
     @Override
-    public List<AssignmentDTO> getAssignmentsByProjectId(int projectId) {
+    public List<AssignmentDTO> getAssignmentsByProjectId(int projectId) throws DatabaseException {
         List<AssignmentDTO> list = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_PROJECT)) {
             statement.setInt(1, projectId);
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapResultSetToAssignment(rs));
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    list.add(mapResultSetToAssignment(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -111,14 +111,14 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
         return list;
     }
 
-    private AssignmentDTO mapResultSetToAssignment(ResultSet rs) throws SQLException {
+    private AssignmentDTO mapResultSetToAssignment(ResultSet resultSet) throws SQLException {
         AssignmentDTO assignment = new AssignmentDTO();
-        assignment.setId(rs.getInt("id_asignacion"));
-        assignment.setAssignmentDate(rs.getDate("fecha_asignacion"));
-        assignment.setStatus(rs.getString("estado"));
-        assignment.setInternId(rs.getInt("id_practicante"));
-        assignment.setProjectId(rs.getInt("id_proyecto"));
-        assignment.setCoordinatorId(rs.getInt("id_coordinador"));
+        assignment.setId(resultSet.getInt("id_asignacion"));
+        assignment.setAssignmentDate(resultSet.getDate("fecha_asignacion"));
+        assignment.setStatus(resultSet.getString("estado"));
+        assignment.setInternId(resultSet.getInt("id_practicante"));
+        assignment.setProjectId(resultSet.getInt("id_proyecto"));
+        assignment.setCoordinatorId(resultSet.getInt("id_coordinador"));
         return assignment;
     }
 }

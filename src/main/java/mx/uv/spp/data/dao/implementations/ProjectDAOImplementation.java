@@ -29,7 +29,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
     }
 
     @Override
-    public boolean saveProject(ProjectDTO project) {
+    public boolean saveProject(ProjectDTO project) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE_PROJECT)) {
             statement.setString(1, project.getDescription());
             statement.setDate(2, new java.sql.Date(project.getStartDate().getTime()));
@@ -44,7 +44,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
     }
 
     @Override
-    public boolean updateProject(ProjectDTO project) {
+    public boolean updateProject(ProjectDTO project) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PROJECT)) {
             statement.setString(1, project.getDescription());
             statement.setDate(2, new java.sql.Date(project.getStartDate().getTime()));
@@ -59,7 +59,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
     }
 
     @Override
-    public boolean deleteProject(int projectId) {
+    public boolean deleteProject(int projectId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_PROJECT)) {
             statement.setInt(1, projectId);
             return statement.executeUpdate() > 0;
@@ -69,7 +69,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
     }
 
     @Override
-    public boolean incrementAssignedInterns(int projectId) {
+    public boolean incrementAssignedInterns(int projectId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_INCREMENT_ASSIGNED)) {
             statement.setInt(1, projectId);
             return statement.executeUpdate() > 0;
@@ -79,7 +79,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
     }
 
     @Override
-    public ProjectDTO getProjectById(int projectId) {
+    public ProjectDTO getProjectById(int projectId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, projectId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -94,16 +94,16 @@ public class ProjectDAOImplementation implements IProjectDAO {
     }
 
     @Override
-    public List<ProjectDTO> getAllProjects() {
+    public List<ProjectDTO> getAllProjects() throws DatabaseException {
         return getProjectList(SQL_FIND_ALL);
     }
 
     @Override
-    public List<ProjectDTO> getAvailableProjects() {
+    public List<ProjectDTO> getAvailableProjects() throws DatabaseException {
         return getProjectList(SQL_FIND_AVAILABLE);
     }
 
-    private List<ProjectDTO> getProjectList(String query) {
+    private List<ProjectDTO> getProjectList(String query) throws DatabaseException {
         List<ProjectDTO> list = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {

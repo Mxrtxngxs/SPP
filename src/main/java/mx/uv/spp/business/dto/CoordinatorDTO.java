@@ -4,6 +4,9 @@ public class CoordinatorDTO extends UserDTO {
     private Integer userId;
     private String staffNumber;
 
+    public CoordinatorDTO() {
+    }
+
     public String getStaffNumber() {
         return staffNumber;
     }

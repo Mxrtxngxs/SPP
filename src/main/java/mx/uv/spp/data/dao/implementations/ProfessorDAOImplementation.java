@@ -26,7 +26,7 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
     }
 
     @Override
-    public boolean existsStaffNumber(String staffNumber) {
+    public boolean existsStaffNumber(String staffNumber) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_EXISTS_STAFF_NUMBER)) {
             statement.setString(1, staffNumber);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -41,7 +41,7 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
     }
 
     @Override
-    public int getActiveProfessorsCount() {
+    public int getActiveProfessorsCount() throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_COUNT_ACTIVE);
              ResultSet resultSet = statement.executeQuery()) {
             if (resultSet.next()) {
@@ -54,7 +54,7 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
     }
 
     @Override
-    public boolean saveProfessor(ProfessorDTO professor) {
+    public boolean saveProfessor(ProfessorDTO professor) throws DatabaseException {
         try {
             int generatedId = -1;
 
@@ -87,7 +87,7 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
     }
 
     @Override
-    public boolean inactivateProfessor(int userId) {
+    public boolean inactivateProfessor(int userId) throws DatabaseException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_INACTIVATE_PROFESSOR_BY_ID)) {
             statement.setInt(1, userId);
             return statement.executeUpdate() > 0;

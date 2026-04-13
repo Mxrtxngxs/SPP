@@ -1,11 +1,13 @@
 package mx.uv.spp.data.dao;
 
 import mx.uv.spp.business.dto.CompanyDTO;
+import mx.uv.spp.data.exceptions.DatabaseException;
+
 import java.util.List;
 
 public interface ICompanyDAO {
-    int saveCompany(CompanyDTO company);
-    boolean updateCompany(CompanyDTO company);
-    CompanyDTO getCompanyById(int companyId);
-    List<CompanyDTO> getAllCompanies();
+    int saveCompany(CompanyDTO company) throws DatabaseException;
+    boolean updateCompany(CompanyDTO company) throws DatabaseException;
+    CompanyDTO getCompanyById(int companyId) throws DatabaseException;
+    List<CompanyDTO> getAllCompanies() throws DatabaseException;
 }

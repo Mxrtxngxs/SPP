@@ -25,11 +25,11 @@ public class InternDAOImplementation implements IInternDAO {
     }
 
     @Override
-    public boolean existsEnrollmentNumber(String enrollmentNumber) {
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_EXISTS_MATRICULA)) {
-            stmt.setString(1, enrollmentNumber);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) return rs.getInt(1) > 0;
+    public boolean existsEnrollmentNumber(String enrollmentNumber) throws DatabaseException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_EXISTS_MATRICULA)) {
+            statement.setString(1, enrollmentNumber);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) return resultSet.getInt(1) > 0;
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error checking enrollment number", e);
@@ -38,29 +38,29 @@ public class InternDAOImplementation implements IInternDAO {
     }
 
     @Override
-    public boolean saveIntern(InternDTO intern) {
+    public boolean saveIntern(InternDTO intern) throws DatabaseException {
         try {
             int generatedId = -1;
-            try (PreparedStatement stmtUser = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
-                stmtUser.setString(1, intern.getName());
-                stmtUser.setString(2, intern.getPassword());
-                stmtUser.setString(3, intern.getState());
-                stmtUser.executeUpdate();
-                try (ResultSet rs = stmtUser.getGeneratedKeys()) {
-                    if (rs.next()) generatedId = rs.getInt(1);
+            try (PreparedStatement statementUser = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
+                statementUser.setString(1, intern.getName());
+                statementUser.setString(2, intern.getPassword());
+                statementUser.setString(3, intern.getState());
+                statementUser.executeUpdate();
+                try (ResultSet resultSet = statementUser.getGeneratedKeys()) {
+                    if (resultSet.next()) generatedId = resultSet.getInt(1);
                 }
             }
 
             if (generatedId != -1) {
-                try (PreparedStatement stmtIntern = connection.prepareStatement(SQL_SAVE_INTERN)) {
-                    stmtIntern.setInt(1, generatedId);
-                    stmtIntern.setString(2, intern.getEnrollmentNumber());
-                    stmtIntern.setString(3, intern.getGender());
-                    stmtIntern.setBoolean(4, intern.getSpeaksIndigenousLanguage());
-                    stmtIntern.setString(5, intern.getIndigenousLanguage());
-                    stmtIntern.setObject(6, intern.getCoordinatorId(), Types.INTEGER);
-                    stmtIntern.setObject(7, intern.getProfessorId(), Types.INTEGER);
-                    return stmtIntern.executeUpdate() > 0;
+                try (PreparedStatement statementIntern = connection.prepareStatement(SQL_SAVE_INTERN)) {
+                    statementIntern.setInt(1, generatedId);
+                    statementIntern.setString(2, intern.getEnrollmentNumber());
+                    statementIntern.setString(3, intern.getGender());
+                    statementIntern.setBoolean(4, intern.getSpeaksIndigenousLanguage());
+                    statementIntern.setString(5, intern.getIndigenousLanguage());
+                    statementIntern.setObject(6, intern.getCoordinatorId(), Types.INTEGER);
+                    statementIntern.setObject(7, intern.getProfessorId(), Types.INTEGER);
+                    return statementIntern.executeUpdate() > 0;
                 }
             }
             return false;
@@ -70,21 +70,23 @@ public class InternDAOImplementation implements IInternDAO {
     }
 
     @Override
-    public boolean inactivateIntern(int userId) {
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_INACTIVATE)) {
-            stmt.setInt(1, userId);
-            return stmt.executeUpdate() > 0;
+    public boolean inactivateIntern(int userId) throws DatabaseException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_INACTIVATE)) {
+            statement.setInt(1, userId);
+            return statement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DatabaseException("Error inactivating intern ID: " + userId, e);
         }
     }
 
     @Override
-    public InternDTO getInternById(int userId) {
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_FIND_BY_ID)) {
-            stmt.setInt(1, userId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) return mapResultSetToIntern(rs);
+    public InternDTO getInternById(int userId) throws DatabaseException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToIntern(resultSet);
+                }
             }
         } catch (SQLException e) {
             throw new DatabaseException("Error finding intern", e);
@@ -93,31 +95,31 @@ public class InternDAOImplementation implements IInternDAO {
     }
 
     @Override
-    public List<InternDTO> getAllInterns() {
+    public List<InternDTO> getAllInterns() throws DatabaseException {
         List<InternDTO> list = new ArrayList<>();
-        try (PreparedStatement stmt = connection.prepareStatement(SQL_FIND_ALL);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) list.add(mapResultSetToIntern(rs));
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) list.add(mapResultSetToIntern(resultSet));
         } catch (SQLException e) {
             throw new DatabaseException("Error listing interns", e);
         }
         return list;
     }
 
-    private InternDTO mapResultSetToIntern(ResultSet rs) throws SQLException {
+    private InternDTO mapResultSetToIntern(ResultSet resultSet) throws SQLException {
         InternDTO intern = new InternDTO();
-        intern.setIdUser(rs.getInt("id_usuario"));
-        intern.setUserId(rs.getInt("id_usuario"));
-        intern.setName(rs.getString("nombre"));
-        intern.setPassword(rs.getString("contrasena"));
-        intern.setState(rs.getString("estado"));
+        intern.setIdUser(resultSet.getInt("id_usuario"));
+        intern.setUserId(resultSet.getInt("id_usuario"));
+        intern.setName(resultSet.getString("nombre"));
+        intern.setPassword(resultSet.getString("contrasena"));
+        intern.setState(resultSet.getString("estado"));
         intern.setRole("Practicante");
-        intern.setEnrollmentNumber(rs.getString("matricula"));
-        intern.setGender(rs.getString("genero"));
-        intern.setSpeaksIndigenousLanguage(rs.getBoolean("habla_lengua_indigena"));
-        intern.setIndigenousLanguage(rs.getString("lengua_indigena"));
-        intern.setCoordinatorId(rs.getObject("id_coordinador") != null ? rs.getInt("id_coordinador") : null);
-        intern.setProfessorId(rs.getObject("id_profesor") != null ? rs.getInt("id_profesor") : null);
+        intern.setEnrollmentNumber(resultSet.getString("matricula"));
+        intern.setGender(resultSet.getString("genero"));
+        intern.setSpeaksIndigenousLanguage(resultSet.getBoolean("habla_lengua_indigena"));
+        intern.setIndigenousLanguage(resultSet.getString("lengua_indigena"));
+        intern.setCoordinatorId(resultSet.getObject("id_coordinador") != null ? resultSet.getInt("id_coordinador") : null);
+        intern.setProfessorId(resultSet.getObject("id_profesor") != null ? resultSet.getInt("id_profesor") : null);
         return intern;
     }
 }
