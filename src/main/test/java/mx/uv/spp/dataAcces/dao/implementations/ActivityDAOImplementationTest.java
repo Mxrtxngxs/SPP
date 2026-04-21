@@ -15,7 +15,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ActivityDAOImplementationTest {
 
@@ -54,8 +58,6 @@ public class ActivityDAOImplementationTest {
             LOGGER.log(Level.SEVERE, "Error cleaning up test database", e);
         }
     }
-
-    // --- saveActivity Tests ---
 
     @Test
     public void saveActivity_validActivity_returnsTrue() throws DataAccessException {
@@ -96,8 +98,6 @@ public class ActivityDAOImplementationTest {
         });
     }
 
-    // --- updateActivity Tests ---
-
     @Test
     public void updateActivity_existingActivity_returnsTrue() throws DataAccessException {
         ActivityDTO activity = createBaseActivity(1);
@@ -136,8 +136,6 @@ public class ActivityDAOImplementationTest {
         });
     }
 
-    // --- getActivityById Tests ---
-
     @Test
     public void getActivityById_existingId_returnsActivity() throws DataAccessException {
         ActivityDTO activity = createBaseActivity(1);
@@ -167,8 +165,6 @@ public class ActivityDAOImplementationTest {
         });
     }
 
-    // --- getActivitiesByProfessorId Tests ---
-
     @Test
     public void getActivitiesByProfessorId_existingProfessor_returnsList() throws DataAccessException {
         ActivityDTO activity = createBaseActivity(1);
@@ -193,8 +189,6 @@ public class ActivityDAOImplementationTest {
 
         assertTrue(result.isEmpty());
     }
-
-    // --- Private Helper Methods ---
 
     private ActivityDTO createBaseActivity(int professorId) {
         ActivityDTO activity = new ActivityDTO();

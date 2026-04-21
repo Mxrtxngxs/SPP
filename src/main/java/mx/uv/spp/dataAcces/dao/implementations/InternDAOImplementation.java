@@ -89,11 +89,13 @@ public class InternDAOImplementation implements IInternDAO {
                 if (resultSet.next()) {
                     return mapResultSetToIntern(resultSet);
                 }
+                InternDTO internDTO = new InternDTO();
+                internDTO.setIdUser(-1);
+                return internDTO;
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error finding intern", e);
         }
-        return null;
     }
 
     @Override

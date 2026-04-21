@@ -15,7 +15,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 public class ActivitySubmissionDAOImplementationTest {
 
@@ -69,8 +75,6 @@ public class ActivitySubmissionDAOImplementationTest {
         }
     }
 
-    // --- saveActivitySubmission Tests ---
-
     @Test
     public void saveActivitySubmission_validData_returnsTrue()
             throws DataAccessException {
@@ -112,8 +116,6 @@ public class ActivitySubmissionDAOImplementationTest {
         });
     }
 
-    // --- findActivitySubmissionById Tests ---
-
     @Test
     public void findActivitySubmissionById_existingId_returnsDto()
             throws DataAccessException {
@@ -145,8 +147,6 @@ public class ActivitySubmissionDAOImplementationTest {
 
         assertNull(result);
     }
-
-    // --- findAllActivitySubmissions Tests ---
 
     @Test
     public void findAllActivitySubmissions_existingRecords_returnsList()
@@ -180,8 +180,6 @@ public class ActivitySubmissionDAOImplementationTest {
 
         assertEquals(2, result.size());
     }
-
-    // --- updateActivitySubmission Tests ---
 
     @Test
     public void updateActivitySubmission_existingRecord_returnsTrue()
@@ -221,8 +219,6 @@ public class ActivitySubmissionDAOImplementationTest {
         });
     }
 
-    // --- deleteActivitySubmissionById Tests ---
-
     @Test
     public void deleteActivitySubmissionById_existingId_returnsTrue()
             throws DataAccessException {
@@ -253,8 +249,6 @@ public class ActivitySubmissionDAOImplementationTest {
 
         assertFalse(result);
     }
-
-    // --- Private Helper Methods ---
 
     private ActivitySubmissionDTO createBaseSubmission(int actId, int internId) {
         ActivitySubmissionDTO submission = new ActivitySubmissionDTO();

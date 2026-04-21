@@ -15,7 +15,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ProjectDAOImplementationTest {
 
@@ -61,8 +66,6 @@ public class ProjectDAOImplementationTest {
         }
     }
 
-    // --- saveProject Tests ---
-
     @Test
     public void saveProject_validData_returnsTrue() throws DataAccessException {
         ProjectDTO project = createBaseProject(1, 1);
@@ -101,8 +104,6 @@ public class ProjectDAOImplementationTest {
         });
     }
 
-    // --- updateProject Tests ---
-
     @Test
     public void updateProject_existingProject_returnsTrue() throws DataAccessException {
         projectDAO.saveProject(createBaseProject(1, 1));
@@ -135,8 +136,6 @@ public class ProjectDAOImplementationTest {
         });
     }
 
-    // --- deleteProject Tests ---
-
     @Test
     public void deleteProject_existingProject_returnsTrue() throws DataAccessException {
         projectDAO.saveProject(createBaseProject(1, 1));
@@ -164,8 +163,6 @@ public class ProjectDAOImplementationTest {
 
         assertFalse(result);
     }
-
-    // --- incrementAssignedInterns Tests ---
 
     @Test
     public void incrementAssignedInterns_availableProject_returnsTrue() throws DataAccessException {
@@ -211,8 +208,6 @@ public class ProjectDAOImplementationTest {
         assertFalse(result);
     }
 
-    // --- getProjectById Tests ---
-
     @Test
     public void getProjectById_existingId_returnsProject() throws DataAccessException {
         projectDAO.saveProject(createBaseProject(1, 1));
@@ -230,8 +225,6 @@ public class ProjectDAOImplementationTest {
         assertNull(result);
     }
 
-    // --- getAllProjects Tests ---
-
     @Test
     public void getAllProjects_withRecords_returnsList() throws DataAccessException {
         projectDAO.saveProject(createBaseProject(1, 1));
@@ -247,8 +240,6 @@ public class ProjectDAOImplementationTest {
 
         assertTrue(result.isEmpty());
     }
-
-    // --- getAvailableProjects Tests ---
 
     @Test
     public void getAvailableProjects_hasAvailableProjects_returnsList() throws DataAccessException {
@@ -271,8 +262,6 @@ public class ProjectDAOImplementationTest {
 
         assertTrue(result.isEmpty());
     }
-
-    // --- Private Helper Methods ---
 
     private ProjectDTO createBaseProject(int companyId, int coordinatorId) {
         ProjectDTO project = new ProjectDTO();

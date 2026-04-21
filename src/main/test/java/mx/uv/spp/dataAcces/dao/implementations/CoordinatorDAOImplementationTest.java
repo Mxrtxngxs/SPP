@@ -14,7 +14,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CoordinatorDAOImplementationTest {
 
@@ -40,8 +45,6 @@ public class CoordinatorDAOImplementationTest {
         cleanDatabase();
     }
 
-    // --- existsStaffNumber Tests ---
-
     @Test
     public void existsStaffNumber_existingNumber_returnsTrue() throws DataAccessException {
         boolean result = coordinatorDAO.existsStaffNumber("12345");
@@ -62,8 +65,6 @@ public class CoordinatorDAOImplementationTest {
 
         assertFalse(result);
     }
-
-    // --- inactivateCurrentCoordinators Tests ---
 
     @Test
     public void inactivateCurrentCoordinators_existingActiveCoordinators_returnsTrue() throws DataAccessException {
@@ -91,8 +92,6 @@ public class CoordinatorDAOImplementationTest {
 
         assertTrue(result);
     }
-
-    // --- saveCoordinator Tests ---
 
     @Test
     public void saveCoordinator_validData_returnsTrue() throws DataAccessException {
@@ -131,8 +130,6 @@ public class CoordinatorDAOImplementationTest {
         });
     }
 
-    // --- inactivateCoordinator Tests ---
-
     @Test
     public void inactivateCoordinator_existingActiveId_returnsTrue() throws DataAccessException {
         boolean result = coordinatorDAO.inactivateCoordinator(1);
@@ -156,8 +153,6 @@ public class CoordinatorDAOImplementationTest {
         assertFalse(result);
     }
 
-    // --- getCoordinatorById Tests ---
-
     @Test
     public void getCoordinatorById_existingId_returnsCoordinator() throws DataAccessException {
         CoordinatorDTO result = coordinatorDAO.getCoordinatorById(1);
@@ -179,8 +174,6 @@ public class CoordinatorDAOImplementationTest {
 
         assertNull(result);
     }
-
-    // --- getAllCoordinators Tests ---
 
     @Test
     public void getAllCoordinators_existingCoordinators_returnsList() throws DataAccessException {
@@ -208,8 +201,6 @@ public class CoordinatorDAOImplementationTest {
 
         assertEquals(2, result.size());
     }
-
-    // --- Private Helper Methods ---
 
     private CoordinatorDTO createBaseCoordinatorDTO(String name, String staffNumber) {
         CoordinatorDTO coordinator = new CoordinatorDTO();
