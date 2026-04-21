@@ -2,7 +2,8 @@ package mx.uv.spp.business.service.implementations;
 
 import mx.uv.spp.business.dto.ProfessorDTO;
 import mx.uv.spp.business.service.IProfessorService;
-import mx.uv.spp.data.dao.IProfessorDAO;
+import mx.uv.spp.dataAcces.dao.IProfessorDAO;
+import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class ProfessorServiceImplementation implements IProfessorService {
@@ -14,7 +15,7 @@ public class ProfessorServiceImplementation implements IProfessorService {
     }
 
     @Override
-    public void registerProfessor(ProfessorDTO professor) {
+    public void registerProfessor(ProfessorDTO professor) throws DataAccessException {
         if (professorDAO.existsStaffNumber(professor.getStaffNumber())) {
             throw new IllegalArgumentException("Staff number is already registered.");
         }
@@ -34,7 +35,7 @@ public class ProfessorServiceImplementation implements IProfessorService {
     }
 
     @Override
-    public void inactivateProfessor(int userId) {
+    public void inactivateProfessor(int userId) throws DataAccessException {
         if (!professorDAO.inactivateProfessor(userId)) {
             throw new RuntimeException("Could not inactivate the professor. Try again.");
         }

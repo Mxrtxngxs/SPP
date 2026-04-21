@@ -2,7 +2,8 @@ package mx.uv.spp.business.service.implementations;
 
 import mx.uv.spp.business.dto.InternDTO;
 import mx.uv.spp.business.service.IInternService;
-import mx.uv.spp.data.dao.IInternDAO;
+import mx.uv.spp.dataAcces.dao.IInternDAO;
+import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 import org.mindrot.jbcrypt.BCrypt;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class InternServiceImplementation implements IInternService {
     }
 
     @Override
-    public void registerIntern(InternDTO intern) {
+    public void registerIntern(InternDTO intern) throws DataAccessException {
         if (internDAO.existsEnrollmentNumber(intern.getEnrollmentNumber())) {
             throw new IllegalArgumentException("Enrollment number is already registered.");
         }
@@ -30,19 +31,19 @@ public class InternServiceImplementation implements IInternService {
     }
 
     @Override
-    public void inactivateIntern(int userId) {
+    public void inactivateIntern(int userId) throws DataAccessException {
         if (!internDAO.inactivateIntern(userId)) {
             throw new RuntimeException("Could not inactivate the intern.");
         }
     }
 
     @Override
-    public InternDTO getIntern(int userId) {
+    public InternDTO getIntern(int userId) throws DataAccessException {
         return internDAO.getInternById(userId);
     }
 
     @Override
-    public List<InternDTO> getAllInterns() {
+    public List<InternDTO> getAllInterns() throws DataAccessException {
         return internDAO.getAllInterns();
     }
 }

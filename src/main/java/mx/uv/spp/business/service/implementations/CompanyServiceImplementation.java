@@ -2,7 +2,8 @@ package mx.uv.spp.business.service.implementations;
 
 import mx.uv.spp.business.dto.CompanyDTO;
 import mx.uv.spp.business.service.ICompanyService;
-import mx.uv.spp.data.dao.ICompanyDAO;
+import mx.uv.spp.dataAcces.dao.ICompanyDAO;
+import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class CompanyServiceImplementation implements ICompanyService {
     }
 
     @Override
-    public int registerCompany(CompanyDTO company) {
+    public int registerCompany(CompanyDTO company) throws DataAccessException {
         int newCompanyId = companyDAO.saveCompany(company);
         if (newCompanyId == -1) {
             throw new RuntimeException("Could not register the company.");
@@ -24,19 +25,19 @@ public class CompanyServiceImplementation implements ICompanyService {
     }
 
     @Override
-    public void updateCompany(CompanyDTO company) {
+    public void updateCompany(CompanyDTO company) throws DataAccessException {
         if (!companyDAO.updateCompany(company)) {
             throw new RuntimeException("Could not update the company.");
         }
     }
 
     @Override
-    public CompanyDTO getCompany(int companyId) {
+    public CompanyDTO getCompany(int companyId) throws DataAccessException {
         return companyDAO.getCompanyById(companyId);
     }
 
     @Override
-    public List<CompanyDTO> getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() throws DataAccessException {
         return companyDAO.getAllCompanies();
     }
 }

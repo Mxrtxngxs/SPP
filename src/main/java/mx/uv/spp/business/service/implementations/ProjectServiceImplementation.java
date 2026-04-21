@@ -2,7 +2,8 @@ package mx.uv.spp.business.service.implementations;
 
 import mx.uv.spp.business.dto.ProjectDTO;
 import mx.uv.spp.business.service.IProjectService;
-import mx.uv.spp.data.dao.IProjectDAO;
+import mx.uv.spp.dataAcces.dao.IProjectDAO;
+import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ProjectServiceImplementation implements IProjectService {
     }
 
     @Override
-    public void registerProject(ProjectDTO project) {
+    public void registerProject(ProjectDTO project) throws DataAccessException {
         validateProjectData(project);
         if (!projectDAO.saveProject(project)) {
             throw new RuntimeException("Could not register the project");
@@ -23,7 +24,7 @@ public class ProjectServiceImplementation implements IProjectService {
     }
 
     @Override
-    public void updateProject(ProjectDTO project) {
+    public void updateProject(ProjectDTO project) throws DataAccessException {
         validateProjectData(project);
         if (!projectDAO.updateProject(project)) {
             throw new RuntimeException("Could not update the projec");
@@ -31,24 +32,24 @@ public class ProjectServiceImplementation implements IProjectService {
     }
 
     @Override
-    public void deleteProject(int projectId) {
+    public void deleteProject(int projectId) throws DataAccessException {
         if (!projectDAO.deleteProject(projectId)) {
             throw new RuntimeException("Could not delete the project");
         }
     }
 
     @Override
-    public ProjectDTO getProject(int projectId) {
+    public ProjectDTO getProject(int projectId) throws DataAccessException {
         return projectDAO.getProjectById(projectId);
     }
 
     @Override
-    public List<ProjectDTO> getAllProjects() {
+    public List<ProjectDTO> getAllProjects() throws DataAccessException {
         return projectDAO.getAllProjects();
     }
 
     @Override
-    public List<ProjectDTO> getAvailableProjects() {
+    public List<ProjectDTO> getAvailableProjects() throws DataAccessException {
         return projectDAO.getAvailableProjects();
     }
 

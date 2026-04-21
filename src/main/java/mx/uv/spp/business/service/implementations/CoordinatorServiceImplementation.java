@@ -2,8 +2,8 @@ package mx.uv.spp.business.service.implementations;
 
 import mx.uv.spp.business.dto.CoordinatorDTO;
 import mx.uv.spp.business.service.ICoordinatorService;
-import mx.uv.spp.data.dao.ICoordinatorDAO;
-import mx.uv.spp.data.exceptions.DatabaseException;
+import mx.uv.spp.dataAcces.dao.ICoordinatorDAO;
+import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 import org.mindrot.jbcrypt.BCrypt;
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class CoordinatorServiceImplementation implements ICoordinatorService {
     }
 
     @Override
-    public void registerCoordinator(CoordinatorDTO coordinator) throws DatabaseException {
+    public void registerCoordinator(CoordinatorDTO coordinator) throws DataAccessException {
         coordinatorDAO.inactivateCurrentCoordinators();
 
         if (coordinatorDAO.existsStaffNumber(coordinator.getStaffNumber())) {
@@ -33,19 +33,19 @@ public class CoordinatorServiceImplementation implements ICoordinatorService {
     }
 
     @Override
-    public void inactivateCoordinator(int userId) throws DatabaseException {
+    public void inactivateCoordinator(int userId) throws DataAccessException {
         if (!coordinatorDAO.inactivateCoordinator(userId)) {
             throw new RuntimeException("Could not inactivate the coordinator.");
         }
     }
 
     @Override
-    public CoordinatorDTO getCoordinator(int userId) throws DatabaseException {
+    public CoordinatorDTO getCoordinator(int userId) throws DataAccessException {
         return coordinatorDAO.getCoordinatorById(userId);
     }
 
     @Override
-    public List<CoordinatorDTO> getAllCoordinators() throws DatabaseException {
+    public List<CoordinatorDTO> getAllCoordinators() throws DataAccessException {
         return coordinatorDAO.getAllCoordinators();
     }
 }

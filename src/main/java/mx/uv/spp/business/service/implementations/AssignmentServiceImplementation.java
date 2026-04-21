@@ -2,8 +2,9 @@ package mx.uv.spp.business.service.implementations;
 
 import mx.uv.spp.business.dto.AssignmentDTO;
 import mx.uv.spp.business.service.IAssignmentService;
-import mx.uv.spp.data.dao.IAssignmentDAO;
-import mx.uv.spp.data.dao.IProjectDAO;
+import mx.uv.spp.dataAcces.dao.IAssignmentDAO;
+import mx.uv.spp.dataAcces.dao.IProjectDAO;
+import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ public class AssignmentServiceImplementation implements IAssignmentService {
     }
 
     @Override
-    public void assignProject(AssignmentDTO assignment) {
+    public void assignProject(AssignmentDTO assignment) throws DataAccessException {
         if (assignmentDAO.hasExistingAssignment(assignment.getInternId())) {
             throw new IllegalStateException("The intern already has an active assignment.");
         }
@@ -36,24 +37,24 @@ public class AssignmentServiceImplementation implements IAssignmentService {
     }
 
     @Override
-    public void inactivateAssignment(int assignmentId) {
+    public void inactivateAssignment(int assignmentId) throws DataAccessException {
         if (!assignmentDAO.inactivateAssignment(assignmentId)) {
             throw new RuntimeException("Could not inactivate the assignment.");
         }
     }
 
     @Override
-    public AssignmentDTO getAssignment(int assignmentId) {
+    public AssignmentDTO getAssignment(int assignmentId) throws DataAccessException {
         return assignmentDAO.getAssignmentById(assignmentId);
     }
 
     @Override
-    public AssignmentDTO getAssignmentByInternId(int internId) {
+    public AssignmentDTO getAssignmentByInternId(int internId) throws DataAccessException {
         return assignmentDAO.getAssignmentByInternId(internId);
     }
 
     @Override
-    public List<AssignmentDTO> getAssignmentsByProjectId(int projectId) {
+    public List<AssignmentDTO> getAssignmentsByProjectId(int projectId) throws DataAccessException {
         return assignmentDAO.getAssignmentsByProjectId(projectId);
     }
 }
