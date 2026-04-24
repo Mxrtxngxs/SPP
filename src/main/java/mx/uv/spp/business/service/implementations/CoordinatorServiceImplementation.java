@@ -3,49 +3,52 @@ package mx.uv.spp.business.service.implementations;
 import mx.uv.spp.business.dto.CoordinatorDTO;
 import mx.uv.spp.business.service.ICoordinatorService;
 import mx.uv.spp.dataAcces.dao.ICoordinatorDAO;
+import mx.uv.spp.dataAcces.dao.implementations.CoordinatorDAOImplementation;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 import org.mindrot.jbcrypt.BCrypt;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class CoordinatorServiceImplementation implements ICoordinatorService {
-
     private final ICoordinatorDAO coordinatorDAO;
+    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{10,}$";
 
-    public CoordinatorServiceImplementation(ICoordinatorDAO coordinatorDAO) {
-        this.coordinatorDAO = coordinatorDAO;
+    public CoordinatorServiceImplementation() throws DataAccessException {
+        this.coordinatorDAO = new CoordinatorDAOImplementation();
     }
 
     @Override
-    public void registerCoordinator(CoordinatorDTO coordinator) throws DataAccessException {
-        coordinatorDAO.inactivateCurrentCoordinators();
+    public boolean registerCoordinator(CoordinatorDTO coordinator) throws DataAccessException {
+        if (!validatePassword(coordinator.getPassword())) {
+            return false;
+        }
 
         if (coordinatorDAO.existsStaffNumber(coordinator.getStaffNumber())) {
-            throw new IllegalArgumentException("Staff number is already registered.");
+            return false;
         }
 
-        String encryptedPassword = BCrypt.hashpw(coordinator.getPassword(), BCrypt.gensalt());
-        coordinator.setPassword(encryptedPassword);
-        coordinator.setState("Activo");
+        String hashedPassword = BCrypt.hashpw(coordinator.getPassword(), BCrypt.gensalt());
+        coordinator.setPassword(hashedPassword);
 
-        if (!coordinatorDAO.saveCoordinator(coordinator)) {
-            throw new RuntimeException("Could not register the coordinator.");
-        }
+        return coordinatorDAO.saveCoordinator(coordinator);
     }
 
     @Override
-    public void inactivateCoordinator(int userId) throws DataAccessException {
-        if (!coordinatorDAO.inactivateCoordinator(userId)) {
-            throw new RuntimeException("Could not inactivate the coordinator.");
-        }
-    }
-
-    @Override
-    public CoordinatorDTO getCoordinator(int userId) throws DataAccessException {
-        return coordinatorDAO.getCoordinatorById(userId);
+    public boolean inactivateCoordinator(int userId) throws DataAccessException {
+        return userId > 0 && coordinatorDAO.inactivateCoordinator(userId);
     }
 
     @Override
     public List<CoordinatorDTO> getAllCoordinators() throws DataAccessException {
         return coordinatorDAO.getAllCoordinators();
+    }
+
+    @Override
+    public boolean existsStaffNumber(String staffNumber) throws DataAccessException {
+        return coordinatorDAO.existsStaffNumber(staffNumber);
+    }
+
+    private boolean validatePassword(String password) {
+        return password != null && Pattern.compile(PASSWORD_REGEX).matcher(password).matches();
     }
 }

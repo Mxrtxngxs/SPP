@@ -10,7 +10,8 @@
       xmlns:fx="http://javafx.com/fxml"
       spacing="15"
       alignment="CENTER"
-      style="-fx-padding: 40;">
+      style="-fx-padding: 40;"
+      fx:controller="mx.uv.spp.presentation.controllers.LoginController">
 
     <Label text="Inicio de sesion"
            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
@@ -19,9 +20,9 @@
     <TextField fx:id="txtUsername"
                promptText="Ingresa tu usuario"/>
 
-    <Label text="Contraseña:"/>
+    <Label text="Contrasena:"/>
     <PasswordField fx:id="txtPassword"
-                   promptText="Ingresa tu contraseña"/>
+                   promptText="Ingresa tu contrasena"/>
 
     <Label fx:id="lblErrorMessage"
            style="-fx-text-fill: red;"
@@ -29,6 +30,7 @@
 
     <Button fx:id="btnLogin"
             text="Iniciar sesion"
-            maxWidth="Infinity"/>
+            maxWidth="Infinity"
+            onAction="#login"/>
 
 </VBox>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.ListCoordinatorsController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Lista de Coordinadores" />
+
+    <TableView fx:id="tvCoordinators" prefHeight="300.0" prefWidth="500.0">
+        <columns>
+            <TableColumn fx:id="colName" prefWidth="250.0" text="Nombre" />
+            <TableColumn fx:id="colStaffNumber" prefWidth="240.0" text="Numero de Personal" />
+        </columns>
+    </TableView>
+
+    <HBox alignment="CENTER_RIGHT" spacing="15.0">
+        <Button fx:id="btnBack" onAction="#goBack" text="Regresar" />
+        <Button fx:id="btnDeactivate" onAction="#openDeactivateWindow" style="-fx-background-color: #ff4444; -fx-text-fill: white;" text="Inactivar Seleccionado" />
+    </HBox>
+</VBox>

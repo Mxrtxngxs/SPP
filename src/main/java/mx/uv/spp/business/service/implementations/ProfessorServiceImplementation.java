@@ -3,41 +3,53 @@ package mx.uv.spp.business.service.implementations;
 import mx.uv.spp.business.dto.ProfessorDTO;
 import mx.uv.spp.business.service.IProfessorService;
 import mx.uv.spp.dataAcces.dao.IProfessorDAO;
+import mx.uv.spp.dataAcces.dao.implementations.ProfessorDAOImplementation;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.regex.Pattern;
 
 public class ProfessorServiceImplementation implements IProfessorService {
 
     private final IProfessorDAO professorDAO;
+    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{10,}$";
 
-    public ProfessorServiceImplementation(IProfessorDAO professorDAO) {
-        this.professorDAO = professorDAO;
+    public ProfessorServiceImplementation() throws DataAccessException {
+        this.professorDAO = new ProfessorDAOImplementation();
     }
 
     @Override
-    public void registerProfessor(ProfessorDTO professor) throws DataAccessException {
+    public boolean registerProfessor(ProfessorDTO professor) throws DataAccessException {
+        if (!validatePassword(professor.getPassword())) {
+            return false;
+        }
+
         if (professorDAO.existsStaffNumber(professor.getStaffNumber())) {
-            throw new IllegalArgumentException("Staff number is already registered.");
+            return false;
         }
 
-        if (professorDAO.getActiveProfessorsCount() >= 2) {
-            throw new IllegalStateException("Maximum limit of 2 active professors reached. Inactivate one first.");
-        }
+        String hashedPassword = BCrypt.hashpw(professor.getPassword(), BCrypt.gensalt());
+        professor.setPassword(hashedPassword);
 
-        String encryptedPassword = BCrypt.hashpw(professor.getPassword(), BCrypt.gensalt());
-        professor.setPassword(encryptedPassword);
-
-        professor.setState("Activo");
-
-        if (!professorDAO.saveProfessor(professor)) {
-            throw new RuntimeException("Could not register the professor. Try again.");
-        }
+        return professorDAO.saveProfessor(professor);
     }
 
     @Override
-    public void inactivateProfessor(int userId) throws DataAccessException {
-        if (!professorDAO.inactivateProfessor(userId)) {
-            throw new RuntimeException("Could not inactivate the professor. Try again.");
-        }
+    public boolean inactivateProfessor(int userId) throws DataAccessException {
+        return userId > 0 && professorDAO.inactivateProfessor(userId);
+    }
+
+    @Override
+    public boolean existsStaffNumber(String staffNumber) throws DataAccessException {
+        return professorDAO.existsStaffNumber(staffNumber);
+    }
+
+    @Override
+    public int getActiveProfessorsCount() throws DataAccessException {
+        return professorDAO.getActiveProfessorsCount();
+    }
+
+    private boolean validatePassword(String password) {
+        return password != null && Pattern.compile(PASSWORD_REGEX).matcher(password).matches();
     }
 }
