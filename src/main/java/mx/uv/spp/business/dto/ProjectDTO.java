@@ -16,6 +16,10 @@ public class ProjectDTO {
     public ProjectDTO() {
     }
 
+    public ProjectDTO(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -83,19 +83,19 @@ public class InternDAOImplementation implements IInternDAO {
 
     @Override
     public InternDTO getInternById(int userId) throws DataAccessException {
+        InternDTO internDTO = new InternDTO();
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, userId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     return mapResultSetToIntern(resultSet);
                 }
-                InternDTO internDTO = new InternDTO();
                 internDTO.setIdUser(-1);
-                return internDTO;
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error finding intern", e);
         }
+        return internDTO;
     }
 
     @Override

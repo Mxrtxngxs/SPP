@@ -12,6 +12,10 @@ public class InternDTO extends UserDTO{
     public InternDTO() {
     }
 
+    public InternDTO(Integer userId) {
+        this.userId = userId;
+    }
+
     public Integer getUserId() {
         return userId;
     }

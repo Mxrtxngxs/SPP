@@ -7,6 +7,10 @@ public class CoordinatorDTO extends UserDTO {
     public CoordinatorDTO() {
     }
 
+    public CoordinatorDTO(Integer userId) {
+        this.userId = userId;
+    }
+
     public String getStaffNumber() {
         return staffNumber;
     }

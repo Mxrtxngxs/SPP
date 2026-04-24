@@ -77,7 +77,7 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error finding assignment ID: " + assignmentId, e);
         }
-        return null;
+        return new AssignmentDTO(-1);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error finding assignment for intern ID: " + internId, e);
         }
-        return null;
+        return new AssignmentDTO(-1);
     }
 
     @Override

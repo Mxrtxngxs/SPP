@@ -57,8 +57,8 @@ public class ProjectDAOImplementationTest {
                     "DELETE FROM Usuario WHERE id_usuario = 1"
             };
             for (String query : cleanQueries) {
-                try (PreparedStatement st = connection.prepareStatement(query)) {
-                    st.executeUpdate();
+                try (PreparedStatement statement = connection.prepareStatement(query)) {
+                    statement.executeUpdate();
                 }
             }
         } catch (SQLException e) {

@@ -13,8 +13,8 @@ public class CompanyDAOImplementation implements ICompanyDAO {
 
     private final Connection connection;
 
-    private static final String SQL_SAVE = "INSERT INTO Empresa (nombre, sector, nombre_responsable, contacto_responsable) VALUES (?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE Empresa SET nombre=?, sector=?, nombre_responsable=?, contacto_responsable=? WHERE id_empresa=?";
+    private static final String SQL_SAVE = "INSERT INTO Empresa (nombre_empresa, sector, nombre_responsable, contacto_responsable) VALUES (?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE Empresa SET nombre_empresa=?, sector=?, nombre_responsable=?, contacto_responsable=? WHERE id_empresa=?";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM Empresa WHERE id_empresa=?";
     private static final String SQL_FIND_ALL = "SELECT * FROM Empresa";
 
@@ -88,8 +88,7 @@ public class CompanyDAOImplementation implements ICompanyDAO {
     private CompanyDTO mapResultSetToCompany(ResultSet resultSet) throws SQLException {
         CompanyDTO company = new CompanyDTO();
         company.setId(resultSet.getInt("id_empresa"));
-        company.setName(resultSet.getString("nombre"));
-        company.setSector(resultSet.getString("sector"));
+        company.setName(resultSet.getString("nombre_empresa"));        company.setSector(resultSet.getString("sector"));
         company.setManagerName(resultSet.getString("nombre_responsable"));
         company.setManagerContact(resultSet.getString("contacto_responsable"));
         return company;

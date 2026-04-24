@@ -50,7 +50,7 @@ public class LetterDAOImplementation implements ILetterDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error al buscar el oficio con ID: " + id, e);
         }
-        return null;
+        return new LetterDTO(-1);
     }
 
     @Override

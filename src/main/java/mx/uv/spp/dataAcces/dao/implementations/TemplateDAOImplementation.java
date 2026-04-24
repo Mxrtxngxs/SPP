@@ -79,7 +79,7 @@ public class TemplateDAOImplementation implements ITemplateDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error finding template ID: " + templateId, e);
         }
-        return null;
+        return new TemplateDTO(-1);
     }
 
     @Override

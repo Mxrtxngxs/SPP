@@ -49,7 +49,7 @@ public class IndicatorDAOImplementation implements IIndicatorDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error finding indicator", e);
         }
-        return null;
+        return new IndicatorDTO(-1);
     }
 
     @Override

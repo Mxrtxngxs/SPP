@@ -87,7 +87,7 @@ public class ActivitySubmissionDAOImplementationTest {
 
     @Test
     public void saveActivitySubmission_invalidInternId_throwsDataAccessException() {
-        ActivitySubmissionDTO submission = createBaseSubmission(1, 999);
+        ActivitySubmissionDTO submission = createBaseSubmission(1, 9);
 
         assertThrows(DataAccessException.class, () -> {
             submissionDAO.saveActivitySubmission(submission);

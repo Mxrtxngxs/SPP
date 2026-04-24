@@ -12,6 +12,10 @@ public class IndicatorDTO {
     public IndicatorDTO() {
     }
 
+    public IndicatorDTO(Integer indicatorId) {
+        this.indicatorId = indicatorId;
+    }
+
     public Integer getIndicatorId() {
         return indicatorId;
     }

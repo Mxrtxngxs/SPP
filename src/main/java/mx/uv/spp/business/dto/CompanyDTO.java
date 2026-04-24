@@ -10,6 +10,10 @@ public class CompanyDTO {
     public CompanyDTO() {
     }
 
+    public CompanyDTO(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

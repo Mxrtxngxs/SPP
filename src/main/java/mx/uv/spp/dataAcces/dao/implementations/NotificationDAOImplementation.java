@@ -51,7 +51,7 @@ public class NotificationDAOImplementation implements INotificationDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error al buscar la notificación con ID: " + id, e);
         }
-        return null;
+        return new NotificationDTO(-1);
     }
 
     @Override

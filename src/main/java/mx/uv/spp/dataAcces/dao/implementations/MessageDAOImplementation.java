@@ -50,7 +50,7 @@ public class MessageDAOImplementation implements IMessageDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error al buscar el mensaje con ID: " + id, e);
         }
-        return null;
+        return new MessageDTO(-1);
     }
 
     @Override

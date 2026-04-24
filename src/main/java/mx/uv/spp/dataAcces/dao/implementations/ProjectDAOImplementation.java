@@ -90,7 +90,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error finding project ID: " + projectId, e);
         }
-        return null;
+        return new ProjectDTO(-1);
     }
 
     @Override

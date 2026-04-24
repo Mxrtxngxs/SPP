@@ -13,6 +13,10 @@ public class AssignmentDTO {
     public AssignmentDTO() {
     }
 
+    public AssignmentDTO(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

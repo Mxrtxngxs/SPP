@@ -60,16 +60,17 @@ public class ActivityDAOImplementationTest {
     }
 
     @Test
-    public void saveActivity_validActivity_returnsTrue() throws DataAccessException {
+    public void TestSaveActivitySuccess_validActivity_returnsTrue() throws DataAccessException {
         ActivityDTO activity = createBaseActivity(1);
 
         boolean result = activityDAO.saveActivity(activity);
 
-        assertTrue(result);
+        assertTrue(
+                result);
     }
 
     @Test
-    public void saveActivity_nullDates_throwsNullPointerException() {
+    public void TestSaveActivityFail_nullDates_throwsNullPointerException() {
         ActivityDTO activity = new ActivityDTO();
         activity.setTitle("Test Title");
         activity.setProfessorId(1);
@@ -151,7 +152,7 @@ public class ActivityDAOImplementationTest {
 
     @Test
     public void getActivityById_nonExistentId_throwsDataAccessException() {
-        int nonExistentId = 9999;
+        int nonExistentId = 9;
 
         assertThrows(DataAccessException.class, () -> {
             activityDAO.getActivityById(nonExistentId);

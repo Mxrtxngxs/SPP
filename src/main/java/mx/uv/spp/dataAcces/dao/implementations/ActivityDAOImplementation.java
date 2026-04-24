@@ -63,15 +63,17 @@ public class ActivityDAOImplementation implements IActivityDAO {
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ACTIVITY_BY_ID)) {
             statement.setInt(1, activityId);
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()){
+                if (resultSet.next()) {
                     return mapResultSetToActivity(resultSet);
                 }
-                throw new DataAccessException("Activity not found with ID: " + activityId);
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error finding activity with ID: " + activityId, e);
         }
+        return new ActivityDTO(-1);
     }
+
+
 
     @Override
     public List<ActivityDTO> getActivitiesByProfessorId(int professorId) throws DataAccessException {
@@ -83,7 +85,9 @@ public class ActivityDAOImplementation implements IActivityDAO {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) list.add(mapResultSetToActivity(resultSet));
+                while (resultSet.next()){
+                    list.add(mapResultSetToActivity(resultSet));
+                }
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error listing activities", e);

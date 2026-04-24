@@ -13,6 +13,10 @@ public class NotificationDTO {
     public NotificationDTO() {
     }
 
+    public NotificationDTO(Integer notificationId) {
+        this.notificationId = notificationId;
+    }
+
     public Integer getNotificationId() {
         return notificationId;
     }

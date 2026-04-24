@@ -14,6 +14,10 @@ public class ActivitySubmissionDTO {
     public ActivitySubmissionDTO() {
     }
 
+    public ActivitySubmissionDTO(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

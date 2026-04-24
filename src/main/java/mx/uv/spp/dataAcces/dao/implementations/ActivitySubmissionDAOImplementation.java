@@ -53,7 +53,7 @@ public class ActivitySubmissionDAOImplementation implements IActivitySubmissionD
         } catch (SQLException e) {
             throw new DataAccessException("Error al buscar la entrega con ID: " + id, e);
         }
-        return null;
+        return new ActivitySubmissionDTO(-1);
     }
 
     @Override

@@ -14,6 +14,10 @@ public class MessageDTO {
     public MessageDTO() {
     }
 
+    public MessageDTO(Integer messageId) {
+        this.messageId = messageId;
+    }
+
     public Integer getMessageId() {
         return messageId;
     }

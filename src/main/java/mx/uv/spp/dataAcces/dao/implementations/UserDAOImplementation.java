@@ -49,7 +49,7 @@ public class UserDAOImplementation implements IUserDAO {
         } catch (SQLException | NumberFormatException e) {
             throw new DataAccessException("Error al buscar el usuario con ID: " + id, e);
         }
-        return null;
+        return new UserDTO(-1);
     }
 
     @Override

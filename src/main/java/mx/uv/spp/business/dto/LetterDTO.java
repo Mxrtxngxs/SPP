@@ -12,6 +12,10 @@ public class LetterDTO {
     public LetterDTO() {
     }
 
+    public LetterDTO(Integer letterId) {
+        this.letterId = letterId;
+    }
+
     public Integer getLetterId() {
         return letterId;
     }

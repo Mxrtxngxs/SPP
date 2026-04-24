@@ -32,7 +32,6 @@ public class CoordinatorDAOImplementationTest {
         try {
             connection = DatabaseConfig.getInstance().getConnection();
             coordinatorDAO = new CoordinatorDAOImplementation();
-
             cleanDatabase();
             insertBaseCoordinator(1, "Base Coordinator", "pass123", "Activo", "12345");
         } catch (DataAccessException e) {

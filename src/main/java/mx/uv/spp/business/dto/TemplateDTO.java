@@ -14,6 +14,10 @@ public class TemplateDTO {
     public TemplateDTO() {
     }
 
+    public TemplateDTO(Integer templateId) {
+        this.templateId = templateId;
+    }
+
     public Integer getTemplateId() {
         return templateId;
     }

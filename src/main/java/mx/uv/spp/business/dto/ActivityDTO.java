@@ -14,6 +14,10 @@ public class ActivityDTO {
     public ActivityDTO() {
     }
 
+    public ActivityDTO(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

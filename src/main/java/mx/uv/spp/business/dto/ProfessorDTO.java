@@ -8,6 +8,10 @@ public class ProfessorDTO extends UserDTO{
     public ProfessorDTO() {
     }
 
+    public ProfessorDTO(Integer userId) {
+        this.userId = userId;
+    }
+
     public Integer getUserId() {
         return userId;
     }

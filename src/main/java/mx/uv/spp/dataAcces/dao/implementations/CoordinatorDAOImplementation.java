@@ -104,7 +104,7 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
         } catch (SQLException e) {
             throw new DataAccessException("Error finding coordinator ID: " + userId, e);
         }
-        return null;
+        return new CoordinatorDTO(-1);
     }
 
     @Override
