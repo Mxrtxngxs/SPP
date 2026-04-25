@@ -15,7 +15,7 @@ import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 import java.util.Optional;
 
-public class DeactivateCoordinatorController {
+public class DesactivateCoordinatorController {
 
     @FXML
     private Label lblName;
@@ -26,7 +26,7 @@ public class DeactivateCoordinatorController {
     private ICoordinatorService coordinatorService;
     private CoordinatorDTO coordinatorSelected;
 
-    public DeactivateCoordinatorController() {
+    public DesactivateCoordinatorController() {
         try {
             this.coordinatorService = new CoordinatorServiceImplementation();
         } catch (DataAccessException e) {
@@ -37,7 +37,7 @@ public class DeactivateCoordinatorController {
     @FXML
     public void initialize() {
         if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
+            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos disponible."));
         }
     }
 
@@ -51,33 +51,46 @@ public class DeactivateCoordinatorController {
 
     @FXML
     private void deactivateCoordinator(ActionEvent event) {
+        if (isDataValid()) {
+            if (showConfirmation()) {
+                executeDeactivation(event);
+            }
+        }
+    }
+
+    private boolean isDataValid() {
         if (coordinatorService == null) {
-            showAlert("Error", "Hubo un error al conectarse a la base de datos");
-            return;
+            showAlert("Error", "No hay conexion con la base de datos.");
+            return false;
         }
 
         if (coordinatorSelected == null || coordinatorSelected.getIdUser() <= 0) {
-            showAlert("Error", "No se ha cargado la informacion del coordinador");
-            return;
+            showAlert("Error", "Informacion del coordinador no cargada.");
+            return false;
         }
+        return true;
+    }
 
+    private boolean showConfirmation() {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirmacion");
         confirmation.setHeaderText(null);
-        confirmation.setContentText("Está seguro de que desea eliminar este coordinador de forma permanente?");
+        confirmation.setContentText("Seguro que desea inactivar a este coordinador?");
 
         Optional<ButtonType> result = confirmation.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                if (coordinatorService.inactivateCoordinator(coordinatorSelected.getIdUser())) {
-                    showAlert("Exito", "Se desactivó el coordinador exitosamente");
-                    closeWindow(event);
-                } else {
-                    showAlert("Error", "Hubo un error al inactivar al coordinador");
-                }
-            } catch (DataAccessException e) {
-                showAlert("Error", "Hubo un problema al comunicarse con la base de datos al inactivar el coordinador");
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
+    private void executeDeactivation(ActionEvent event) {
+        try {
+            if (coordinatorService.inactivateCoordinator(coordinatorSelected.getIdUser())) {
+                showAlert("Exito", "Coordinador inactivado correctamente.");
+                closeWindow(event);
+            } else {
+                showAlert("Error", "No se pudo inactivar al coordinador.");
             }
+        } catch (DataAccessException e) {
+            showAlert("Error", "Fallo la comunicacion con la base de datos.");
         }
     }
 

@@ -26,7 +26,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
                 return user;
             }
         }
-
+        user.setIdUser(-1);
         return user;
     }
 }

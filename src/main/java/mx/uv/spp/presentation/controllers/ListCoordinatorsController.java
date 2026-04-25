@@ -88,7 +88,7 @@ public class ListCoordinatorsController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/DesactivateCoordinatorView.fxml"));
             Parent root = loader.load();
 
-            DeactivateCoordinatorController controller = loader.getController();
+            DesactivateCoordinatorController controller = loader.getController();
             controller.setCoordinator(selectedCoordinator);
 
             Stage stage = new Stage();
