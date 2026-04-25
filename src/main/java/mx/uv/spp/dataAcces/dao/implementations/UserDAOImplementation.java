@@ -142,6 +142,9 @@ public class UserDAOImplementation implements IUserDAO {
 
     @Override
     public UserDTO getUserByIdentifier(String identifier) throws DataAccessException {
+        UserDTO user = new UserDTO();
+        user.setIdUser(-1);
+
         try (PreparedStatement statement = connection.prepareStatement(SQL_GET_USER_BY_IDENTIFIER)) {
             statement.setString(1, identifier);
             statement.setString(2, identifier);
@@ -149,23 +152,23 @@ public class UserDAOImplementation implements IUserDAO {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    UserDTO user = new UserDTO();
-                    user.setIdUser(resultSet.getInt("id_usuario"));
-                    user.setName(resultSet.getString("nombre"));
-                    user.setRole(resultSet.getString("rol"));
-                    user.setState(resultSet.getString("estado"));
-
-                    user.setPassword(resultSet.getString("contrasena"));
-
-                    return user;
+                    return mapResultSetToUser(resultSet);
                 }
             }
         } catch (SQLException e) {
             throw new DataAccessException("Error getting user by identifier", e);
         }
 
-        UserDTO flagUser = new UserDTO();
-        flagUser.setIdUser(-1);
-        return flagUser;
+        return user;
+    }
+
+    private UserDTO mapResultSetToUser(ResultSet resultSet) throws SQLException {
+        UserDTO user = new UserDTO();
+        user.setIdUser(resultSet.getInt("id_usuario"));
+        user.setName(resultSet.getString("nombre"));
+        user.setRole(resultSet.getString("rol"));
+        user.setState(resultSet.getString("estado"));
+        user.setPassword(resultSet.getString("contrasena"));
+        return user;
     }
 }

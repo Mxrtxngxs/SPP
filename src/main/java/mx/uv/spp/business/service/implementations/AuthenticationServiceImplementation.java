@@ -18,7 +18,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
     public UserDTO login(String identifier, String password) throws DataAccessException {
         UserDTO user = userDAO.getUserByIdentifier(identifier);
 
-        if (user != null && user.getIdUser() != -1 && "Activo".equals(user.getState())) {
+        if (user.getIdUser() != -1 && "Activo".equals(user.getState())) {
 
             if (BCrypt.checkpw(password, user.getPassword())) {
 
@@ -27,8 +27,6 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
             }
         }
 
-        UserDTO NotFoundUser = new UserDTO();
-        NotFoundUser.setIdUser(-1);
-        return NotFoundUser;
+        return user;
     }
 }

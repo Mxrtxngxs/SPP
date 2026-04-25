@@ -27,19 +27,19 @@ public class LoginController {
     @FXML
     private Button btnLogin;
 
-    private IAuthenticationService authService;
+    private IAuthenticationService authenticationService;
 
     public LoginController() {
         try {
-            this.authService = new AuthenticationServiceImplementation();
+            this.authenticationService = new AuthenticationServiceImplementation();
         } catch (DataAccessException e) {
-            this.authService = null;
+            this.authenticationService = null;
         }
     }
 
     @FXML
     public void initialize() {
-        if (authService == null) {
+        if (authenticationService == null) {
             Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos."));
         }
     }
@@ -48,30 +48,34 @@ public class LoginController {
     private void login(ActionEvent event) {
         lblErrorMessage.setText("");
 
-        if (authService == null) {
-            showAlert("Error", "No hay conexion con la base de datos.");
-            return;
-        }
-
         String username = txtUsername.getText().trim();
         String password = txtPassword.getText().trim();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            lblErrorMessage.setText("Por favor, ingresa usuario y contrasena.");
-            return;
+        if(validateFields(username, password)){
+            authenticateUser(username, password);
         }
+    }
 
+    private void authenticateUser(String username, String password){
         try {
-            UserDTO user = authService.login(username, password);
+            UserDTO user = authenticationService.login(username, password);
 
             if (user.getIdUser() != -1) {
                 showAlert("Exito", "Inicio de sesion exitoso. Bienvenido: " + user.getName());
             } else {
-                lblErrorMessage.setText("Usuario o contrasena incorrectos.");
+                lblErrorMessage.setText("Usuario o contraseña incorrectos.");
             }
         } catch (DataAccessException e) {
-            showAlert("Error", "Error con el servidor.");
+            showAlert("Error", "Error con el servidor");
         }
+    }
+
+    private boolean validateFields(String username, String password){
+        if (username.isEmpty() || password.isEmpty()) {
+            lblErrorMessage.setText("Por favor ingresa usuario y contraseña");
+            return false;
+        }
+        return true;
     }
 
     private void showAlert(String title, String message) {
