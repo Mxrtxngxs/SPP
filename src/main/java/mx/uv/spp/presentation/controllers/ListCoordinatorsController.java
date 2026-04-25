@@ -46,7 +46,7 @@ public class ListCoordinatorsController {
     @FXML
     public void initialize() {
         if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos."));
+            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
         } else {
             configureTable();
             loadData();
@@ -65,7 +65,7 @@ public class ListCoordinatorsController {
                 ObservableList<CoordinatorDTO> coordinators = FXCollections.observableArrayList(list);
                 tvCoordinators.setItems(coordinators);
             } catch (DataAccessException e) {
-                showAlert("Error", "No se pudieron cargar los coordinadores.");
+                showAlert("Error", "Hubo un error al cargar los coordinadores");
             }
         }
     }
@@ -73,14 +73,14 @@ public class ListCoordinatorsController {
     @FXML
     private void openDeactivateWindow(ActionEvent event) {
         if (coordinatorService == null) {
-            showAlert("Error", "No hay conexion con la base de datos.");
+            showAlert("Error", "No se pudo establecer la conexion con la base de datos");
             return;
         }
 
         CoordinatorDTO selectedCoordinator = tvCoordinators.getSelectionModel().getSelectedItem();
 
         if (selectedCoordinator == null) {
-            showAlert("Atencion", "Por favor, seleccione un coordinador de la tabla.");
+            showAlert("Atencion", "Por favor, seleccione un coordinador de la tabla");
             return;
         }
 
@@ -100,7 +100,7 @@ public class ListCoordinatorsController {
             loadData();
 
         } catch (IOException e) {
-            showAlert("Error", "No se pudo abrir la ventana de inactivacion");
+            showAlert("Error", "Hubo un error al abrir la ventana de inactivacion");
         }
     }
 

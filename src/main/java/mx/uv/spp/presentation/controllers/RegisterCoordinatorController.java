@@ -36,14 +36,14 @@ public class RegisterCoordinatorController {
     @FXML
     public void initialize() {
         if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos."));
+            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
         }
     }
 
     @FXML
     private void registerCoordinator(ActionEvent event) {
         if (coordinatorService == null) {
-            showAlert("Error", "No hay conexion con la base de datos.");
+            showAlert("Error", "Hubo un error al conectarse a la base de datos");
             return;
         }
 
@@ -52,13 +52,13 @@ public class RegisterCoordinatorController {
         String password = txtPassword.getText().trim();
 
         if (name.isEmpty() || staffNumber.isEmpty() || password.isEmpty()) {
-            showAlert("Campos vacios", "Por favor, llene todos los campos.");
+            showAlert("Campos vacios", "Por favor, rellene todos los campos");
             return;
         }
 
         try {
             if (coordinatorService.existsStaffNumber(staffNumber)) {
-                showAlert("Error", "El numero de personal ya esta registrado.");
+                showAlert("Error", "El numero de personal ya se encuentra registrado");
                 return;
             }
 
@@ -69,10 +69,10 @@ public class RegisterCoordinatorController {
             coordinator.setState("Activo");
 
             if (coordinatorService.registerCoordinator(coordinator)) {
-                showAlert("Exito", "Coordinador registrado correctamente.");
+                showAlert("Exito", "Se registro al coordinador exitosamente");
                 clearFields();
             } else {
-                showAlert("Error", "La contrasena no cumple con los requisitos de seguridad.");
+                showAlert("Error", "La contraseña no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
             }
         } catch (DataAccessException e) {
             showAlert("Error", "Fallo la comunicacion con la base de datos.");

@@ -40,7 +40,7 @@ public class LoginController {
     @FXML
     public void initialize() {
         if (authenticationService == null) {
-            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos."));
+            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
         }
     }
 
@@ -61,9 +61,9 @@ public class LoginController {
             UserDTO user = authenticationService.login(username, password);
 
             if (user.getIdUser() != -1) {
-                showAlert("Exito", "Inicio de sesion exitoso. Bienvenido: " + user.getName());
+                showAlert("Exito", "Bienvenido: " + user.getName());
             } else {
-                lblErrorMessage.setText("Usuario o contraseña incorrectos.");
+                lblErrorMessage.setText("Correo o contraseña incorrecta");
             }
         } catch (DataAccessException e) {
             showAlert("Error", "Error con el servidor");

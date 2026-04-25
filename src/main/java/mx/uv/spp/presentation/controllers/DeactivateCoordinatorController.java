@@ -37,7 +37,7 @@ public class DeactivateCoordinatorController {
     @FXML
     public void initialize() {
         if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos."));
+            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
         }
     }
 
@@ -52,31 +52,31 @@ public class DeactivateCoordinatorController {
     @FXML
     private void deactivateCoordinator(ActionEvent event) {
         if (coordinatorService == null) {
-            showAlert("Error", "No hay conexion con la base de datos.");
+            showAlert("Error", "Hubo un error al conectarse a la base de datos");
             return;
         }
 
         if (coordinatorSelected == null || coordinatorSelected.getIdUser() <= 0) {
-            showAlert("Error", "No se ha cargado la informacion del coordinador.");
+            showAlert("Error", "No se ha cargado la informacion del coordinador");
             return;
         }
 
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirmacion");
         confirmation.setHeaderText(null);
-        confirmation.setContentText("Seguro que desea inactivar a este Coordinador?");
+        confirmation.setContentText("Está seguro de que desea eliminar este coordinador de forma permanente?");
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 if (coordinatorService.inactivateCoordinator(coordinatorSelected.getIdUser())) {
-                    showAlert("Exito", "Coordinador inactivado correctamente.");
+                    showAlert("Exito", "Se desactivó el coordinador exitosamente");
                     closeWindow(event);
                 } else {
-                    showAlert("Error", "No se pudo inactivar al coordinador.");
+                    showAlert("Error", "Hubo un error al inactivar al coordinador");
                 }
             } catch (DataAccessException e) {
-                showAlert("Error", "Fallo la comunicacion con la base de datos al intentar inactivar.");
+                showAlert("Error", "Hubo un problema al comunicarse con la base de datos al inactivar el coordinador");
             }
         }
     }

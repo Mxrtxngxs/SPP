@@ -41,7 +41,7 @@ public class RegisterProfessorController {
     @FXML
     public void initialize() {
         if (professorService == null) {
-            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos."));
+            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
         } else {
             ObservableList<String> shifts = FXCollections.observableArrayList("Matutino", "Vespertino");
             cbShift.setItems(shifts);
@@ -51,7 +51,7 @@ public class RegisterProfessorController {
     @FXML
     private void registerProfessor(ActionEvent event) {
         if (professorService == null) {
-            showAlert("Error", "No hay conexion con la base de datos.");
+            showAlert("Error", "Hubo un error al conectarse a la base de datos");
             return;
         }
 
@@ -61,13 +61,13 @@ public class RegisterProfessorController {
         String shift = cbShift.getValue();
 
         if (name.isEmpty() || staffNumber.isEmpty() || password.isEmpty() || shift == null) {
-            showAlert("Campos vacios", "Por favor, llene todos los campos y seleccione un turno.");
+            showAlert("Campos vacios", "Por favor, rellene todos los campos y seleccione un turno");
             return;
         }
 
         try {
             if (professorService.existsStaffNumber(staffNumber)) {
-                showAlert("Error", "El numero de personal ya esta registrado.");
+                showAlert("Error", "El numero de personal ya se encuentra registrado");
                 return;
             }
 
@@ -79,13 +79,13 @@ public class RegisterProfessorController {
             professor.setState("Activo");
 
             if (professorService.registerProfessor(professor)) {
-                showAlert("Exito", "Profesor registrado correctamente.");
+                showAlert("Exito", "El profesor se registro exitosamente");
                 clearFields();
             } else {
-                showAlert("Error", "La contrasena no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros).");
+                showAlert("Error", "La contraseña no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
             }
         } catch (DataAccessException e) {
-            showAlert("Error", "Fallo en la base de datos.");
+            showAlert("Error", "Fallo en la base de datos");
         }
     }
 
