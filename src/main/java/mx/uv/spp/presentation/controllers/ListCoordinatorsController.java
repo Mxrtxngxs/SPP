@@ -72,33 +72,40 @@ public class ListCoordinatorsController {
 
     @FXML
     private void openDeactivateWindow(ActionEvent event) {
+        CoordinatorDTO selectedCoordinator = getSelectedCoordinator();
+
+        if (selectedCoordinator != null) {
+            showDeactivateView(selectedCoordinator);
+            loadData();
+        }
+    }
+
+    private CoordinatorDTO getSelectedCoordinator() {
         if (coordinatorService == null) {
             showAlert("Error", "No se pudo establecer la conexion con la base de datos");
-            return;
+            return null;
         }
 
-        CoordinatorDTO selectedCoordinator = tvCoordinators.getSelectionModel().getSelectedItem();
-
-        if (selectedCoordinator == null) {
+        CoordinatorDTO selected = tvCoordinators.getSelectionModel().getSelectedItem();
+        if (selected == null) {
             showAlert("Atencion", "Por favor, seleccione un coordinador de la tabla");
-            return;
         }
+        return selected;
+    }
 
+    private void showDeactivateView(CoordinatorDTO coordinator) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/DesactivateCoordinatorView.fxml"));
             Parent root = loader.load();
 
             DesactivateCoordinatorController controller = loader.getController();
-            controller.setCoordinator(selectedCoordinator);
+            controller.setCoordinator(coordinator);
 
             Stage stage = new Stage();
             stage.setTitle("Inactivar Coordinador");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
-            loadData();
-
         } catch (IOException e) {
             showAlert("Error", "Hubo un error al abrir la ventana de inactivacion");
         }

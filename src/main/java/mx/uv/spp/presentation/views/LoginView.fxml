@@ -20,7 +20,7 @@
     <TextField fx:id="txtUsername"
                promptText="Ingresa tu usuario"/>
 
-    <Label text="Contrasena:"/>
+    <Label text="Contraseña:"/>
     <PasswordField fx:id="txtPassword"
                    promptText="Ingresa tu contrasena"/>
 

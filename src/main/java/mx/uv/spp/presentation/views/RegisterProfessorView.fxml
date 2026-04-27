@@ -24,7 +24,7 @@
         <Label text="Numero de personal:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         <TextField fx:id="txtStaffNumber" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-        <Label text="Contrasena:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
         <PasswordField fx:id="txtPassword" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
         <Label text="Turno:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>

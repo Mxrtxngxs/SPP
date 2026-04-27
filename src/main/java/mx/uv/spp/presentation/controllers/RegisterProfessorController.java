@@ -50,18 +50,27 @@ public class RegisterProfessorController {
 
     @FXML
     private void registerProfessor(ActionEvent event) {
-        if (professorService == null) {
-            showAlert("Error", "Hubo un error al conectarse a la base de datos");
-            return;
-        }
-
         String name = txtName.getText().trim();
         String staffNumber = txtStaffNumber.getText().trim();
         String password = txtPassword.getText().trim();
         String shift = cbShift.getValue();
 
+        if (validateFields(name, staffNumber, password, shift)) {
+            processRegistration(name, staffNumber, password, shift);
+        }
+    }
+
+    private boolean validateFields(String name, String staffNumber, String password, String shift) {
         if (name.isEmpty() || staffNumber.isEmpty() || password.isEmpty() || shift == null) {
             showAlert("Campos vacios", "Por favor, rellene todos los campos y seleccione un turno");
+            return false;
+        }
+        return true;
+    }
+
+    private void processRegistration(String name, String staffNumber, String password, String shift) {
+        if (professorService == null) {
+            showAlert("Error", "Hubo un error al conectarse a la base de datos");
             return;
         }
 
@@ -71,22 +80,27 @@ public class RegisterProfessorController {
                 return;
             }
 
-            ProfessorDTO professor = new ProfessorDTO();
-            professor.setName(name);
-            professor.setStaffNumber(staffNumber);
-            professor.setPassword(password);
-            professor.setShift(shift);
-            professor.setState("Activo");
+            ProfessorDTO professor = createProfessorDTO(name, staffNumber, password, shift);
 
             if (professorService.registerProfessor(professor)) {
                 showAlert("Exito", "El profesor se registro exitosamente");
                 clearFields();
             } else {
-                showAlert("Error", "La contraseña no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
+                showAlert("Error", "La contrasena no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
             }
         } catch (DataAccessException e) {
             showAlert("Error", "Fallo en la base de datos");
         }
+    }
+
+    private ProfessorDTO createProfessorDTO(String name, String staffNumber, String password, String shift) {
+        ProfessorDTO professor = new ProfessorDTO();
+        professor.setName(name);
+        professor.setStaffNumber(staffNumber);
+        professor.setPassword(password);
+        professor.setShift(shift);
+        professor.setState("Activo");
+        return professor;
     }
 
     @FXML

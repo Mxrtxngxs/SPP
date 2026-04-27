@@ -37,7 +37,7 @@ public class DesactivateCoordinatorController {
     @FXML
     public void initialize() {
         if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos disponible."));
+            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos"));
         }
     }
 
@@ -60,12 +60,12 @@ public class DesactivateCoordinatorController {
 
     private boolean isDataValid() {
         if (coordinatorService == null) {
-            showAlert("Error", "No hay conexion con la base de datos.");
+            showAlert("Error", "No hay conexion con la base de datos");
             return false;
         }
 
         if (coordinatorSelected == null || coordinatorSelected.getIdUser() <= 0) {
-            showAlert("Error", "Informacion del coordinador no cargada.");
+            showAlert("Error", "Informacion del coordinador no cargada");
             return false;
         }
         return true;
@@ -84,13 +84,13 @@ public class DesactivateCoordinatorController {
     private void executeDeactivation(ActionEvent event) {
         try {
             if (coordinatorService.inactivateCoordinator(coordinatorSelected.getIdUser())) {
-                showAlert("Exito", "Coordinador inactivado correctamente.");
+                showAlert("Exito", "Coordinador inactivado correctamente");
                 closeWindow(event);
             } else {
-                showAlert("Error", "No se pudo inactivar al coordinador.");
+                showAlert("Error", "No se pudo inactivar al coordinador");
             }
         } catch (DataAccessException e) {
-            showAlert("Error", "Fallo la comunicacion con la base de datos.");
+            showAlert("Error", "Fallo la comunicacion con la base de datos");
         }
     }
 

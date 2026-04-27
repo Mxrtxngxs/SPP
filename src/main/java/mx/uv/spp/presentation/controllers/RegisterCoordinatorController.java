@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import mx.uv.spp.business.dto.CoordinatorDTO;
@@ -42,19 +41,24 @@ public class RegisterCoordinatorController {
 
     @FXML
     private void registerCoordinator(ActionEvent event) {
-        if (coordinatorService == null) {
-            showAlert("Error", "Hubo un error al conectarse a la base de datos");
-            return;
-        }
-
         String name = txtName.getText().trim();
         String staffNumber = txtStaffNumber.getText().trim();
         String password = txtPassword.getText().trim();
 
+        if (validateFields(name, staffNumber, password)) {
+            processRegistration(name, staffNumber, password);
+        }
+    }
+
+    private boolean validateFields(String name, String staffNumber, String password) {
         if (name.isEmpty() || staffNumber.isEmpty() || password.isEmpty()) {
             showAlert("Campos vacios", "Por favor, rellene todos los campos");
-            return;
+            return false;
         }
+        return true;
+    }
+
+    private void processRegistration(String name, String staffNumber, String password) {
 
         try {
             if (coordinatorService.existsStaffNumber(staffNumber)) {
@@ -62,11 +66,7 @@ public class RegisterCoordinatorController {
                 return;
             }
 
-            CoordinatorDTO coordinator = new CoordinatorDTO();
-            coordinator.setName(name);
-            coordinator.setStaffNumber(staffNumber);
-            coordinator.setPassword(password);
-            coordinator.setState("Activo");
+            CoordinatorDTO coordinator = createCoordinatorDTO(name, staffNumber, password);
 
             if (coordinatorService.registerCoordinator(coordinator)) {
                 showAlert("Exito", "Se registro al coordinador exitosamente");
@@ -75,8 +75,17 @@ public class RegisterCoordinatorController {
                 showAlert("Error", "La contraseña no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
             }
         } catch (DataAccessException e) {
-            showAlert("Error", "Fallo la comunicacion con la base de datos.");
+            showAlert("Error", "Fallo la comunicacion con la base de datos");
         }
+    }
+
+    private CoordinatorDTO createCoordinatorDTO(String name, String staffNumber, String password) {
+        CoordinatorDTO coordinator = new CoordinatorDTO();
+        coordinator.setName(name);
+        coordinator.setStaffNumber(staffNumber);
+        coordinator.setPassword(password);
+        coordinator.setState("Activo");
+        return coordinator;
     }
 
     @FXML
