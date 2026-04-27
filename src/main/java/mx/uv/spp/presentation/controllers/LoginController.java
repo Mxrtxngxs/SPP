@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import mx.uv.spp.business.dto.UserDTO;
 import mx.uv.spp.business.service.IAuthenticationService;
 import mx.uv.spp.business.service.implementations.AuthenticationServiceImplementation;
-import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 public class LoginController {
 
@@ -30,11 +29,7 @@ public class LoginController {
     private IAuthenticationService authenticationService;
 
     public LoginController() {
-        try {
-            this.authenticationService = new AuthenticationServiceImplementation();
-        } catch (DataAccessException e) {
-            this.authenticationService = null;
-        }
+        this.authenticationService = new AuthenticationServiceImplementation();
     }
 
     @FXML
@@ -57,25 +52,22 @@ public class LoginController {
     }
 
     private void authenticateUser(String username, String password){
-        try {
-            UserDTO user = authenticationService.login(username, password);
+        UserDTO user = authenticationService.login(username, password);
 
-            if (user.getIdUser() != -1) {
-                showAlert("Exito", "Bienvenido: " + user.getName());
-            } else {
-                lblErrorMessage.setText("Correo o contraseña incorrecta");
-            }
-        } catch (DataAccessException e) {
-            showAlert("Error", "Error con el servidor");
+        if (user != null && user.getIdUser() != -1) {
+            showAlert("Exito", "Bienvenido: " + user.getName());
+        } else {
+            lblErrorMessage.setText("Correo o contraseña incorrecta");
         }
     }
 
     private boolean validateFields(String username, String password){
+        boolean isValid = true;
         if (username.isEmpty() || password.isEmpty()) {
             lblErrorMessage.setText("Por favor ingresa usuario y contraseña");
-            return false;
+            isValid = false;
         }
-        return true;
+        return isValid;
     }
 
     private void showAlert(String title, String message) {

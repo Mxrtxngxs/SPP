@@ -12,7 +12,6 @@ import javafx.scene.control.TextField;
 import mx.uv.spp.business.dto.ProfessorDTO;
 import mx.uv.spp.business.service.IProfessorService;
 import mx.uv.spp.business.service.implementations.ProfessorServiceImplementation;
-import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 public class RegisterProfessorController {
 
@@ -31,17 +30,13 @@ public class RegisterProfessorController {
     private IProfessorService professorService;
 
     public RegisterProfessorController() {
-        try {
-            this.professorService = new ProfessorServiceImplementation();
-        } catch (DataAccessException e) {
-            this.professorService = null;
-        }
+        this.professorService = new ProfessorServiceImplementation();
     }
 
     @FXML
     public void initialize() {
         if (professorService == null) {
-            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
+            Platform.runLater(() -> showAlert("Error", "Servicio no disponible"));
         } else {
             ObservableList<String> shifts = FXCollections.observableArrayList("Matutino", "Vespertino");
             cbShift.setItems(shifts);
@@ -61,35 +56,30 @@ public class RegisterProfessorController {
     }
 
     private boolean validateFields(String name, String staffNumber, String password, String shift) {
+        boolean isValid = true;
         if (name.isEmpty() || staffNumber.isEmpty() || password.isEmpty() || shift == null) {
             showAlert("Campos vacios", "Por favor, rellene todos los campos y seleccione un turno");
-            return false;
+            isValid = false;
         }
-        return true;
+        return isValid;
     }
 
     private void processRegistration(String name, String staffNumber, String password, String shift) {
-        if (professorService == null) {
-            showAlert("Error", "Hubo un error al conectarse a la base de datos");
-            return;
-        }
-
-        try {
+        if (professorService != null) {
             if (professorService.existsStaffNumber(staffNumber)) {
                 showAlert("Error", "El numero de personal ya se encuentra registrado");
-                return;
-            }
-
-            ProfessorDTO professor = createProfessorDTO(name, staffNumber, password, shift);
-
-            if (professorService.registerProfessor(professor)) {
-                showAlert("Exito", "El profesor se registro exitosamente");
-                clearFields();
             } else {
-                showAlert("Error", "La contrasena no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
+                ProfessorDTO professor = createProfessorDTO(name, staffNumber, password, shift);
+
+                if (professorService.registerProfessor(professor)) {
+                    showAlert("Exito", "El profesor se registro exitosamente");
+                    clearFields();
+                } else {
+                    showAlert("Error", "La contrasena no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
+                }
             }
-        } catch (DataAccessException e) {
-            showAlert("Error", "Fallo en la base de datos");
+        } else {
+            showAlert("Error", "Servicio no disponible");
         }
     }
 

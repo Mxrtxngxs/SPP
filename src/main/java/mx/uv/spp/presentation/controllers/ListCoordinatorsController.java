@@ -1,6 +1,5 @@
 package mx.uv.spp.presentation.controllers;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,10 +16,11 @@ import javafx.stage.Stage;
 import mx.uv.spp.business.dto.CoordinatorDTO;
 import mx.uv.spp.business.service.ICoordinatorService;
 import mx.uv.spp.business.service.implementations.CoordinatorServiceImplementation;
-import mx.uv.spp.dataAcces.exceptions.DataAccessException;
+import mx.uv.spp.utils.LogConfig;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ListCoordinatorsController {
 
@@ -34,23 +34,16 @@ public class ListCoordinatorsController {
     private TableColumn<CoordinatorDTO, String> colStaffNumber;
 
     private ICoordinatorService coordinatorService;
+    private static final Logger LOG = LogConfig.getLogger(ListCoordinatorsController.class);
 
     public ListCoordinatorsController() {
-        try {
-            this.coordinatorService = new CoordinatorServiceImplementation();
-        } catch (DataAccessException e) {
-            this.coordinatorService = null;
-        }
+        this.coordinatorService = new CoordinatorServiceImplementation();
     }
 
     @FXML
     public void initialize() {
-        if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
-        } else {
-            configureTable();
-            loadData();
-        }
+        configureTable();
+        loadData();
     }
 
     private void configureTable() {
@@ -59,19 +52,13 @@ public class ListCoordinatorsController {
     }
 
     private void loadData() {
-        if (coordinatorService != null) {
-            try {
-                List<CoordinatorDTO> list = coordinatorService.getAllCoordinators();
-                ObservableList<CoordinatorDTO> coordinators = FXCollections.observableArrayList(list);
-                tvCoordinators.setItems(coordinators);
-            } catch (DataAccessException e) {
-                showAlert("Error", "Hubo un error al cargar los coordinadores");
-            }
-        }
+        List<CoordinatorDTO> list = coordinatorService.getAllActiveCoordinators();
+        ObservableList<CoordinatorDTO> coordinators = FXCollections.observableArrayList(list);
+        tvCoordinators.setItems(coordinators);
     }
 
     @FXML
-    private void openDeactivateWindow(ActionEvent event) {
+    private void openDesactivateWindow(ActionEvent event) {
         CoordinatorDTO selectedCoordinator = getSelectedCoordinator();
 
         if (selectedCoordinator != null) {
@@ -81,14 +68,9 @@ public class ListCoordinatorsController {
     }
 
     private CoordinatorDTO getSelectedCoordinator() {
-        if (coordinatorService == null) {
-            showAlert("Error", "No se pudo establecer la conexion con la base de datos");
-            return null;
-        }
-
         CoordinatorDTO selected = tvCoordinators.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            showAlert("Atencion", "Por favor, seleccione un coordinador de la tabla");
+            showAlert(Alert.AlertType.WARNING, "Atencion", "Por favor seleccione un coordinador de la tabla");
         }
         return selected;
     }
@@ -96,6 +78,7 @@ public class ListCoordinatorsController {
     private void showDeactivateView(CoordinatorDTO coordinator) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/DesactivateCoordinatorView.fxml"));
+
             Parent root = loader.load();
 
             DesactivateCoordinatorController controller = loader.getController();
@@ -107,7 +90,8 @@ public class ListCoordinatorsController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {
-            showAlert("Error", "Hubo un error al abrir la ventana de inactivacion");
+            LOG.severe("Error loading UI: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Hubo un error al abrir la ventana de inactivacion");
         }
     }
 
@@ -117,8 +101,8 @@ public class ListCoordinatorsController {
         stage.close();
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

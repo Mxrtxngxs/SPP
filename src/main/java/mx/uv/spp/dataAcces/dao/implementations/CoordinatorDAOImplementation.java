@@ -24,7 +24,7 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
     private static final String SQL_SAVE_COORDINATOR = "INSERT INTO Coordinador_Detalle (id_usuario, numero_personal) VALUES (?, ?)";
     private static final String SQL_FIND_BY_ID = "SELECT u.id_usuario, u.nombre, u.contrasena, u.estado, c.numero_personal FROM Usuario u INNER JOIN Coordinador_Detalle c ON u.id_usuario = c.id_usuario WHERE u.id_usuario = ?";
     private static final String SQL_FIND_ALL = "SELECT u.id_usuario, u.nombre, u.contrasena, u.estado, c.numero_personal FROM Usuario u INNER JOIN Coordinador_Detalle c ON u.id_usuario = c.id_usuario WHERE u.rol = 'Coordinador'";
-
+    private static final String SQL_FIND_ALL_ACTIVE_COORDINATORS = "SELECT u.id_usuario, u.nombre, u.contrasena, u.estado, c.numero_personal FROM Usuario u INNER JOIN Coordinador_Detalle c ON u.id_usuario = c.id_usuario WHERE u.rol = 'Coordinador' AND u.estado = 'Activo'";
     public CoordinatorDAOImplementation() throws DataAccessException {
         this.connection = DatabaseConfig.getInstance().getConnection();
     }
@@ -109,6 +109,11 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
 
     @Override
     public List<CoordinatorDTO> getAllCoordinators() throws DataAccessException {
+        return List.of();
+    }
+
+    @Override
+    public List<CoordinatorDTO> getActiveCoordinators() throws DataAccessException {
         List<CoordinatorDTO> list = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL);
              ResultSet resultSet = statement.executeQuery()) {
@@ -120,6 +125,21 @@ public class CoordinatorDAOImplementation implements ICoordinatorDAO {
         }
         return list;
     }
+
+    @Override
+    public List<CoordinatorDTO> getAllActiveCoordinators() throws DataAccessException {
+        List<CoordinatorDTO> list = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_ACTIVE_COORDINATORS);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                list.add(mapResultSetToCoordinator(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error listing coordinators", e);
+        }
+        return list;
+    }
+
 
     private CoordinatorDTO mapResultSetToCoordinator(ResultSet resultSet) throws SQLException {
         CoordinatorDTO coordinator = new CoordinatorDTO();

@@ -24,6 +24,6 @@
 
     <HBox alignment="CENTER_RIGHT" spacing="15.0">
         <Button fx:id="btnBack" onAction="#goBack" text="Regresar" />
-        <Button fx:id="btnDeactivate" onAction="#openDeactivateWindow" style="-fx-background-color: #ff4444; -fx-text-fill: white;" text="Inactivar Seleccionado" />
+        <Button fx:id="btnDeactivate" onAction="#openDesactivateWindow" style="-fx-background-color: #ff4444; -fx-text-fill: white;" text="Inactivar Seleccionado" />
     </HBox>
 </VBox>

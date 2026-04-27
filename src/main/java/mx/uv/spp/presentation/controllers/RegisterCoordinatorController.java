@@ -1,6 +1,5 @@
 package mx.uv.spp.presentation.controllers;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,7 +8,6 @@ import javafx.scene.control.TextField;
 import mx.uv.spp.business.dto.CoordinatorDTO;
 import mx.uv.spp.business.service.ICoordinatorService;
 import mx.uv.spp.business.service.implementations.CoordinatorServiceImplementation;
-import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 public class RegisterCoordinatorController {
 
@@ -25,18 +23,7 @@ public class RegisterCoordinatorController {
     private ICoordinatorService coordinatorService;
 
     public RegisterCoordinatorController() {
-        try {
-            this.coordinatorService = new CoordinatorServiceImplementation();
-        } catch (DataAccessException e) {
-            this.coordinatorService = null;
-        }
-    }
-
-    @FXML
-    public void initialize() {
-        if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "Hubo un error al conectarse a la base de datos"));
-        }
+        this.coordinatorService = new CoordinatorServiceImplementation();
     }
 
     @FXML
@@ -51,31 +38,26 @@ public class RegisterCoordinatorController {
     }
 
     private boolean validateFields(String name, String staffNumber, String password) {
+        boolean isValid = true;
         if (name.isEmpty() || staffNumber.isEmpty() || password.isEmpty()) {
-            showAlert("Campos vacios", "Por favor, rellene todos los campos");
-            return false;
+            showAlert(Alert.AlertType.WARNING, "Campos vacios", "Por favor rellene todos los campos");
+            isValid = false;
         }
-        return true;
+        return isValid;
     }
 
     private void processRegistration(String name, String staffNumber, String password) {
-
-        try {
-            if (coordinatorService.existsStaffNumber(staffNumber)) {
-                showAlert("Error", "El numero de personal ya se encuentra registrado");
-                return;
-            }
-
+        if (coordinatorService.existsStaffNumber(staffNumber)) {
+            showAlert(Alert.AlertType.ERROR, "Error", "El numero de personal ya se encuentra registrado");
+        } else {
             CoordinatorDTO coordinator = createCoordinatorDTO(name, staffNumber, password);
 
             if (coordinatorService.registerCoordinator(coordinator)) {
-                showAlert("Exito", "Se registro al coordinador exitosamente");
+                showAlert(Alert.AlertType.INFORMATION, "Exito", "Se registro al coordinador exitosamente");
                 clearFields();
             } else {
-                showAlert("Error", "La contraseña no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
+                showAlert(Alert.AlertType.ERROR, "Error", "La contrasena no cumple con los requisitos de seguridad (minimo 10 caracteres mayusculas minusculas y numeros)");
             }
-        } catch (DataAccessException e) {
-            showAlert("Error", "Fallo la comunicacion con la base de datos");
         }
     }
 
@@ -93,8 +75,8 @@ public class RegisterCoordinatorController {
         clearFields();
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

@@ -44,7 +44,7 @@ public class MenuController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
         } catch (IOException | IllegalStateException e) {
-            showAlert("Error", "No se pudo abrir la vista");
+            showAlert("Error", "No se pudo abrir la vista: " + fxmlPath);
         }
     }
 

@@ -1,6 +1,5 @@
 package mx.uv.spp.presentation.controllers;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,9 +10,6 @@ import javafx.stage.Stage;
 import mx.uv.spp.business.dto.CoordinatorDTO;
 import mx.uv.spp.business.service.ICoordinatorService;
 import mx.uv.spp.business.service.implementations.CoordinatorServiceImplementation;
-import mx.uv.spp.dataAcces.exceptions.DataAccessException;
-
-import java.util.Optional;
 
 public class DesactivateCoordinatorController {
 
@@ -23,22 +19,14 @@ public class DesactivateCoordinatorController {
     @FXML
     private Label lblPersonalNumber;
 
+    @FXML
+    private Label lblState;
+
     private ICoordinatorService coordinatorService;
     private CoordinatorDTO coordinatorSelected;
 
     public DesactivateCoordinatorController() {
-        try {
-            this.coordinatorService = new CoordinatorServiceImplementation();
-        } catch (DataAccessException e) {
-            this.coordinatorService = null;
-        }
-    }
-
-    @FXML
-    public void initialize() {
-        if (coordinatorService == null) {
-            Platform.runLater(() -> showAlert("Error", "No hay conexion con la base de datos"));
-        }
+        this.coordinatorService = new CoordinatorServiceImplementation();
     }
 
     public void setCoordinator(CoordinatorDTO coordinator) {
@@ -46,51 +34,44 @@ public class DesactivateCoordinatorController {
         if (coordinator != null) {
             lblName.setText(coordinator.getName());
             lblPersonalNumber.setText(coordinator.getStaffNumber());
+            lblState.setText(coordinator.getState());
         }
     }
 
     @FXML
-    private void deactivateCoordinator(ActionEvent event) {
-        if (isDataValid()) {
-            if (showConfirmation()) {
-                executeDeactivation(event);
-            }
+    private void desactivateCoordinator(ActionEvent event) {
+        if (isDataValid() && showConfirmation()) {
+            executeDeactivation(event);
         }
     }
 
     private boolean isDataValid() {
+        boolean isValid = true;
         if (coordinatorService == null) {
-            showAlert("Error", "No hay conexion con la base de datos");
-            return false;
+            showAlert(Alert.AlertType.ERROR, "Error", "Servicio no disponible");
+            isValid = false;
+        } else if (coordinatorSelected == null || coordinatorSelected.getIdUser() <= 0) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Informacion del coordinador no cargada");
+            isValid = false;
         }
-
-        if (coordinatorSelected == null || coordinatorSelected.getIdUser() <= 0) {
-            showAlert("Error", "Informacion del coordinador no cargada");
-            return false;
-        }
-        return true;
+        return isValid;
     }
 
     private boolean showConfirmation() {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirmacion");
         confirmation.setHeaderText(null);
-        confirmation.setContentText("Seguro que desea inactivar a este coordinador?");
+        confirmation.setContentText("Seguro que desea inactivar a este coordinador");
 
-        Optional<ButtonType> result = confirmation.showAndWait();
-        return result.isPresent() && result.get() == ButtonType.OK;
+        return confirmation.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }
 
     private void executeDeactivation(ActionEvent event) {
-        try {
-            if (coordinatorService.inactivateCoordinator(coordinatorSelected.getIdUser())) {
-                showAlert("Exito", "Coordinador inactivado correctamente");
-                closeWindow(event);
-            } else {
-                showAlert("Error", "No se pudo inactivar al coordinador");
-            }
-        } catch (DataAccessException e) {
-            showAlert("Error", "Fallo la comunicacion con la base de datos");
+        if (coordinatorService.inactivateCoordinator(coordinatorSelected.getIdUser())) {
+            showAlert(Alert.AlertType.INFORMATION, "Exito", "Coordinador inactivado correctamente");
+            closeWindow(event);
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo inactivar al coordinador");
         }
     }
 
@@ -99,8 +80,8 @@ public class DesactivateCoordinatorController {
         closeWindow(event);
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

@@ -12,4 +12,7 @@ public interface ICoordinatorDAO {
     boolean inactivateCoordinator(int userId) throws DataAccessException;
     CoordinatorDTO getCoordinatorById(int userId) throws DataAccessException;
     List<CoordinatorDTO> getAllCoordinators() throws DataAccessException;
+    List<CoordinatorDTO> getActiveCoordinators() throws DataAccessException;
+
+    List<CoordinatorDTO> getAllActiveCoordinators() throws DataAccessException;
 }
