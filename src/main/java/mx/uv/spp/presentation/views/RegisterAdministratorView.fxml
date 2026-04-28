@@ -22,7 +22,7 @@
 
     <VBox spacing="5.0">
         <Label text="Contraseña:" />
-        <PasswordField fx:id="txtPassword" promptText="Mínimo 10 caracteres (Mayús, minús y números)" />
+        <PasswordField fx:id="txtPassword" promptText="Minimo 10 caracteres (Mayús, minús y números)" />
     </VBox>
 
     <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 10 0 0 0;">

@@ -11,10 +11,10 @@
         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
     </padding>
 
-    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Menú del Profesor" />
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Menu del Profesor" />
 
     <VBox alignment="CENTER" spacing="10.0">
-        <Label style="-fx-font-weight: bold;" text="Gestión de Actividades y Formatos:" />
+        <Label style="-fx-font-weight: bold;" text="Gestion de Actividades y Formatos:" />
         <HBox alignment="CENTER" spacing="15.0">
             <Button fx:id="btnGenerateActivity" onAction="#generateActivityAction" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Generar Actividad" />
             <Button fx:id="btnAddFormat" onAction="#addFormatAction" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Añadir Formato" />
@@ -30,11 +30,11 @@
     </VBox>
 
     <VBox alignment="CENTER" spacing="10.0">
-        <Label style="-fx-font-weight: bold;" text="Comunicación:" />
-        <Button fx:id="btnMessages" onAction="#messagesAction" prefHeight="40.0" prefWidth="375.0" style="-fx-background-color: #42ABFB; -fx-text-fill: white;" text="Consultar Buzón de Mensajes" />
+        <Label style="-fx-font-weight: bold;" text="Comunicacion:" />
+        <Button fx:id="btnMessages" onAction="#messagesAction" prefHeight="40.0" prefWidth="375.0" style="-fx-background-color: #42ABFB; -fx-text-fill: white;" text="Consultar Buzon de Mensajes" />
     </VBox>
 
     <HBox alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
-        <Button fx:id="btnLogout" onAction="#logoutAction" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cerrar Sesión" />
+        <Button fx:id="btnLogout" onAction="#logoutAction" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cerrar Sesion" />
     </HBox>
 </VBox>
