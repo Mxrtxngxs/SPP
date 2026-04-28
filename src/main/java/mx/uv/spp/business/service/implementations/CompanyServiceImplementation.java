@@ -19,7 +19,7 @@ public class CompanyServiceImplementation implements ICompanyService {
     public int registerCompany(CompanyDTO company) throws DataAccessException {
         int newCompanyId = companyDAO.saveCompany(company);
         if (newCompanyId == -1) {
-            throw new RuntimeException("Could not register the company.");
+            throw new RuntimeException("Could not register the company");
         }
         return newCompanyId;
     }
@@ -27,7 +27,7 @@ public class CompanyServiceImplementation implements ICompanyService {
     @Override
     public void updateCompany(CompanyDTO company) throws DataAccessException {
         if (!companyDAO.updateCompany(company)) {
-            throw new RuntimeException("Could not update the company.");
+            throw new RuntimeException("Could not update the company");
         }
     }
 

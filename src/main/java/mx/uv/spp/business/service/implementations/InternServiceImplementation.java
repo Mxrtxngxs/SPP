@@ -18,7 +18,7 @@ public class InternServiceImplementation implements IInternService {
     @Override
     public void registerIntern(InternDTO intern) throws DataAccessException {
         if (internDAO.existsEnrollmentNumber(intern.getEnrollmentNumber())) {
-            throw new IllegalArgumentException("Enrollment number is already registered.");
+            throw new IllegalArgumentException("Enrollment number is already registered");
         }
 
         String encryptedPassword = BCrypt.hashpw(intern.getPassword(), BCrypt.gensalt());
@@ -26,14 +26,14 @@ public class InternServiceImplementation implements IInternService {
         intern.setState("Activo");
 
         if (!internDAO.saveIntern(intern)) {
-            throw new RuntimeException("Could not register the intern.");
+            throw new RuntimeException("Could not register the inter");
         }
     }
 
     @Override
     public void inactivateIntern(int userId) throws DataAccessException {
         if (!internDAO.inactivateIntern(userId)) {
-            throw new RuntimeException("Could not inactivate the intern.");
+            throw new RuntimeException("Could not inactivate the intern");
         }
     }
 

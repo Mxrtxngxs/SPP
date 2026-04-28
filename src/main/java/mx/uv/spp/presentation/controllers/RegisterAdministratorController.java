@@ -13,8 +13,10 @@ import javafx.stage.Stage;
 import mx.uv.spp.business.dto.UserDTO;
 import mx.uv.spp.business.service.IAdministratorService;
 import mx.uv.spp.business.service.implementations.AdministratorServiceImplementation;
+import mx.uv.spp.utils.LogConfig;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class RegisterAdministratorController {
 
@@ -25,6 +27,8 @@ public class RegisterAdministratorController {
     private PasswordField txtPassword;
 
     private IAdministratorService adminService;
+
+    private static final Logger LOG = LogConfig.getLogger(RegisterAdministratorController.class);
 
     public RegisterAdministratorController() {
         this.adminService = new AdministratorServiceImplementation();
@@ -82,7 +86,7 @@ public class RegisterAdministratorController {
 
             closeCurrentWindow();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe("Error loading UI: " + e.getMessage());
             showAlert("Error", "No se pudo cargar la ventana de inicio de sesión");
         }
     }

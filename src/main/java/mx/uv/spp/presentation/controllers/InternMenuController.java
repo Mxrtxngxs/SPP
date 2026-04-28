@@ -9,13 +9,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import mx.uv.spp.utils.LogConfig;
+
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class InternMenuController {
 
     @FXML
     private Button btnLogout;
+
+    private static final Logger LOG = LogConfig.getLogger(InternMenuController.class);
 
     @FXML
     private void requestProjectAction(ActionEvent event) {
@@ -62,7 +67,7 @@ public class InternMenuController {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Cerrar Sesión");
         confirmation.setHeaderText(null);
-        confirmation.setContentText("¿Seguro que desea salir del sistema?"); // IU-N-9 [cite: 454]
+        confirmation.setContentText("¿Seguro que desea salir del sistema?");
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -82,7 +87,16 @@ public class InternMenuController {
             Stage currentStage = (Stage) btnLogout.getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe("Error loading UI: " + e.getMessage());
+            showErrorAlert("No se pudo cargar la ventana: " + title);
         }
+    }
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error de Sistema");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

@@ -9,9 +9,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import mx.uv.spp.utils.LogConfig;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class AdminMenuController {
 
@@ -29,6 +31,8 @@ public class AdminMenuController {
 
     @FXML
     private Button btnLogout;
+
+    private static final Logger LOG = LogConfig.getLogger(AdminMenuController.class);
 
     @FXML
     private void registerCoordinatorAction(ActionEvent event) {
@@ -73,11 +77,11 @@ public class AdminMenuController {
             stage.setScene(new Scene(root));
             stage.show();
 
-
             Stage currentStage = (Stage) btnLogout.getScene().getWindow();
             currentStage.close();
 
         } catch (IOException e) {
+            LOG.severe("Error loading UI: " + e.getMessage());
             showErrorAlert("No se pudo cargar la ventana: " + title);
         }
     }

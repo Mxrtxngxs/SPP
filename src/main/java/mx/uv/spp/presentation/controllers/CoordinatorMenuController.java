@@ -9,13 +9,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import mx.uv.spp.utils.LogConfig;
+
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class CoordinatorMenuController {
 
     @FXML
     private Button btnLogout;
+
+    private static final Logger LOG = LogConfig.getLogger(CoordinatorMenuController.class);
 
     @FXML
     private void registerProjectAction(ActionEvent event) {
@@ -77,7 +82,16 @@ public class CoordinatorMenuController {
             Stage currentStage = (Stage) btnLogout.getScene().getWindow();
             currentStage.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.severe("Error loading UI: " + e.getMessage());
+            showErrorAlert("No se pudo cargar la ventana: " + title);
         }
+    }
+
+    private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error de Sistema");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

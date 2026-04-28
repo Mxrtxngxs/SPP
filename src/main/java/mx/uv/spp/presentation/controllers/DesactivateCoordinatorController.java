@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 import mx.uv.spp.business.dto.CoordinatorDTO;
 import mx.uv.spp.business.service.ICoordinatorService;
 import mx.uv.spp.business.service.implementations.CoordinatorServiceImplementation;
+import mx.uv.spp.utils.LogConfig;
+
+import java.util.logging.Logger;
 
 public class DesactivateCoordinatorController {
 
@@ -24,6 +27,8 @@ public class DesactivateCoordinatorController {
 
     private ICoordinatorService coordinatorService;
     private CoordinatorDTO coordinatorSelected;
+
+    private static final Logger LOG = LogConfig.getLogger(DesactivateCoordinatorController.class);
 
     public DesactivateCoordinatorController() {
         this.coordinatorService = new CoordinatorServiceImplementation();
