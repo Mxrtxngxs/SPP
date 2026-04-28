@@ -12,11 +12,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL fxmlLocation = getClass().getResource("presentation/views/MenuView.fxml");
+        URL fxmlLocation = getClass().getResource("presentation/views/LoginView.fxml");
 
         Parent root = FXMLLoader.load(fxmlLocation);
 
-        Scene scene = new Scene(root, 300, 350);
+        Scene scene = new Scene(root, 500, 550);
         primaryStage.setTitle("Inicio de Sesion - SPP");
         primaryStage.setScene(scene);
         primaryStage.show();

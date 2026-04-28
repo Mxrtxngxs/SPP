@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.ProfessorMenuController">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Menú del Profesor" />
+
+    <VBox alignment="CENTER" spacing="10.0">
+        <Label style="-fx-font-weight: bold;" text="Gestión de Actividades y Formatos:" />
+        <HBox alignment="CENTER" spacing="15.0">
+            <Button fx:id="btnGenerateActivity" onAction="#generateActivityAction" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Generar Actividad" />
+            <Button fx:id="btnAddFormat" onAction="#addFormatAction" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Añadir Formato" />
+        </HBox>
+    </VBox>
+
+    <VBox alignment="CENTER" spacing="10.0">
+        <Label style="-fx-font-weight: bold;" text="Evaluación de Reportes:" />
+        <HBox alignment="CENTER" spacing="15.0">
+            <Button fx:id="btnEvaluatePartialReport" onAction="#evaluatePartialReportAction" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #005BAA; -fx-text-fill: white;" text="Evaluar Reporte Parcial" />
+            <Button fx:id="btnEvaluateMonthlyReport" onAction="#evaluateMonthlyReportAction" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #005BAA; -fx-text-fill: white;" text="Evaluar Reporte Mensual" />
+        </HBox>
+    </VBox>
+
+    <VBox alignment="CENTER" spacing="10.0">
+        <Label style="-fx-font-weight: bold;" text="Comunicación:" />
+        <Button fx:id="btnMessages" onAction="#messagesAction" prefHeight="40.0" prefWidth="375.0" style="-fx-background-color: #42ABFB; -fx-text-fill: white;" text="Consultar Buzón de Mensajes" />
+    </VBox>
+
+    <HBox alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+        <Button fx:id="btnLogout" onAction="#logoutAction" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cerrar Sesión" />
+    </HBox>
+</VBox>

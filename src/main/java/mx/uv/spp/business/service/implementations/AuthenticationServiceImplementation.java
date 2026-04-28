@@ -32,7 +32,7 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
             try {
                 UserDTO user = userDAO.getUserByIdentifier(identifier);
 
-                if (user != null && user.getIdUser() != -1 && "Activo".equals(user.getState())) {
+                if (user.getIdUser() != -1 && "Activo".equals(user.getState())) {
                     if (BCrypt.checkpw(password, user.getPassword())) {
                         user.setPassword(null);
                         resultUser = user;

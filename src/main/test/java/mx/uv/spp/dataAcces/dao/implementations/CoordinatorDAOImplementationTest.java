@@ -45,28 +45,28 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void existsStaffNumber_existingNumber_returnsTrue() throws DataAccessException {
+    public void Test_ExistsStaffNumber_Success_existingNumber_returnsTrue() throws DataAccessException {
         boolean result = coordinatorDAO.existsStaffNumber("12345");
 
         assertTrue(result);
     }
 
     @Test
-    public void existsStaffNumber_nonExistingNumber_returnsFalse() throws DataAccessException {
+    public void Test_ExistsStaffNumber_Fail_nonExistingNumber_returnsFalse() throws DataAccessException {
         boolean result = coordinatorDAO.existsStaffNumber("99999");
 
         assertFalse(result);
     }
 
     @Test
-    public void existsStaffNumber_nullNumber_returnsFalse() throws DataAccessException {
+    public void Test_ExistsStaffNumber_Fail_nullNumber_returnsFalse() throws DataAccessException {
         boolean result = coordinatorDAO.existsStaffNumber(null);
 
         assertFalse(result);
     }
 
     @Test
-    public void inactivateCurrentCoordinators_existingActiveCoordinators_returnsTrue() throws DataAccessException {
+    public void Test_InactivateCurrentCoordinators_Success_existingActiveCoordinators_returnsTrue() throws DataAccessException {
         boolean result = coordinatorDAO.inactivateCurrentCoordinators();
 
         assertTrue(result);
@@ -75,7 +75,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void inactivateCurrentCoordinators_noCoordinators_returnsTrue() throws DataAccessException {
+    public void Test_InactivateCurrentCoordinators_Success_noCoordinators_returnsTrue() throws DataAccessException {
         cleanDatabase();
 
         boolean result = coordinatorDAO.inactivateCurrentCoordinators();
@@ -84,7 +84,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void inactivateCurrentCoordinators_alreadyInactiveCoordinators_returnsTrue() throws DataAccessException {
+    public void Test_InactivateCurrentCoordinators_Success_alreadyInactiveCoordinators_returnsTrue() throws DataAccessException {
         coordinatorDAO.inactivateCurrentCoordinators();
 
         boolean result = coordinatorDAO.inactivateCurrentCoordinators();
@@ -93,7 +93,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void saveCoordinator_validData_returnsTrue() throws DataAccessException {
+    public void Test_SaveCoordinator_Success_validData_returnsTrue() throws DataAccessException {
         CoordinatorDTO newCoordinator = createBaseCoordinatorDTO("New Coord", "54321");
 
         boolean result = coordinatorDAO.saveCoordinator(newCoordinator);
@@ -102,7 +102,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void saveCoordinator_duplicateStaffNumber_throwsDataAccessException() {
+    public void Test_SaveCoordinator_Fail_duplicateStaffNumber_throwsDataAccessException() {
         CoordinatorDTO duplicateCoordinator = createBaseCoordinatorDTO("Another Coord", "12345");
 
         assertThrows(DataAccessException.class, () -> {
@@ -111,7 +111,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void saveCoordinator_nullName_throwsDataAccessException() {
+    public void Test_SaveCoordinator_Fail_nullName_throwsDataAccessException() {
         CoordinatorDTO invalidCoordinator = createBaseCoordinatorDTO(null, "67890");
 
         assertThrows(DataAccessException.class, () -> {
@@ -120,7 +120,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void saveCoordinator_nullPassword_throwsDataAccessException() {
+    public void Test_SaveCoordinator_Fail_nullPassword_throwsDataAccessException() {
         CoordinatorDTO invalidCoordinator = createBaseCoordinatorDTO("Coord Name", "67890");
         invalidCoordinator.setPassword(null);
 
@@ -130,7 +130,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void inactivateCoordinator_existingActiveId_returnsTrue() throws DataAccessException {
+    public void Test_InactivateCoordinator_Success_existingActiveId_returnsTrue() throws DataAccessException {
         boolean result = coordinatorDAO.inactivateCoordinator(1);
 
         assertTrue(result);
@@ -139,21 +139,21 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void inactivateCoordinator_nonExistentId_returnsFalse() throws DataAccessException {
+    public void Test_InactivateCoordinator_Fail_nonExistentId_returnsFalse() throws DataAccessException {
         boolean result = coordinatorDAO.inactivateCoordinator(999);
 
         assertFalse(result);
     }
 
     @Test
-    public void inactivateCoordinator_negativeId_returnsFalse() throws DataAccessException {
+    public void Test_InactivateCoordinator_Fail_negativeId_returnsFalse() throws DataAccessException {
         boolean result = coordinatorDAO.inactivateCoordinator(-1);
 
         assertFalse(result);
     }
 
     @Test
-    public void getCoordinatorById_existingId_returnsCoordinator() throws DataAccessException {
+    public void Test_GetCoordinatorById_Success_existingId_returnsCoordinator() throws DataAccessException {
         CoordinatorDTO result = coordinatorDAO.getCoordinatorById(1);
 
         assertNotNull(result);
@@ -161,21 +161,21 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void getCoordinatorById_nonExistentId_returnsNull() throws DataAccessException {
+    public void Test_GetCoordinatorById_Fail_nonExistentId_returnsNull() throws DataAccessException {
         CoordinatorDTO result = coordinatorDAO.getCoordinatorById(999);
 
         assertNull(result);
     }
 
     @Test
-    public void getCoordinatorById_negativeId_returnsNull() throws DataAccessException {
+    public void Test_GetCoordinatorById_Fail_negativeId_returnsNull() throws DataAccessException {
         CoordinatorDTO result = coordinatorDAO.getCoordinatorById(-1);
 
         assertNull(result);
     }
 
     @Test
-    public void getAllCoordinators_existingCoordinators_returnsList() throws DataAccessException {
+    public void Test_GetAllCoordinators_Success_existingCoordinators_returnsList() throws DataAccessException {
         List<CoordinatorDTO> result = coordinatorDAO.getAllCoordinators();
 
         assertFalse(result.isEmpty());
@@ -183,7 +183,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void getAllCoordinators_noCoordinators_returnsEmptyList() throws DataAccessException {
+    public void Test_GetAllCoordinators_Success_noCoordinators_returnsEmptyList() throws DataAccessException {
         cleanDatabase();
 
         List<CoordinatorDTO> result = coordinatorDAO.getAllCoordinators();
@@ -192,7 +192,7 @@ public class CoordinatorDAOImplementationTest {
     }
 
     @Test
-    public void getAllCoordinators_multipleCoordinators_returnsList() throws DataAccessException {
+    public void Test_GetAllCoordinators_Success_multipleCoordinators_returnsList() throws DataAccessException {
         CoordinatorDTO secondCoordinator = createBaseCoordinatorDTO("Second Coord", "54321");
         coordinatorDAO.saveCoordinator(secondCoordinator);
 

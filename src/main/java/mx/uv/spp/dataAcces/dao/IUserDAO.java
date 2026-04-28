@@ -8,11 +8,15 @@ import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 
 public interface IUserDAO {
 
+    boolean existsAdmin() throws DataAccessException;
+
     boolean saveCoordinator(CoordinatorDTO coordinator) throws DataAccessException;
 
     boolean saveProfessor(ProfessorDTO professor) throws DataAccessException;
 
     boolean saveIntern(InternDTO intern) throws DataAccessException;
+
+    boolean saveAdministrator(UserDTO admin) throws DataAccessException;
 
     boolean inactivateUser(int userId) throws DataAccessException;
 
