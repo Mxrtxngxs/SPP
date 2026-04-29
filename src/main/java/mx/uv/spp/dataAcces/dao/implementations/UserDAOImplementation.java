@@ -31,7 +31,6 @@ public class UserDAOImplementation implements IUserDAO {
 
     private static final String SQL_EXISTS_ADMIN = "SELECT 1 FROM Usuario WHERE rol = 'Administrador' LIMIT 1";
 
-    // Updated query to allow finding Admin by name OR others by their specific identifiers
     private static final String SQL_GET_USER_BY_IDENTIFIER = "SELECT u.id_usuario, u.nombre, u.rol, u.estado, u.contrasena " +
             "FROM Usuario u " +
             "LEFT JOIN Coordinador_Detalle c ON u.id_usuario = c.id_usuario " +

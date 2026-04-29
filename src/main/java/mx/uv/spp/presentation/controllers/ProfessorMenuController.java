@@ -44,7 +44,7 @@ public class ProfessorMenuController {
 
     @FXML
     private void messagesAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/MessagesView.fxml", "Buzón de Mensajes");
+        loadWindow("/mx/uv/spp/presentation/views/MessagesView.fxml", "Buzon de Mensajes");
     }
 
     @FXML
@@ -56,7 +56,7 @@ public class ProfessorMenuController {
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesión - SPP");
+            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesion - SPP");
         }
     }
 

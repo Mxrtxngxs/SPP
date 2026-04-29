@@ -82,23 +82,22 @@ public class LoginController {
         String fxmlPath = "";
         String title = "";
 
-        // Mapeo basado en los roles de la ERS y nombres de archivos reales
         switch (user.getRole()) {
             case "Administrador":
                 fxmlPath = "/mx/uv/spp/presentation/views/AdministratorMenuView.fxml";
-                title = "Menú Administrador";
+                title = "Menu dministrador";
                 break;
             case "Coordinador":
                 fxmlPath = "/mx/uv/spp/presentation/views/CoordinatorMenuView.fxml";
-                title = "Menú Coordinador";
+                title = "Menu Coordinador";
                 break;
             case "Profesor":
                 fxmlPath = "/mx/uv/spp/presentation/views/ProfessorMenuView.fxml";
-                title = "Menú Profesor";
+                title = "Menu Profesor";
                 break;
             case "Practicante":
                 fxmlPath = "/mx/uv/spp/presentation/views/InternMenuView.fxml";
-                title = "Menú Practicante";
+                title = "Menu Practicante";
                 break;
             default:
                 lblErrorMessage.setText("Rol no reconocido: " + user.getRole());
@@ -112,7 +111,7 @@ public class LoginController {
         URL fxmlLocation = getClass().getResource(fxmlPath);
 
         if (fxmlLocation == null) {
-            showAlert("Error de ubicación", "No se encontró el archivo: " + fxmlPath);
+            showAlert("Error de ubicacion", "No se encontro el archivo: " + fxmlPath);
             return;
         }
 
@@ -125,10 +124,9 @@ public class LoginController {
             stage.setScene(new Scene(root));
             stage.show();
 
-            showAlert("Éxito", welcomeMessage);
+            showAlert("exito", welcomeMessage);
             closeWindow();
         } catch (IOException e) {
-            e.printStackTrace();
             showAlert("Error", "Error al cargar la vista principal");
         }
     }
@@ -144,7 +142,7 @@ public class LoginController {
     private void redirectToAdminRegistration() {
         loadDashboard("/mx/uv/spp/presentation/views/RegisterAdministratorView.fxml",
                 "Registrar Administrador",
-                "No existe un administrador. Por favor, regístrese.");
+                "No existe un administrador. Por favor registrese");
     }
 
     private void closeWindow() {

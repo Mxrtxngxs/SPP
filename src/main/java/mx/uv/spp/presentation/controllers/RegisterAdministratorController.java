@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -52,17 +53,17 @@ public class RegisterAdministratorController {
             admin.setPassword(password);
 
             if (adminService.registerAdmin(admin)) {
-                showAlert("Éxito", "Administrador registrado correctamente. Por favor inicie sesión.");
-                returnToLogin();
+                showAlert("Exito", "Administrador registrado correctamente. Por favor inicie sesión.");
+                returnToLogin(event);
             } else {
-                showAlert("Error", "La contraseña no cumple con los requisitos (mínimo 10 caracteres, mayúsculas, minúsculas y números) o hubo un error en la BD.");
+                showAlert("Error", "La contraseña no cumple con los requisitos (mínimo 10 caracteres, mayusculas, minusculas y numeros)");
             }
         }
     }
 
     @FXML
     private void cancelAction(ActionEvent event) {
-        returnToLogin();
+        returnToLogin(event);
     }
 
     private boolean validateFields(String name, String password) {
@@ -74,27 +75,36 @@ public class RegisterAdministratorController {
         return isValid;
     }
 
-    private void returnToLogin() {
+    @FXML
+    private void returnMenu(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/CoordinatorMenuView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setTitle("Menu Coordinador");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            LOG.severe("Error loading UI: " + e.getMessage());
+            showAlert("Error", "No se pudo cargar la ventana");
+        }
+    }
+
+    private void returnToLogin(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/LoginView.fxml"));
             Parent root = loader.load();
 
-            Stage stage = new Stage();
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             stage.setTitle("Inicio de Sesión - SPP");
             stage.setScene(new Scene(root));
             stage.show();
 
-            closeCurrentWindow();
         } catch (IOException e) {
             LOG.severe("Error loading UI: " + e.getMessage());
-            showAlert("Error", "No se pudo cargar la ventana de inicio de sesión");
-        }
-    }
-
-    private void closeCurrentWindow() {
-        Stage currentStage = (Stage) txtName.getScene().getWindow();
-        if (currentStage != null) {
-            currentStage.close();
+            showAlert("Error", "No se pudo cargar la ventana de inicio de sesion");
         }
     }
 

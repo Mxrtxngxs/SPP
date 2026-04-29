@@ -60,13 +60,13 @@ public class CoordinatorMenuController {
     @FXML
     private void logoutAction(ActionEvent event) {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmation.setTitle("Cerrar Sesión");
+        confirmation.setTitle("Cerrar Sesion");
         confirmation.setHeaderText(null);
         confirmation.setContentText("¿Seguro que desea salir del sistema?");
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesión - SPP");
+            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesion - SPP");
         }
     }
 

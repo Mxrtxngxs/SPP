@@ -1,34 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.RegisterCoordinatorController">
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.RegisterCoordinatorController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
+   <VBox prefHeight="9.0" prefWidth="373.0">
+      <children>
+         <Button mnemonicParsing="false" text="🡨" />
+      </children>
+   </VBox>
 
-    <Label text="Registrar Coordinador" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registrar Coordinador" />
 
-    <GridPane hgap="10" vgap="15" alignment="CENTER">
-        <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TextField fx:id="txtName" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <GridPane alignment="CENTER" hgap="10" vgap="15">
+        <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="txtName" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <Label text="Numero de personal:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <TextField fx:id="txtStaffNumber" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Numero de personal:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="txtStaffNumber" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Label text="Contrasena:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <PasswordField fx:id="txtPassword" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="Contrasena:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <PasswordField fx:id="txtPassword" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
     </GridPane>
 
     <HBox alignment="CENTER" spacing="20.0">
-        <Button text="Registrar" onAction="#registerCoordinator"/>
-        <Button text="Cancelar" onAction="#cancelAction"/>
+        <Button onAction="#registerCoordinator" text="Registrar" />
+        <Button onAction="#cancelAction" text="Cancelar" />
     </HBox>
 </VBox>
