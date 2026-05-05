@@ -75,23 +75,6 @@ public class RegisterAdministratorController {
         return isValid;
     }
 
-    @FXML
-    private void returnMenu(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/CoordinatorMenuView.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            stage.setTitle("Menu Coordinador");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        } catch (Exception e) {
-            LOG.severe("Error loading UI: " + e.getMessage());
-            showAlert("Error", "No se pudo cargar la ventana");
-        }
-    }
-
     private void returnToLogin(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/LoginView.fxml"));

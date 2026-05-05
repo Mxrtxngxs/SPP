@@ -2,9 +2,14 @@ package mx.uv.spp.presentation.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import mx.uv.spp.business.dto.CoordinatorDTO;
 import mx.uv.spp.business.service.ICoordinatorService;
 import mx.uv.spp.business.service.implementations.CoordinatorServiceImplementation;
@@ -68,6 +73,22 @@ public class RegisterCoordinatorController {
         coordinator.setPassword(password);
         coordinator.setState("Activo");
         return coordinator;
+    }
+
+    @FXML
+    private void returnMenu(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/AdministratorMenuView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setTitle("Menu Coordinador");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar la ventana");
+        }
     }
 
     @FXML

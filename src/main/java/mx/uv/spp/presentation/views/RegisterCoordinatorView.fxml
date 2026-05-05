@@ -8,11 +8,11 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <VBox prefHeight="9.0" prefWidth="373.0">
-      <children>
-         <Button mnemonicParsing="false" text="🡨" />
-      </children>
-   </VBox>
+    <VBox prefHeight="24.0" prefWidth="227.0">
+        <children>
+            <Button onAction="#returnMenu" mnemonicParsing="false" prefHeight="26.0" prefWidth="43.0" text="🡨" />
+        </children>
+    </VBox>
 
     <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Registrar Coordinador" />
 

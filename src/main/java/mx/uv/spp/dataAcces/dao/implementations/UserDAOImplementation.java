@@ -23,14 +23,10 @@ public class UserDAOImplementation implements IUserDAO {
 
     private static final String SQL_SAVE_USER_PROFESSOR = "INSERT INTO Usuario (nombre, contrasena, estado, rol) VALUES (?, ?, 'Activo', 'Profesor')";
     private static final String SQL_SAVE_PROFESSOR_DETAIL = "INSERT INTO Profesor_Detalle (id_usuario, numero_personal, turno) VALUES (?, ?, ?)";
-
     private static final String SQL_SAVE_USER_INTERN = "INSERT INTO Usuario (nombre, contrasena, estado, rol) VALUES (?, ?, 'Activo', 'Practicante')";
     private static final String SQL_SAVE_INTERN_DETAIL = "INSERT INTO Practicante_Detalle (id_usuario, matricula, sexo, habla_lengua_indigena, lengua_indigena, id_coordinador, id_profesor) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
     private static final String SQL_INACTIVATE_USER = "UPDATE Usuario SET estado = 'No Activo' WHERE id_usuario = ?";
-
     private static final String SQL_EXISTS_ADMIN = "SELECT 1 FROM Usuario WHERE rol = 'Administrador' LIMIT 1";
-
     private static final String SQL_GET_USER_BY_IDENTIFIER = "SELECT u.id_usuario, u.nombre, u.rol, u.estado, u.contrasena " +
             "FROM Usuario u " +
             "LEFT JOIN Coordinador_Detalle c ON u.id_usuario = c.id_usuario " +

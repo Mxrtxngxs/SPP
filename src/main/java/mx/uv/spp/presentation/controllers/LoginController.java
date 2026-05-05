@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import mx.uv.spp.business.dto.UserDTO;
 import mx.uv.spp.business.service.IAdministratorService;
@@ -45,16 +46,18 @@ public class LoginController {
 
     @FXML
     public void initialize() {
-        if (authenticationService == null || adminService == null) {
-            Platform.runLater(() -> showAlert("Error", "Servicios de autenticación no disponibles"));
-            return;
-        }
+        if (authenticationService != null && adminService != null) {
+            limitTextFieldLength(txtUsername, 50);
+            limitTextFieldLength(txtPassword, 255);
 
-        Platform.runLater(() -> {
-            if (!adminService.existsAdmin()) {
-                redirectToAdminRegistration();
-            }
-        });
+            Platform.runLater(() -> {
+                if (!adminService.existsAdmin()) {
+                    redirectToAdminRegistration();
+                }
+            });
+        } else {
+            Platform.runLater(() -> showAlert("Error", "Servicios de autenticación no disponibles"));
+        }
     }
 
     @FXML
@@ -81,11 +84,12 @@ public class LoginController {
     private void redirectBasedOnRole(UserDTO user) {
         String fxmlPath = "";
         String title = "";
+        boolean isRoleValid = true;
 
         switch (user.getRole()) {
             case "Administrador":
                 fxmlPath = "/mx/uv/spp/presentation/views/AdministratorMenuView.fxml";
-                title = "Menu dministrador";
+                title = "Menu Administrador";
                 break;
             case "Coordinador":
                 fxmlPath = "/mx/uv/spp/presentation/views/CoordinatorMenuView.fxml";
@@ -101,42 +105,45 @@ public class LoginController {
                 break;
             default:
                 lblErrorMessage.setText("Rol no reconocido: " + user.getRole());
-                return;
+                isRoleValid = false;
+                break;
         }
 
-        loadDashboard(fxmlPath, title, "Bienvenido: " + user.getName());
+        if (isRoleValid) {
+            loadDashboard(fxmlPath, title, "Bienvenido: " + user.getName());
+        }
     }
 
     private void loadDashboard(String fxmlPath, String title, String welcomeMessage) {
         URL fxmlLocation = getClass().getResource(fxmlPath);
 
-        if (fxmlLocation == null) {
+        if (fxmlLocation != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(fxmlLocation);
+                Parent root = loader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle(title);
+                stage.setScene(new Scene(root));
+                stage.show();
+
+                showAlert("exito", welcomeMessage);
+                closeWindow();
+            } catch (IOException e) {
+                showAlert("Error", "Error al cargar la vista principal");
+            }
+        } else {
             showAlert("Error de ubicacion", "No se encontro el archivo: " + fxmlPath);
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(fxmlLocation);
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-            stage.show();
-
-            showAlert("exito", welcomeMessage);
-            closeWindow();
-        } catch (IOException e) {
-            showAlert("Error", "Error al cargar la vista principal");
         }
     }
 
     private boolean validateFields(String username, String password) {
+        boolean isValid = true;
         if (username.isEmpty() || password.isEmpty()) {
             lblErrorMessage.setText("Por favor ingresa usuario y contraseña");
-            return false;
+            isValid = false;
         }
-        return true;
+        return isValid;
     }
 
     private void redirectToAdminRegistration() {
@@ -158,5 +165,15 @@ public class LoginController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void limitTextFieldLength(TextField textField, int maxLength) {
+        textField.setTextFormatter(new TextFormatter<>(change -> {
+            TextFormatter.Change result = null;
+            if (change.getControlNewText().length() <= maxLength) {
+                result = change;
+            }
+            return result;
+        }));
     }
 }
