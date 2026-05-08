@@ -46,12 +46,12 @@ public class AdminMenuController {
 
     @FXML
     private void inactivateCoordinatorAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/InactivateCoordinatorView.fxml", "Inactivar Coordinador");
+        loadWindow("/mx/uv/spp/presentation/views/admin/ListCoordinatorsView.fxml", "Inactivar Coordinador");
     }
 
     @FXML
     private void inactivateProfessorAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/InactivateProfessorView.fxml", "Inactivar Profesor");
+        loadWindow("/mx/uv/spp/presentation/views/admin/ListProfessorsView.fxml", "Inactivar Profesor");
     }
 
     @FXML
