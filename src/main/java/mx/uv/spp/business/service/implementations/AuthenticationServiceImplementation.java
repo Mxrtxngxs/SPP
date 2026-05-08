@@ -18,13 +18,17 @@ public class AuthenticationServiceImplementation implements IAuthenticationServi
     public AuthenticationServiceImplementation() {
         try {
             this.userDAO = new UserDAOImplementation();
+            System.out.println("UserDAO inicializado correctamente");
         } catch (DataAccessException e) {
+            System.out.println("Error inicializando UserDAO: " + e.getMessage());
             LOG.severe("Error al inicializar el DAO: " + e.getMessage());
         }
     }
 
     @Override
     public UserDTO login(String identifier, String password) {
+        System.out.println("Intentando login con: " + identifier);
+        System.out.println("UserDAO es null: " + (userDAO == null));
         UserDTO resultUser = new UserDTO();
         resultUser.setIdUser(-1);
 

@@ -73,6 +73,7 @@ public class LoginController {
 
     private void authenticateUser(String username, String password) {
         UserDTO user = authenticationService.login(username, password);
+        System.out.println("Usuario: " + (user != null ? user.getIdUser() + " rol: " + user.getRole() + " estado: " + user.getState() : "null"));
 
         if (user != null && user.getIdUser() != -1) {
             redirectBasedOnRole(user);

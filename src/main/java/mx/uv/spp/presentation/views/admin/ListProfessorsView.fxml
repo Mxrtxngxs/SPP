@@ -10,10 +10,18 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.ListProfessorsController">
     <padding>
         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
     </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <Label style="-fx-font-size: 13px; -fx-text-fill: #555;" text="Administrador" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblCurrentUser" style="-fx-font-size: 13px; -fx-text-fill: #114B5F; -fx-font-weight: bold;" text="" />
+    </HBox>
+
+    <Separator />
 
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Lista de Profesores" />
 
@@ -26,10 +34,12 @@
         </columns>
     </TableView>
 
+    <Separator />
+
     <HBox alignment="CENTER_RIGHT">
-        <Button fx:id="btnBack" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Regresar" />
+        <Button fx:id="btnBack" onAction="#goBack" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Regresar" />
         <Region HBox.hgrow="ALWAYS" />
-        <Button fx:id="btnDeactivate"  prefHeight="35.0" prefWidth="180.0" style="-fx-background-color: #114B5F; -fx-text-fill: white;" text="Inactivar Seleccionado" />
+        <Button fx:id="btnDeactivate" onAction="#openDesactivateWindow" prefHeight="35.0" prefWidth="180.0" style="-fx-background-color: #114B5F; -fx-text-fill: white;" text="Inactivar Seleccionado" />
     </HBox>
 
 </VBox>

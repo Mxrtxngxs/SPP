@@ -6,11 +6,9 @@ import mx.uv.spp.dataAcces.dao.IProfessorDAO;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 import mx.uv.spp.utils.LogConfig;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class ProfessorDAOImplementation implements IProfessorDAO {
@@ -23,6 +21,11 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
     private static final String SQL_SAVE_USER = "INSERT INTO Usuario (nombre, contrasena, estado, rol) VALUES (?, ?, ?, 'Profesor')";
     private static final String SQL_SAVE_PROFESSOR = "INSERT INTO Profesor_Detalle (id_usuario, numero_personal, turno) VALUES (?, ?, ?)";
     private static final String SQL_INACTIVATE_PROFESSOR_BY_ID = "UPDATE Usuario SET estado = 'No Activo' WHERE id_usuario = ?";
+    private static final String SQL_GET_ACTIVE_PROFESSORS =
+            "SELECT u.id_usuario, u.nombre, u.estado, p.numero_personal, p.turno " +
+                    "FROM Usuario u " +
+                    "INNER JOIN Profesor_Detalle p ON u.id_usuario = p.id_usuario " +
+                    "WHERE u.rol = 'Profesor' AND u.estado = 'Activo'";
 
     public ProfessorDAOImplementation() throws DataAccessException {
         this.connection = DatabaseConfig.getInstance().getConnection();
@@ -102,5 +105,26 @@ public class ProfessorDAOImplementation implements IProfessorDAO {
             throw new DataAccessException("Error inactivating professor with ID: " + userId, e);
         }
         return isInactivated;
+    }
+
+    @Override
+    public List<ProfessorDTO> getActiveProfessors() throws DataAccessException {
+        List<ProfessorDTO> professors = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(SQL_GET_ACTIVE_PROFESSORS);
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                ProfessorDTO professor = new ProfessorDTO();
+                professor.setIdUser(resultSet.getInt("id_usuario"));
+                professor.setUserId(resultSet.getInt("id_usuario"));
+                professor.setName(resultSet.getString("nombre"));
+                professor.setStaffNumber(resultSet.getString("numero_personal"));
+                professor.setShift(resultSet.getString("turno"));
+                professor.setState(resultSet.getString("estado"));
+                professors.add(professor);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("Error getting active professors", e);
+        }
+        return professors;
     }
 }

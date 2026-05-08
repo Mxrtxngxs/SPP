@@ -12,7 +12,7 @@
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Inicio de Sesion" />
 
     <VBox spacing="5.0">
-        <Label style="-fx-font-weight: bold;" text="Usuario:" />
+        <Label style="-fx-font-weight: bold;" text="Usuario, Matricula o No. Personal:" />
         <TextField fx:id="txtUsername" prefWidth="375.0" promptText="Ingresa tu usuario" />
     </VBox>
 

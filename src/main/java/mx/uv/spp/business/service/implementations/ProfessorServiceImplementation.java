@@ -8,6 +8,8 @@ import mx.uv.spp.dataAcces.exceptions.DataAccessException;
 import mx.uv.spp.utils.LogConfig;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -91,6 +93,21 @@ public class ProfessorServiceImplementation implements IProfessorService {
         }
 
         return count;
+    }
+
+    @Override
+    public List<ProfessorDTO> getActiveProfessors() {
+        List<ProfessorDTO> professors = new ArrayList<>();
+
+        if (professorDAO != null) {
+            try {
+                professors = professorDAO.getActiveProfessors();
+            } catch (DataAccessException e) {
+                LOG.severe("Database error getting active professors: " + e.getMessage());
+            }
+        }
+
+        return professors;
     }
 
     private boolean validatePassword(String password) {
