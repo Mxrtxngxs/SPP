@@ -4,6 +4,7 @@ import mx.uv.spp.business.dto.AssignmentDTO;
 import mx.uv.spp.dataAcces.config.DatabaseConfig;
 import mx.uv.spp.dataAcces.dao.IAssignmentDAO;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
+import mx.uv.spp.utils.LogConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,10 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class AssignmentDAOImplementation implements IAssignmentDAO {
 
     private final Connection connection;
+    private static final Logger LOG = LogConfig.getLogger(AssignmentDAOImplementation.class);
 
     private static final String SQL_SAVE = "INSERT INTO Asignacion (fecha_asignacion, estado, id_practicante, id_proyecto, id_coordinador) VALUES (?, 'Activa', ?, ?, ?)";
     private static final String SQL_CHECK_EXISTING = "SELECT COUNT(*) FROM Asignacion WHERE id_practicante = ? AND estado = 'Activa'";
@@ -29,70 +32,82 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
 
     @Override
     public boolean saveAssignment(AssignmentDTO assignment) throws DataAccessException {
+        boolean isSaved = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE)) {
             statement.setDate(1, new java.sql.Date(assignment.getAssignmentDate().getTime()));
             statement.setInt(2, assignment.getInternId());
             statement.setInt(3, assignment.getProjectId());
             statement.setInt(4, assignment.getCoordinatorId());
-            return statement.executeUpdate() > 0;
+            isSaved = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al guardar la asignacion: " + e.getMessage());
             throw new DataAccessException("Error saving the assignment", e);
         }
+        return isSaved;
     }
 
     @Override
     public boolean hasExistingAssignment(int internId) throws DataAccessException {
+        boolean hasAssignment = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_CHECK_EXISTING)) {
             statement.setInt(1, internId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
+                    hasAssignment = resultSet.getInt(1) > 0;
                 }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al verificar asignacion del practicante con ID " + internId + ": " + e.getMessage());
             throw new DataAccessException("Error checking assignments for intern ID: " + internId, e);
         }
-        return false;
+        return hasAssignment;
     }
 
     @Override
     public boolean inactivateAssignment(int assignmentId) throws DataAccessException {
+        boolean isInactivated = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_INACTIVATE)) {
             statement.setInt(1, assignmentId);
-            return statement.executeUpdate() > 0;
+            isInactivated = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al inactivar la asignacion con ID " + assignmentId + ": " + e.getMessage());
             throw new DataAccessException("Error inactivating assignment ID: " + assignmentId, e);
         }
+        return isInactivated;
     }
 
     @Override
     public AssignmentDTO getAssignmentById(int assignmentId) throws DataAccessException {
+        AssignmentDTO assignment = new AssignmentDTO(-1);
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, assignmentId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return mapResultSetToAssignment(resultSet);
+                    assignment = mapResultSetToAssignment(resultSet);
                 }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al buscar la asignacion con ID " + assignmentId + ": " + e.getMessage());
             throw new DataAccessException("Error finding assignment ID: " + assignmentId, e);
         }
-        return new AssignmentDTO(-1);
+        return assignment;
     }
 
     @Override
     public AssignmentDTO getAssignmentByInternId(int internId) throws DataAccessException {
+        AssignmentDTO assignment = new AssignmentDTO(-1);
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_INTERN)) {
             statement.setInt(1, internId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return mapResultSetToAssignment(resultSet);
+                    assignment = mapResultSetToAssignment(resultSet);
                 }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al buscar la asignacion del practicante con ID " + internId + ": " + e.getMessage());
             throw new DataAccessException("Error finding assignment for intern ID: " + internId, e);
         }
-        return new AssignmentDTO(-1);
+        return assignment;
     }
 
     @Override
@@ -106,6 +121,7 @@ public class AssignmentDAOImplementation implements IAssignmentDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al listar asignaciones del proyecto con ID " + projectId + ": " + e.getMessage());
             throw new DataAccessException("Error finding assignments for project ID: " + projectId, e);
         }
         return list;

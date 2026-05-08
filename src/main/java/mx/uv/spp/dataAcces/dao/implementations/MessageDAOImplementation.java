@@ -4,6 +4,7 @@ import mx.uv.spp.business.dto.MessageDTO;
 import mx.uv.spp.dataAcces.config.DatabaseConfig;
 import mx.uv.spp.dataAcces.dao.IMessageDAO;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
+import mx.uv.spp.utils.LogConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,10 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class MessageDAOImplementation implements IMessageDAO {
 
     private final Connection connection;
+    private static final Logger LOG = LogConfig.getLogger(MessageDAOImplementation.class);
 
     private static final String SQL_SAVE_MESSAGE = "INSERT INTO Mensaje (asunto, cuerpo, fecha_envio, eliminado, id_remitente, id_destinatario) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_FIND_MESSAGE_BY_ID = "SELECT * FROM Mensaje WHERE id_mensaje = ?";
@@ -28,6 +31,7 @@ public class MessageDAOImplementation implements IMessageDAO {
 
     @Override
     public boolean saveMessage(MessageDTO message) throws DataAccessException {
+        boolean isSaved = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE_MESSAGE)) {
             statement.setString(1, message.getSubject());
             statement.setString(2, message.getBody());
@@ -35,22 +39,29 @@ public class MessageDAOImplementation implements IMessageDAO {
             statement.setBoolean(4, message.getDeleted());
             statement.setInt(5, message.getSenderId());
             statement.setInt(6, message.getReceiverId());
-            return statement.executeUpdate() > 0;
+            isSaved = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al guardar el mensaje: " + e.getMessage());
             throw new DataAccessException("Error al guardar el mensaje", e);
         }
+        return isSaved;
     }
 
     @Override
     public MessageDTO findMessageById(Integer id) throws DataAccessException {
-        try (PreparedStatement st = connection.prepareStatement(SQL_FIND_MESSAGE_BY_ID)) {
-            st.setInt(1, id);
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) return mapResultSetToMessage(rs);
+        MessageDTO message = new MessageDTO(-1);
+        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_MESSAGE_BY_ID)) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    message = mapResultSetToMessage(resultSet);
+                }
+            }
         } catch (SQLException e) {
+            LOG.severe("Error al buscar el mensaje con ID " + id + ": " + e.getMessage());
             throw new DataAccessException("Error al buscar el mensaje con ID: " + id, e);
         }
-        return new MessageDTO(-1);
+        return message;
     }
 
     @Override
@@ -58,8 +69,11 @@ public class MessageDAOImplementation implements IMessageDAO {
         List<MessageDTO> list = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_MESSAGES);
              ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) list.add(mapResultSetToMessage(resultSet));
+            while (resultSet.next()) {
+                list.add(mapResultSetToMessage(resultSet));
+            }
         } catch (SQLException e) {
+            LOG.severe("Error al listar los mensajes: " + e.getMessage());
             throw new DataAccessException("Error al listar los mensajes", e);
         }
         return list;
@@ -67,6 +81,7 @@ public class MessageDAOImplementation implements IMessageDAO {
 
     @Override
     public boolean updateMessage(MessageDTO message) throws DataAccessException {
+        boolean isUpdated = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_MESSAGE)) {
             statement.setString(1, message.getSubject());
             statement.setString(2, message.getBody());
@@ -75,20 +90,25 @@ public class MessageDAOImplementation implements IMessageDAO {
             statement.setInt(5, message.getSenderId());
             statement.setInt(6, message.getReceiverId());
             statement.setInt(7, message.getMessageId());
-            return statement.executeUpdate() > 0;
+            isUpdated = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al actualizar el mensaje con ID " + message.getMessageId() + ": " + e.getMessage());
             throw new DataAccessException("Error al actualizar el mensaje con ID: " + message.getMessageId(), e);
         }
+        return isUpdated;
     }
 
     @Override
     public boolean deleteMessageById(Integer id) throws DataAccessException {
+        boolean isDeleted = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_MESSAGE_BY_ID)) {
             statement.setInt(1, id);
-            return statement.executeUpdate() > 0;
+            isDeleted = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al eliminar el mensaje con ID " + id + ": " + e.getMessage());
             throw new DataAccessException("Error al eliminar el mensaje con ID: " + id, e);
         }
+        return isDeleted;
     }
 
     private MessageDTO mapResultSetToMessage(ResultSet resultSet) throws SQLException {

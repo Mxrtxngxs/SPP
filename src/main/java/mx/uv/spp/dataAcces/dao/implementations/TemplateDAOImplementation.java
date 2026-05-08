@@ -4,6 +4,7 @@ import mx.uv.spp.business.dto.TemplateDTO;
 import mx.uv.spp.dataAcces.config.DatabaseConfig;
 import mx.uv.spp.dataAcces.dao.ITemplateDAO;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
+import mx.uv.spp.utils.LogConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,10 +13,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class TemplateDAOImplementation implements ITemplateDAO {
 
     private final Connection connection;
+    private static final Logger LOG = LogConfig.getLogger(TemplateDAOImplementation.class);
 
     private static final String SQL_SAVE = "INSERT INTO Formato (nombre, tipo_documento, version, nombre_archivo, fecha_subida, id_profesor) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE Formato SET nombre=?, tipo_documento=?, version=?, nombre_archivo=?, fecha_subida=?, id_profesor=? WHERE id_formato=?";
@@ -30,6 +33,7 @@ public class TemplateDAOImplementation implements ITemplateDAO {
 
     @Override
     public boolean saveTemplate(TemplateDTO template) throws DataAccessException {
+        boolean isSaved = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE)) {
             statement.setString(1, template.getName());
             statement.setString(2, template.getDocumentType());
@@ -37,14 +41,17 @@ public class TemplateDAOImplementation implements ITemplateDAO {
             statement.setString(4, template.getFileName());
             statement.setTimestamp(5, Timestamp.valueOf(template.getUploadDate()));
             statement.setInt(6, template.getProfessorId());
-            return statement.executeUpdate() > 0;
+            isSaved = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al guardar el formato: " + e.getMessage());
             throw new DataAccessException("Error saving template", e);
         }
+        return isSaved;
     }
 
     @Override
     public boolean updateTemplate(TemplateDTO template) throws DataAccessException {
+        boolean isUpdated = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             statement.setString(1, template.getName());
             statement.setString(2, template.getDocumentType());
@@ -53,33 +60,42 @@ public class TemplateDAOImplementation implements ITemplateDAO {
             statement.setTimestamp(5, Timestamp.valueOf(template.getUploadDate()));
             statement.setInt(6, template.getProfessorId());
             statement.setInt(7, template.getTemplateId());
-            return statement.executeUpdate() > 0;
+            isUpdated = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al actualizar el formato con ID " + template.getTemplateId() + ": " + e.getMessage());
             throw new DataAccessException("Error updating template ID: " + template.getTemplateId(), e);
         }
+        return isUpdated;
     }
 
     @Override
     public boolean deleteTemplate(int templateId) throws DataAccessException {
+        boolean isDeleted = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE)) {
             statement.setInt(1, templateId);
-            return statement.executeUpdate() > 0;
+            isDeleted = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al eliminar el formato con ID " + templateId + ": " + e.getMessage());
             throw new DataAccessException("Error deleting template ID: " + templateId, e);
         }
+        return isDeleted;
     }
 
     @Override
     public TemplateDTO getTemplateById(int templateId) throws DataAccessException {
+        TemplateDTO template = new TemplateDTO(-1);
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, templateId);
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) return mapResultSetToTemplate(resultSet);
+                if (resultSet.next()) {
+                    template = mapResultSetToTemplate(resultSet);
+                }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al buscar el formato con ID " + templateId + ": " + e.getMessage());
             throw new DataAccessException("Error finding template ID: " + templateId, e);
         }
-        return new TemplateDTO(-1);
+        return template;
     }
 
     @Override
@@ -104,6 +120,7 @@ public class TemplateDAOImplementation implements ITemplateDAO {
                 }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al listar los formatos: " + e.getMessage());
             throw new DataAccessException("Error listing templates", e);
         }
         return list;
@@ -116,12 +133,10 @@ public class TemplateDAOImplementation implements ITemplateDAO {
         template.setDocumentType(resultSet.getString("tipo_documento"));
         template.setVersion(resultSet.getInt("version"));
         template.setFileName(resultSet.getString("nombre_archivo"));
-
         Timestamp timestamp = resultSet.getTimestamp("fecha_subida");
         if (timestamp != null) {
             template.setUploadDate(timestamp.toLocalDateTime());
         }
-
         template.setProfessorId(resultSet.getInt("id_profesor"));
         return template;
     }

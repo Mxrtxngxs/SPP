@@ -4,6 +4,7 @@ import mx.uv.spp.business.dto.IndicatorDTO;
 import mx.uv.spp.dataAcces.config.DatabaseConfig;
 import mx.uv.spp.dataAcces.dao.IIndicatorDAO;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
+import mx.uv.spp.utils.LogConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,10 +13,12 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class IndicatorDAOImplementation implements IIndicatorDAO {
 
     private final Connection connection;
+    private static final Logger LOG = LogConfig.getLogger(IndicatorDAOImplementation.class);
 
     private static final String SQL_SAVE = "INSERT INTO Indicador (fecha_consulta, filtros_aplicados, nombre_archivo, id_coordinador) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_BY_ID = "SELECT * FROM Indicador WHERE id_indicador = ?";
@@ -28,28 +31,35 @@ public class IndicatorDAOImplementation implements IIndicatorDAO {
 
     @Override
     public boolean saveIndicator(IndicatorDTO indicator) throws DataAccessException {
+        boolean isSaved = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE)) {
             statement.setTimestamp(1, Timestamp.valueOf(indicator.getQueryDate()));
             statement.setString(2, indicator.getAppliedFilters());
             statement.setString(3, indicator.getFileName());
             statement.setInt(4, indicator.getCoordinatorId());
-            return statement.executeUpdate() > 0;
+            isSaved = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al guardar el indicador: " + e.getMessage());
             throw new DataAccessException("Error saving indicator", e);
         }
+        return isSaved;
     }
 
     @Override
     public IndicatorDTO getIndicatorById(int indicatorId) throws DataAccessException {
+        IndicatorDTO indicator = new IndicatorDTO(-1);
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, indicatorId);
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) return mapResultSetToIndicator(resultSet);
+                if (resultSet.next()) {
+                    indicator = mapResultSetToIndicator(resultSet);
+                }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al buscar el indicador con ID " + indicatorId + ": " + e.getMessage());
             throw new DataAccessException("Error finding indicator", e);
         }
-        return new IndicatorDTO(-1);
+        return indicator;
     }
 
     @Override
@@ -69,9 +79,12 @@ public class IndicatorDAOImplementation implements IIndicatorDAO {
                 statement.setInt(1, coordinatorId);
             }
             try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) list.add(mapResultSetToIndicator(resultSet));
+                while (resultSet.next()) {
+                    list.add(mapResultSetToIndicator(resultSet));
+                }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al listar los indicadores: " + e.getMessage());
             throw new DataAccessException("Error listing indicators", e);
         }
         return list;
