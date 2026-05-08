@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Evaluar Reporte Parcial" />
+
+    <TableView fx:id="tvReports" prefHeight="150.0" prefWidth="650.0">
+        <columns>
+            <TableColumn fx:id="colPractitioner" prefWidth="220.0" text="Practicante" />
+            <TableColumn fx:id="colPeriod" prefWidth="120.0" text="Periodo" />
+            <TableColumn fx:id="colDate" prefWidth="120.0" text="Fecha entrega" />
+            <TableColumn fx:id="colStatus" prefWidth="180.0" text="Estado" />
+        </columns>
+    </TableView>
+
+    <GridPane alignment="CENTER" hgap="10" vgap="15">
+        <columnConstraints>
+            <ColumnConstraints minWidth="180.0" />
+            <ColumnConstraints minWidth="250.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         <RowConstraints />
+        </rowConstraints>
+
+        <Label style="-fx-font-weight: bold;" text="Rubrica:" GridPane.rowIndex="1" />
+        <Label fx:id="lblRubric" style="-fx-text-fill: #555;" text="Criterios de evaluacion del reporte parcial" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label style="-fx-font-weight: bold;" text="Observaciones:" GridPane.rowIndex="2" />
+        <TextArea fx:id="txtObservations" prefHeight="60.0" prefWidth="250.0" promptText="Agregar observaciones al reporte" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label style="-fx-font-weight: bold;" text="Calificacion (0-10):" GridPane.rowIndex="3" />
+        <TextField fx:id="txtGrade" prefWidth="250.0" promptText="Ingrese calificacion" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    </GridPane>
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="btnDownload" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #42A8FB; -fx-text-fill: white;" text="Descargar" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnCancel" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cancelar" />
+        <Region prefWidth="10.0" />
+        <Button fx:id="btnGrade" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Calificar" />
+    </HBox>
+
+</VBox>

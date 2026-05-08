@@ -29,22 +29,22 @@ public class CoordinatorMenuController {
 
     @FXML
     private void assignProjectAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/AssignProjectView.fxml", "Asignar Proyecto");
+        loadWindow("/mx/uv/spp/presentation/views/coordinator/AssignProjectView.fxml", "Asignar Proyecto");
     }
 
     @FXML
     private void updateProjectAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/UpdateProjectView.fxml", "Actualizar Proyecto");
+        loadWindow("/mx/uv/spp/presentation/views/coordinator/UpdateProjectView.fxml", "Actualizar Proyecto");
     }
 
     @FXML
     private void deleteProjectAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/DeleteProjectView.fxml", "Eliminar Proyecto");
+        loadWindow("/mx/uv/spp/presentation/views/coordinator/DeleteProjectView.fxml", "Eliminar Proyecto");
     }
 
     @FXML
     private void registerInternAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/RegisterInternView.fxml", "Registrar Practicante");
+        loadWindow("/mx/uv/spp/presentation/views/coordinator/RegisterInternView.fxml", "Registrar Practicante");
     }
 
     @FXML
@@ -66,7 +66,7 @@ public class CoordinatorMenuController {
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesion - SPP");
+            loadWindow("/mx/uv/spp/presentation/views/user/LoginView.fxml", "Inicio de Sesion - SPP");
         }
     }
 

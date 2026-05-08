@@ -24,7 +24,7 @@ public class InternMenuController {
 
     @FXML
     private void requestProjectAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/RequestProjectView.fxml", "Solicitar Proyecto");
+        loadWindow("/mx/uv/spp/presentation/views/intern/RequestProjectView.fxml", "Solicitar Proyecto");
     }
 
     @FXML
@@ -39,12 +39,12 @@ public class InternMenuController {
 
     @FXML
     private void addActivityAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/AddActivityView.fxml", "Entregar Actividad");
+        loadWindow("/mx/uv/spp/presentation/views/intern/AddActivityView.fxml", "Entregar Actividad");
     }
 
     @FXML
     private void addScheduleAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/AddScheduleView.fxml", "Añadir Horario");
+        loadWindow("/mx/uv/spp/presentation/views/intern/AddScheduleView.fxml", "Añadir Horario");
     }
 
     @FXML
@@ -71,7 +71,7 @@ public class InternMenuController {
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesión - SPP");
+            loadWindow("/mx/uv/spp/presentation/views/user/LoginView.fxml", "Inicio de Sesión - SPP");
         }
     }
 

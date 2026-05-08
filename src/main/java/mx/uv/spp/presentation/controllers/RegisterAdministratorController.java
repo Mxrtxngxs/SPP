@@ -77,7 +77,7 @@ public class RegisterAdministratorController {
 
     private void returnToLogin(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/LoginView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/user/LoginView.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

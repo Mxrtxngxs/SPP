@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.LoginController">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Inicio de Sesion" />
+
+    <VBox spacing="5.0">
+        <Label style="-fx-font-weight: bold;" text="Usuario:" />
+        <TextField fx:id="txtUsername" prefWidth="375.0" promptText="Ingresa tu usuario" />
+    </VBox>
+
+    <VBox spacing="5.0">
+        <Label style="-fx-font-weight: bold;" text="Contraseña:" />
+        <PasswordField fx:id="txtPassword" prefWidth="375.0" promptText="Ingresa tu contrasena" />
+    </VBox>
+
+    <Label fx:id="lblErrorMessage" style="-fx-text-fill: red;" text="" />
+
+    <HBox alignment="CENTER">
+        <Region prefHeight="35.0" prefWidth="85.0" HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnLogin" alignment="CENTER" contentDisplay="CENTER" onAction="#login" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Iniciar Sesion" textAlignment="CENTER" />
+    </HBox>
+
+</VBox>

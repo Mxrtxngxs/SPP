@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Generar Autoevaluacion" />
+
+    <Label style="-fx-text-fill: #555;" text="Asigna un puntaje del 1 al 5 para cada criterio." />
+
+    <TableView fx:id="tvCriteria" prefHeight="300.0" prefWidth="600.0">
+        <columns>
+            <TableColumn fx:id="colCriteria" prefWidth="380.0" text="Criterio" />
+            <TableColumn fx:id="colScore" prefWidth="210.0" text="Puntaje (1-5)" />
+        </columns>
+    </TableView>
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cancelar" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnGenerate" prefHeight="35.0" prefWidth="180.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Generar autoevaluacion" />
+    </HBox>
+
+</VBox>

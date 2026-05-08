@@ -24,7 +24,7 @@ public class ProfessorMenuController {
 
     @FXML
     private void generateActivityAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/GenerateActivityView.fxml", "Generar Actividad");
+        loadWindow("/mx/uv/spp/presentation/views/professor/GenerateActivityView.fxml", "Generar Actividad");
     }
 
     @FXML
@@ -34,12 +34,12 @@ public class ProfessorMenuController {
 
     @FXML
     private void evaluatePartialReportAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/EvaluatePartialReportView.fxml", "Evaluar Reporte Parcial");
+        loadWindow("/mx/uv/spp/presentation/views/professor/EvaluatePartialReportView.fxml", "Evaluar Reporte Parcial");
     }
 
     @FXML
     private void evaluateMonthlyReportAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/EvaluateMonthlyReportView.fxml", "Evaluar Reporte Mensual");
+        loadWindow("/mx/uv/spp/presentation/views/professor/EvaluateMonthlyReportView.fxml", "Evaluar Reporte Mensual");
     }
 
     @FXML
@@ -56,7 +56,7 @@ public class ProfessorMenuController {
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesion - SPP");
+            loadWindow("/mx/uv/spp/presentation/views/user/LoginView.fxml", "Inicio de Sesion - SPP");
         }
     }
 

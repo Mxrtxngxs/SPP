@@ -77,7 +77,7 @@ public class ListCoordinatorsController {
 
     private void showDeactivateView(CoordinatorDTO coordinator) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/DesactivateCoordinatorView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/admin/DesactivateCoordinatorView.fxml"));
 
             Parent root = loader.load();
 

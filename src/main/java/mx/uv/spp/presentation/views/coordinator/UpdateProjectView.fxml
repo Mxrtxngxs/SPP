@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Actualizar Proyecto" />
+
+    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" prefWidth="600.0">
+
+        <Tab text="Datos de la Empresa">
+            <VBox spacing="15.0">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <GridPane alignment="CENTER" hgap="10" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="180.0" />
+                        <ColumnConstraints minWidth="250.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <Label style="-fx-font-weight: bold;" text="Nombre de la empresa:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtCompanyName" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label style="-fx-font-weight: bold;" text="Sector:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtSector" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label style="-fx-font-weight: bold;" text="Direccion:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="txtAddress" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </GridPane>
+            </VBox>
+        </Tab>
+
+        <Tab text="Datos del Responsable">
+            <VBox spacing="15.0">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <GridPane alignment="CENTER" hgap="10" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="180.0" />
+                        <ColumnConstraints minWidth="250.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <Label style="-fx-font-weight: bold;" text="Nombre del responsable:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtResponsibleName" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label style="-fx-font-weight: bold;" text="Cargo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="txtPosition" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label style="-fx-font-weight: bold;" text="Correo:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="txtEmail" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </GridPane>
+            </VBox>
+        </Tab>
+
+        <Tab text="Datos del Proyecto">
+            <VBox spacing="15.0">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <GridPane alignment="CENTER" hgap="10" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="180.0" />
+                        <ColumnConstraints minWidth="250.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <Label style="-fx-font-weight: bold;" text="Nombre del proyecto:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="txtProjectName" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label style="-fx-font-weight: bold;" text="Descripcion:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextArea fx:id="txtDescription" prefWidth="250.0" prefHeight="80.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label style="-fx-font-weight: bold;" text="Cupo maximo:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="txtMaxCapacity" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                </GridPane>
+            </VBox>
+        </Tab>
+
+        <Tab text="Calendarizacion">
+            <VBox spacing="15.0">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <GridPane alignment="CENTER" hgap="10" vgap="15">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="180.0" />
+                        <ColumnConstraints minWidth="250.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
+                    <Label style="-fx-font-weight: bold;" text="Fecha de inicio:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <DatePicker fx:id="dpStartDate" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label style="-fx-font-weight: bold;" text="Fecha de termino:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <DatePicker fx:id="dpEndDate" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                </GridPane>
+            </VBox>
+        </Tab>
+
+    </TabPane>
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cancelar" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnUpdate" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Actualizar" />
+    </HBox>
+
+</VBox>

@@ -15,22 +15,22 @@ public class MenuController {
 
     @FXML
     private void openLogin(ActionEvent event) {
-        openWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Login");
+        openWindow("/mx/uv/spp/presentation/views/user/LoginView.fxml", "Login");
     }
 
     @FXML
     private void openRegisterCoordinator(ActionEvent event) {
-        openWindow("/mx/uv/spp/presentation/views/RegisterCoordinatorView.fxml", "Registrar Coordinador");
+        openWindow("/mx/uv/spp/presentation/views/admin/RegisterCoordinatorView.fxml", "Registrar Coordinador");
     }
 
     @FXML
     private void openRegisterProfessor(ActionEvent event) {
-        openWindow("/mx/uv/spp/presentation/views/RegisterProfessorView.fxml", "Registrar Profesor");
+        openWindow("/mx/uv/spp/presentation/views/admin/RegisterProfessorView.fxml", "Registrar Profesor");
     }
 
     @FXML
     private void openListCoordinators(ActionEvent event) {
-        openWindow("/mx/uv/spp/presentation/views/ListCoordinatorsView.fxml", "Lista de Coordinadores");
+        openWindow("/mx/uv/spp/presentation/views/admin/ListCoordinatorsView.fxml", "Lista de Coordinadores");
     }
 
     private void openWindow(String fxmlPath, String title) {

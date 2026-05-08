@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.RegisterAdministratorController">
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mx.uv.spp.presentation.controllers.RegisterAdministratorController">
     <padding>
         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
     </padding>
 
-    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Registrar Administrador" />
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Registrar Administrador" />
 
     <VBox spacing="5.0">
-        <Label text="Nombre de usuario:" />
-        <TextField fx:id="txtName" promptText="Ingrese el nombre de usuario" />
+        <Label style="-fx-font-weight: bold;" text="Nombre de usuario:" />
+        <TextField fx:id="txtName" prefWidth="375.0" promptText="Ingrese el nombre de usuario" />
     </VBox>
 
     <VBox spacing="5.0">
-        <Label text="Contraseña:" />
-        <PasswordField fx:id="txtPassword" promptText="Minimo 10 caracteres (Mayusculas, minuscuas y numeros)" />
+        <Label style="-fx-font-weight: bold;" text="Contrasena:" />
+        <PasswordField fx:id="txtPassword" prefWidth="375.0" promptText="Minimo 10 caracteres (Mayusculas, minusculas y numeros)" />
     </VBox>
 
-    <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 10 0 0 0;">
-        <Button onAction="#cancelAction" text="Cancelar" />
-        <Button onAction="#registerAdmin" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Registrar" />
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" onAction="#cancelAction" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cancelar" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnRegister" onAction="#registerAdmin" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Registrar" />
     </HBox>
+
 </VBox>

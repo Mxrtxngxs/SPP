@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" >
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Reporte de Indicadores" />
+
+    <HBox alignment="CENTER_LEFT" spacing="15.0">
+        <Label style="-fx-font-weight: bold;" text="Genero:" />
+        <ComboBox fx:id="cbGender" prefWidth="120.0" promptText="Todos" />
+
+        <Label style="-fx-font-weight: bold;" text="Turno:" />
+        <ComboBox fx:id="cbShift" prefWidth="120.0" promptText="Todos" />
+
+        <Label style="-fx-font-weight: bold;" text="Periodo:" />
+        <ComboBox fx:id="cbPeriod" prefWidth="120.0" promptText="Todos" />
+
+        <Label style="-fx-font-weight: bold;" text="Sector:" />
+        <ComboBox fx:id="cbSector" prefWidth="120.0" promptText="Todos" />
+
+        <Button fx:id="btnClearFilters" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #42A8FB; -fx-text-fill: white;" text="Limpiar" />
+    </HBox>
+
+    <TableView fx:id="tvIndicators" prefHeight="300.0" prefWidth="750.0">
+        <columns>
+            <TableColumn fx:id="colName" prefWidth="180.0" text="Nombre" />
+            <TableColumn fx:id="colGender" prefWidth="80.0" text="Genero" />
+            <TableColumn fx:id="colAge" prefWidth="60.0" text="Edad" />
+            <TableColumn fx:id="colPeriod" prefWidth="100.0" text="Periodo" />
+            <TableColumn fx:id="colSector" prefWidth="120.0" text="Sector" />
+            <TableColumn fx:id="colLanguage" prefWidth="120.0" text="Lengua indigena" />
+            <TableColumn fx:id="colShift" prefWidth="80.0" text="Turno" />
+        </columns>
+    </TableView>
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cancelar" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnGeneratePDF" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Generar PDF" />
+    </HBox>
+
+</VBox>

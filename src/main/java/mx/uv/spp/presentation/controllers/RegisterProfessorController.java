@@ -5,13 +5,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import mx.uv.spp.business.dto.ProfessorDTO;
 import mx.uv.spp.business.service.IProfessorService;
 import mx.uv.spp.business.service.implementations.ProfessorServiceImplementation;
+
+import java.util.Optional;
 
 public class RegisterProfessorController {
 
@@ -36,7 +39,7 @@ public class RegisterProfessorController {
     @FXML
     public void initialize() {
         if (professorService == null) {
-            Platform.runLater(() -> showAlert("Error", "Servicio no disponible"));
+            Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Error", "Servicio no disponible"));
         } else {
             ObservableList<String> shifts = FXCollections.observableArrayList("Matutino", "Vespertino");
             cbShift.setItems(shifts);
@@ -58,7 +61,7 @@ public class RegisterProfessorController {
     private boolean validateFields(String name, String staffNumber, String password, String shift) {
         boolean isValid = true;
         if (name.isEmpty() || staffNumber.isEmpty() || password.isEmpty() || shift == null) {
-            showAlert("Campos vacios", "Por favor, rellene todos los campos y seleccione un turno");
+            showAlert(Alert.AlertType.WARNING, "Campos vacios", "Por favor, rellene todos los campos y seleccione un turno");
             isValid = false;
         }
         return isValid;
@@ -67,19 +70,19 @@ public class RegisterProfessorController {
     private void processRegistration(String name, String staffNumber, String password, String shift) {
         if (professorService != null) {
             if (professorService.existsStaffNumber(staffNumber)) {
-                showAlert("Error", "El numero de personal ya se encuentra registrado");
+                showAlert(Alert.AlertType.ERROR, "Error", "El numero de personal ya se encuentra registrado");
             } else {
                 ProfessorDTO professor = createProfessorDTO(name, staffNumber, password, shift);
 
                 if (professorService.registerProfessor(professor)) {
-                    showAlert("Exito", "El profesor se registro exitosamente");
+                    showAlert(Alert.AlertType.INFORMATION, "Exito", "El profesor se registro exitosamente");
                     clearFields();
                 } else {
-                    showAlert("Error", "La contrasena no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
+                    showAlert(Alert.AlertType.ERROR, "Error", "La contrasena no cumple con los requisitos de seguridad (minimo 10 caracteres, mayusculas, minusculas y numeros)");
                 }
             }
         } else {
-            showAlert("Error", "Servicio no disponible");
+            showAlert(Alert.AlertType.ERROR, "Error", "Servicio no disponible");
         }
     }
 
@@ -94,12 +97,36 @@ public class RegisterProfessorController {
     }
 
     @FXML
-    private void cancelAction(ActionEvent event) {
-        clearFields();
+    private void returnMenu(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mx/uv/spp/presentation/views/admin/AdministratorMenuView.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setTitle("Menu Coordinador");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No se pudo cargar la ventana");
+        }
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    @FXML
+    private void cancelAction(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmar cancelacion");
+        alert.setHeaderText(null);
+        alert.setContentText("¿Desea cancelar el registro y regresar al menu?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            returnMenu(event);
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);

@@ -9,14 +9,6 @@
         <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
     </padding>
 
-    <HBox alignment="CENTER_LEFT" spacing="10.0">
-        <Label fx:id="lblWelcome" style="-fx-font-size: 13px; -fx-text-fill: #555;" text="Bienvenido Administrador" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Label fx:id="lblCurrentUser" style="-fx-font-size: 13px; -fx-text-fill: #114B5F; -fx-font-weight: bold;" text="" />
-    </HBox>
-
-    <Separator />
-
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Menu del Administrador" />
 
     <VBox alignment="CENTER" spacing="10.0">
@@ -42,8 +34,6 @@
             <Button fx:id="btnListProfessors" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #42A8FB; -fx-text-fill: white;" text="Ver Profesores" />
         </HBox>
     </VBox>
-
-    <Separator />
 
     <HBox alignment="CENTER_RIGHT">
         <Button fx:id="btnLogout" onAction="#logoutAction" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cerrar Sesión" />

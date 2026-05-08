@@ -36,12 +36,12 @@ public class AdminMenuController {
 
     @FXML
     private void registerCoordinatorAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/RegisterCoordinatorView.fxml", "Registrar Coordinador");
+        loadWindow("/mx/uv/spp/presentation/views/admin/RegisterCoordinatorView.fxml", "Registrar Coordinador");
     }
 
     @FXML
     private void registerProfessorAction(ActionEvent event) {
-        loadWindow("/mx/uv/spp/presentation/views/RegisterProfessorView.fxml", "Registrar Profesor");
+        loadWindow("/mx/uv/spp/presentation/views/admin/RegisterProfessorView.fxml", "Registrar Profesor");
     }
 
     @FXML
@@ -63,7 +63,7 @@ public class AdminMenuController {
 
         Optional<ButtonType> result = confirmation.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            loadWindow("/mx/uv/spp/presentation/views/LoginView.fxml", "Inicio de Sesion - SPP");
+            loadWindow("/mx/uv/spp/presentation/views/user/LoginView.fxml", "Inicio de Sesion - SPP");
         }
     }
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Nuevo Mensaje" />
+
+    <GridPane alignment="CENTER" hgap="10" vgap="15">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120.0" />
+            <ColumnConstraints minWidth="350.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+
+        <Label style="-fx-font-weight: bold;" text="Destinatario:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="3.0">
+            <TextField fx:id="txtRecipient" prefWidth="350.0" promptText="Nombre de usuario del destinatario" />
+            <Label fx:id="lblRecipientError" style="-fx-text-fill: red; -fx-font-size: 11px;" text="" />
+        </VBox>
+
+        <Label style="-fx-font-weight: bold;" text="Asunto:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="txtSubject" prefWidth="350.0" promptText="Asunto del mensaje" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label style="-fx-font-weight: bold;" text="Mensaje:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextArea fx:id="txtBody" prefWidth="350.0" prefHeight="150.0" promptText="Escribe tu mensaje aqui" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    </GridPane>
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #D32F2F; -fx-text-fill: white;" text="Cancelar" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnSend" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Enviar" />
+    </HBox>
+
+</VBox>

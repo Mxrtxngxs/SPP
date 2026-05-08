@@ -88,19 +88,19 @@ public class LoginController {
 
         switch (user.getRole()) {
             case "Administrador":
-                fxmlPath = "/mx/uv/spp/presentation/views/AdministratorMenuView.fxml";
+                fxmlPath = "/mx/uv/spp/presentation/views/admin/AdministratorMenuView.fxml";
                 title = "Menu Administrador";
                 break;
             case "Coordinador":
-                fxmlPath = "/mx/uv/spp/presentation/views/CoordinatorMenuView.fxml";
+                fxmlPath = "/mx/uv/spp/presentation/views/coordinator/CoordinatorMenuView.fxml";
                 title = "Menu Coordinador";
                 break;
             case "Profesor":
-                fxmlPath = "/mx/uv/spp/presentation/views/ProfessorMenuView.fxml";
+                fxmlPath = "/mx/uv/spp/presentation/views/professor/ProfessorMenuView.fxml";
                 title = "Menu Profesor";
                 break;
             case "Practicante":
-                fxmlPath = "/mx/uv/spp/presentation/views/InternMenuView.fxml";
+                fxmlPath = "/mx/uv/spp/presentation/views/intern/InternMenuView.fxml";
                 title = "Menu Practicante";
                 break;
             default:
