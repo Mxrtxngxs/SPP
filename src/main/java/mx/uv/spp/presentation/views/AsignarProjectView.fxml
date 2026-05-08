@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Asignar Proyecto" />
+
+    <Label style="-fx-font-size: 13px; -fx-text-fill: #555555;" text="Seleccione al practicante y el proyecto que desea asignarle:" />
+
+    <VBox spacing="8.0">
+        <Label style="-fx-font-weight: bold;" text="Practicantes con solicitudes pendientes:" />
+        <TableView fx:id="tblPractitioners" prefHeight="220.0" prefWidth="700.0">
+            <columns>
+                <TableColumn fx:id="colMatricula" prefWidth="120.0" text="Matricula" />
+                <TableColumn fx:id="colName" prefWidth="220.0" text="Nombre" />
+                <TableColumn fx:id="colProject1" prefWidth="180.0" text="1ra opcion" />
+                <TableColumn fx:id="colProject2" prefWidth="180.0" text="2da opcion" />
+            </columns>
+        </TableView>
+    </VBox>
+
+    <VBox spacing="8.0">
+        <Label style="-fx-font-weight: bold;" text="Proyectos disponibles del practicante seleccionado:" />
+        <TableView fx:id="tblProjects" prefHeight="180.0" prefWidth="700.0">
+            <columns>
+                <TableColumn fx:id="colProjectName" prefWidth="260.0" text="Proyecto" />
+                <TableColumn fx:id="colCompany" prefWidth="200.0" text="Empresa" />
+                <TableColumn fx:id="colCapacity" prefWidth="120.0" text="Capacidad" />
+                <TableColumn fx:id="colAssign" prefWidth="100.0" text="Accion" />
+            </columns>
+        </TableView>
+    </VBox>
+
+    <Label fx:id="lblErrorMessage" style="-fx-text-fill: red;" text="" />
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #757575; -fx-text-fill: white;" text="Cancelar" />
+    </HBox>
+</VBox>

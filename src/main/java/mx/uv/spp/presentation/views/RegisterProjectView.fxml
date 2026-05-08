@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox alignment="CENTER" spacing="20.0" >
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+        </padding>
+
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Registrar Proyecto" />
+
+        <VBox spacing="10.0">
+            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Datos de Empresa:" />
+            <GridPane hgap="10" vgap="12" alignment="CENTER_LEFT">
+                <Label text="Nombre de la empresa:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtCompanyName" prefWidth="300.0" promptText="Nombre de la empresa" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Sector:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtSector" prefWidth="300.0" promptText="Sector de la empresa" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Direccion:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtAddress" prefWidth="300.0" promptText="Direccion de la empresa" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            </GridPane>
+        </VBox>
+
+        <VBox spacing="10.0">
+            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Datos del Responsable del Proyecto:" />
+            <GridPane hgap="10" vgap="12" alignment="CENTER_LEFT">
+                <Label text="Nombre del responsable:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtResponsibleName" prefWidth="300.0" promptText="Nombre completo" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Cargo:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="txtResponsibleRole" prefWidth="300.0" promptText="Cargo del responsable" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Telefono:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtResponsiblePhone" prefWidth="300.0" promptText="Numero de telefono" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            </GridPane>
+        </VBox>
+
+        <VBox spacing="10.0">
+            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Datos del Proyecto:" />
+            <GridPane hgap="10" vgap="12" alignment="CENTER_LEFT">
+                <Label text="Nombre del proyecto:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtProjectName" prefWidth="300.0" promptText="Nombre del proyecto" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Descripcion:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextArea fx:id="txtDescription" prefWidth="300.0" prefHeight="80.0" promptText="Descripcion del proyecto" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Capacidad de practicantes:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="txtCapacity" prefWidth="300.0" promptText="Numero maximo de practicantes" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            </GridPane>
+        </VBox>
+
+        <VBox spacing="10.0">
+            <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Calendarizacion de Actividades:" />
+            <GridPane hgap="10" vgap="12" alignment="CENTER_LEFT">
+                <Label text="Fecha de inicio:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <DatePicker fx:id="dpStartDate" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Fecha de termino:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <DatePicker fx:id="dpEndDate" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            </GridPane>
+        </VBox>
+
+        <Label fx:id="lblErrorMessage" style="-fx-text-fill: red;" text="" />
+
+        <HBox alignment="CENTER" spacing="20.0">
+            <Button fx:id="btnRegister" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #005BAA; -fx-text-fill: white;" text="Registrar" />
+            <Button fx:id="btnCancel" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #757575; -fx-text-fill: white;" text="Cancelar" />
+        </HBox>
+    </VBox>
+</ScrollPane>

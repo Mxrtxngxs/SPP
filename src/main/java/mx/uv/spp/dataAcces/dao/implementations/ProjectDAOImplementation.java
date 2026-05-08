@@ -4,6 +4,7 @@ import mx.uv.spp.business.dto.ProjectDTO;
 import mx.uv.spp.dataAcces.config.DatabaseConfig;
 import mx.uv.spp.dataAcces.dao.IProjectDAO;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
+import mx.uv.spp.utils.LogConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,10 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ProjectDAOImplementation implements IProjectDAO {
 
     private final Connection connection;
+    private static final Logger LOG = LogConfig.getLogger(ProjectDAOImplementation.class);
 
     private static final String SQL_SAVE_PROJECT = "INSERT INTO Proyecto (descripcion, fecha_inicio, fecha_fin, capacidad_practicantes, id_empresa, id_coordinador) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE_PROJECT = "UPDATE Proyecto SET descripcion=?, fecha_inicio=?, fecha_fin=?, capacidad_practicantes=?, id_empresa=? WHERE id_proyecto=?";
@@ -30,6 +33,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
 
     @Override
     public boolean saveProject(ProjectDTO project) throws DataAccessException {
+        boolean isSaved = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE_PROJECT)) {
             statement.setString(1, project.getDescription());
             statement.setDate(2, new java.sql.Date(project.getStartDate().getTime()));
@@ -37,14 +41,17 @@ public class ProjectDAOImplementation implements IProjectDAO {
             statement.setInt(4, project.getInternCapacity());
             statement.setInt(5, project.getCompanyId());
             statement.setInt(6, project.getCoordinatorId());
-            return statement.executeUpdate() > 0;
+            isSaved = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al guardar el proyecto: " + e.getMessage());
             throw new DataAccessException("Error saving project", e);
         }
+        return isSaved;
     }
 
     @Override
     public boolean updateProject(ProjectDTO project) throws DataAccessException {
+        boolean isUpdated = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PROJECT)) {
             statement.setString(1, project.getDescription());
             statement.setDate(2, new java.sql.Date(project.getStartDate().getTime()));
@@ -52,45 +59,55 @@ public class ProjectDAOImplementation implements IProjectDAO {
             statement.setInt(4, project.getInternCapacity());
             statement.setInt(5, project.getCompanyId());
             statement.setInt(6, project.getId());
-            return statement.executeUpdate() > 0;
+            isUpdated = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al actualizar el proyecto con ID " + project.getId() + ": " + e.getMessage());
             throw new DataAccessException("Error updating project ID: " + project.getId(), e);
         }
+        return isUpdated;
     }
 
     @Override
     public boolean deleteProject(int projectId) throws DataAccessException {
+        boolean isDeleted = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_PROJECT)) {
             statement.setInt(1, projectId);
-            return statement.executeUpdate() > 0;
+            isDeleted = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al eliminar el proyecto con ID " + projectId + ": " + e.getMessage());
             throw new DataAccessException("Error deleting project ID: " + projectId, e);
         }
+        return isDeleted;
     }
 
     @Override
     public boolean incrementAssignedInterns(int projectId) throws DataAccessException {
+        boolean isIncremented = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_INCREMENT_ASSIGNED)) {
             statement.setInt(1, projectId);
-            return statement.executeUpdate() > 0;
+            isIncremented = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al incrementar practicantes asignados del proyecto con ID " + projectId + ": " + e.getMessage());
             throw new DataAccessException("Error incrementing assigned interns for project ID: " + projectId, e);
         }
+        return isIncremented;
     }
 
     @Override
     public ProjectDTO getProjectById(int projectId) throws DataAccessException {
+        ProjectDTO project = new ProjectDTO(-1);
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_BY_ID)) {
             statement.setInt(1, projectId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    return mapResultSetToProject(resultSet);
+                    project = mapResultSetToProject(resultSet);
                 }
             }
         } catch (SQLException e) {
+            LOG.severe("Error al buscar el proyecto con ID " + projectId + ": " + e.getMessage());
             throw new DataAccessException("Error finding project ID: " + projectId, e);
         }
-        return new ProjectDTO(-1);
+        return project;
     }
 
     @Override
@@ -111,6 +128,7 @@ public class ProjectDAOImplementation implements IProjectDAO {
                 list.add(mapResultSetToProject(resultSet));
             }
         } catch (SQLException e) {
+            LOG.severe("Error al listar los proyectos: " + e.getMessage());
             throw new DataAccessException("Error listing projects", e);
         }
         return list;

@@ -12,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL fxmlLocation = getClass().getResource("presentation/views/user/LoginView.fxml");
+        URL fxmlLocation = getClass().getResource("presentation/views/LoginView.fxml");
 
         Parent root = FXMLLoader.load(fxmlLocation);
 

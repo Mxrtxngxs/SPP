@@ -4,6 +4,7 @@ import mx.uv.spp.business.dto.NotificationDTO;
 import mx.uv.spp.dataAcces.config.DatabaseConfig;
 import mx.uv.spp.dataAcces.dao.INotificationDAO;
 import mx.uv.spp.dataAcces.exceptions.DataAccessException;
+import mx.uv.spp.utils.LogConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,10 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class NotificationDAOImplementation implements INotificationDAO {
 
     private final Connection connection;
+    private static final Logger LOG = LogConfig.getLogger(NotificationDAOImplementation.class);
 
     private static final String SQL_SAVE_NOTIFICATION = "INSERT INTO Notificacion (tipo, mensaje, leida, fecha_envio, id_destinatario) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_FIND_NOTIFICATION_BY_ID = "SELECT * FROM Notificacion WHERE id_notificacion = ?";
@@ -28,30 +31,36 @@ public class NotificationDAOImplementation implements INotificationDAO {
 
     @Override
     public boolean saveNotification(NotificationDTO notification) throws DataAccessException {
+        boolean isSaved = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_SAVE_NOTIFICATION)) {
             statement.setString(1, notification.getType());
             statement.setString(2, notification.getMessage());
             statement.setBoolean(3, notification.getRead());
             statement.setTimestamp(4, new java.sql.Timestamp(notification.getSendDate().atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()));
             statement.setInt(5, notification.getReceiverId());
-            return statement.executeUpdate() > 0;
+            isSaved = statement.executeUpdate() > 0;
         } catch (SQLException e) {
+            LOG.severe("Error al guardar la notificacion: " + e.getMessage());
             throw new DataAccessException("Error al guardar la notificacion", e);
         }
+        return isSaved;
     }
 
     @Override
     public NotificationDTO findNotificationById(Integer id) throws DataAccessException {
+        NotificationDTO notification = new NotificationDTO(-1);
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_NOTIFICATION_BY_ID)) {
             statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()){
-                return mapResultSetToNotification(rs);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    notification = mapResultSetToNotification(resultSet);
+                }
             }
         } catch (SQLException e) {
-            throw new DataAccessException("Error al buscar la notificación con ID: " + id, e);
+            LOG.severe("Error al buscar la notificacion con ID " + id + ": " + e.getMessage());
+            throw new DataAccessException("Error al buscar la notificacion con ID: " + id, e);
         }
-        return new NotificationDTO(-1);
+        return notification;
     }
 
     @Override
@@ -59,10 +68,11 @@ public class NotificationDAOImplementation implements INotificationDAO {
         List<NotificationDTO> list = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ALL_NOTIFICATIONS);
              ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 list.add(mapResultSetToNotification(resultSet));
             }
         } catch (SQLException e) {
+            LOG.severe("Error al listar las notificaciones: " + e.getMessage());
             throw new DataAccessException("Error al listar las notificaciones", e);
         }
         return list;
@@ -70,6 +80,7 @@ public class NotificationDAOImplementation implements INotificationDAO {
 
     @Override
     public boolean updateNotification(NotificationDTO notification) throws DataAccessException {
+        boolean isUpdated = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_NOTIFICATION)) {
             statement.setString(1, notification.getType());
             statement.setString(2, notification.getMessage());
@@ -77,20 +88,25 @@ public class NotificationDAOImplementation implements INotificationDAO {
             statement.setTimestamp(4, new java.sql.Timestamp(notification.getSendDate().atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()));
             statement.setInt(5, notification.getReceiverId());
             statement.setInt(6, notification.getNotificationId());
-            return statement.executeUpdate() > 0;
+            isUpdated = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataAccessException("Error al actualizar la notificación con ID: " + notification.getNotificationId(), e);
+            LOG.severe("Error al actualizar la notificacion con ID " + notification.getNotificationId() + ": " + e.getMessage());
+            throw new DataAccessException("Error al actualizar la notificacion con ID: " + notification.getNotificationId(), e);
         }
+        return isUpdated;
     }
 
     @Override
     public boolean deleteNotificationById(Integer id) throws DataAccessException {
+        boolean isDeleted = false;
         try (PreparedStatement statement = connection.prepareStatement(SQL_DELETE_NOTIFICATION_BY_ID)) {
             statement.setInt(1, id);
-            return statement.executeUpdate() > 0;
+            isDeleted = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataAccessException("Error al eliminar la notificación con ID: " + id, e);
+            LOG.severe("Error al eliminar la notificacion con ID " + id + ": " + e.getMessage());
+            throw new DataAccessException("Error al eliminar la notificacion con ID: " + id, e);
         }
+        return isDeleted;
     }
 
     private NotificationDTO mapResultSetToNotification(ResultSet resultSet) throws SQLException {
